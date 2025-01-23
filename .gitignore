@@ -1,0 +1,19 @@
+# Ignore build directory
+/build/
+
+# Ignore CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+
+# Ignore executables
+*.out
+*.exe
+*.a
+*.o
+*.so
+*.dll
+
+# Catch2 testing reports
+Testing/
+CTestTestfile.cmake
