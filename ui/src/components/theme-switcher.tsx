@@ -5,6 +5,12 @@ import { useTheme } from "next-themes";
 import { SunIcon, MoonIcon } from "lucide-react";
 import { Button } from "./ui/button";
 
+/**
+ * The button that changes between the different themes, light or dark.
+ *
+ * Light mode will be plain white.
+ * Dark mode will be plain black.
+ */
 export default function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
