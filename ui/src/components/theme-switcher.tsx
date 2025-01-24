@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { SunIcon, MoonIcon } from "lucide-react";
-import { Button } from "./ui/button";
 
 /**
  * The button that changes between the different themes, light or dark.
@@ -35,9 +34,10 @@ export default function ThemeSwitcher() {
   };
 
   return (
-    <Button key="theme-switcher" variant={"ghost"} onClick={handleTheme}>
-      {theme === "dark" && <SunIcon size={18} />}
-      {theme === "light" && <MoonIcon size={18} />}
-    </Button>
+    // biome-ignore lint/a11y/useKeyWithClickEvents lint/a11y/useFocusableInteractive lint/a11y/useSemanticElements: treat as a button, it should be fine
+    <div role="button" onClick={handleTheme} className="px-4">
+      {theme === "dark" && <SunIcon size={28} />}
+      {theme === "light" && <MoonIcon size={28} />}
+    </div>
   );
 }
