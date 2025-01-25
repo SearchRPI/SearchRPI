@@ -10,8 +10,7 @@ project(SearchRPI VERSION 1.0)
 # Add the main program
 # add_executable(my_program src/main.cpp)
 
-# GoogleTest requires at least C++14
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
@@ -27,7 +26,7 @@ enable_testing()
 
 # Find all test source files in the tests directory
 file(GLOB TEST_SOURCES "tests/*.cc")
-file(GLOB QUERY_PROCESSING_SOURCES "query-processing/*.cpp" "query-processing/*.cc")
+file(GLOB QUERY_PROCESSING_SOURCES "src/*.cpp" "src/*.cc")
 
 # Create an executable for all tests
 add_executable(
@@ -38,7 +37,7 @@ add_executable(
 
 target_include_directories(
   all_tests PRIVATE
-  query-processing
+  src
 )
 # Link GTest library
 target_link_libraries(
