@@ -4,36 +4,129 @@ import Header from "../components/header";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+
+// Fake data
+const linksMap: Map<string, string> = new Map([
+  ["https://www.google.com", "Google"],
+  ["https://www.facebook.com", "Facebook"],
+  ["https://www.twitter.com", "Twitter"],
+  ["https://www.linkedin.com", "LinkedIn"],
+  ["https://www.github.com", "GitHub"],
+  ["https://www.reddit.com", "Reddit"],
+  ["https://www.youtube.com", "YouTube"],
+  ["https://www.amazon.com", "Amazon"],
+  ["https://www.wikipedia.org", "Wikipedia"],
+  ["https://www.stackoverflow.com", "Stack Overflow"],
+  ["https://www.apple.com", "Apple"],
+  ["https://www.microsoft.com", "Microsoft"],
+  ["https://www.instagram.com", "Instagram"],
+  ["https://www.pinterest.com", "Pinterest"],
+  ["https://www.netflix.com", "Netflix"],
+  ["https://www.spotify.com", "Spotify"],
+  ["https://www.twitch.tv", "Twitch"],
+  ["https://www.bbc.com", "BBC"],
+  ["https://www.nytimes.com", "New York Times"],
+  ["https://www.cnn.com", "CNN"],
+]);
+
+const searchResults: SearchResults[] = Array.from(
+  linksMap,
+  ([link, title]) => ({ link, title }),
+);
 
 const HomePage: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [searchQuery, setSearchQuery] = useState<string | null>(
+    searchParams.get("query"),
+  );
+
+  const [showResults, setShowResults] = useState<boolean>(false);
+
+  // determines whether the results are being loaded
+  const [loadingState, setLoadingState] = useState<boolean>(false);
 
   // NOTE: Used to test whether searchQuery is correct
+  // biome-ignore lint/correctness/useExhaustiveDependencies: We don't worry about setShowResults
   useEffect(() => {
-    console.log(searchQuery);
-  }, [searchQuery]);
+    if (searchParams.get("query")) {
+      setShowResults(true);
+    } else {
+      setShowResults(false);
+    }
+  }, [searchParams, searchQuery]);
 
   // NOTE: Used to call backend API to fetch the results
   const onSubmit = () => {
-    console.log("Search button clicked");
-    console.log(`Search Query: ${searchQuery}`);
+    if (searchQuery) {
+      addQueryParam(searchQuery);
+      setShowResults(true);
+    }
+  };
+
+  // Adds the search query param to the URL
+  const addQueryParam = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("query", value);
+    router.push(`${window.location.pathname}?${params.toString()}`);
   };
 
   return (
     <div>
       <Header />
-      <div className="h-[80vh] mt-20">
-        <div className="flex justify-center">
-          {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
-          <Input
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-[50vw]"
-            placeholder="Search here ..."
-          />
-          <Button onClick={onSubmit}>Search</Button>
+      {/* Show the search results  */}
+      {showResults ? (
+        <div className="h-[90vh] mt-20">
+          <div className="flex justify-center">
+            {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
+            <Input
+              value={searchQuery || ""}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-[40vw]"
+              placeholder="Search here ..."
+            />
+          </div>
+          <div className="flex justify-center mt-3">
+            <Button onClick={onSubmit}>Search</Button>
+          </div>
+
+          {/* Set loading state to true */}
+          {searchResults.map((result) => (
+            <div key={result.title} className="gap-10">
+              <Link href={result.link}>
+                <Card>
+                  <CardContent>
+                    <CardTitle>{result.link}</CardTitle>
+                    {result.title}
+                  </CardContent>
+                </Card>
+              </Link>
+            </div>
+          ))}
+          {/* Set loading state to false */}
         </div>
-      </div>
+      ) : (
+        // No search results (i.e. did not click the search button, or does not have any search params in the URL)
+        <div className="h-[80vh] mt-20">
+          <div className="flex justify-center">
+            {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
+            <Input
+              value={searchQuery || ""}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-[40vw]"
+              placeholder="Search here ..."
+            />
+          </div>
+          <div className="flex justify-center mt-3">
+            <Button onClick={onSubmit}>Search</Button>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
