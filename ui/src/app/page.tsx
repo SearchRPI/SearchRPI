@@ -92,6 +92,12 @@ const HomePage: React.FC = () => {
     router.push(`${window.location.pathname}?${params.toString()}`);
   };
 
+  const addPageParam = (value: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("pages", value.toString());
+    router.push(`${window.location.pathname}?${params.toString()}`);
+  };
+
   // Used to keep track of pages
   const [totalPages, setTotalPages] = useState<number>(5);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -161,9 +167,10 @@ const HomePage: React.FC = () => {
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
-                onClick={() =>
-                  currentPage > 1 && setCurrentPage((prev) => prev - 1)
-                }
+                onClick={() => {
+                  currentPage > 1 && setCurrentPage((prev) => prev - 1);
+                  currentPage > 1 && addPageParam(currentPage - 1);
+                }}
               />
             </PaginationItem>
             <RenderPaginationItems
@@ -171,12 +178,15 @@ const HomePage: React.FC = () => {
               maxPagesToShow={maxPagesToShow}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              addPageParam={addPageParam}
             />
             <PaginationItem>
               <PaginationNext
-                onClick={() =>
-                  currentPage < totalPages && setCurrentPage((prev) => prev + 1)
-                }
+                onClick={() => {
+                  currentPage < totalPages &&
+                    setCurrentPage((prev) => prev + 1);
+                  currentPage < totalPages && addPageParam(currentPage + 1);
+                }}
               />
             </PaginationItem>
           </PaginationContent>

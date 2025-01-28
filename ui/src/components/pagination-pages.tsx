@@ -10,6 +10,7 @@ interface Props {
   maxPagesToShow: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  addPageParam: (value: number) => void;
 }
 
 const RenderPaginationItems: React.FC<Props> = ({
@@ -17,6 +18,7 @@ const RenderPaginationItems: React.FC<Props> = ({
   maxPagesToShow,
   currentPage,
   setCurrentPage,
+  addPageParam,
 }) => {
   /**
    * Generates a random id/key for a unique key for lists
@@ -59,7 +61,10 @@ const RenderPaginationItems: React.FC<Props> = ({
           <PaginationItem key={makeid(5)}>
             <PaginationLink
               className={1 === currentPage ? "bg-gray-300" : ""}
-              onClick={() => setCurrentPage(1)}
+              onClick={() => {
+                setCurrentPage(1);
+                addPageParam(1);
+              }}
             >
               1
             </PaginationLink>
@@ -82,7 +87,10 @@ const RenderPaginationItems: React.FC<Props> = ({
           <PaginationItem key={makeid(5)}>
             <PaginationLink
               className={i === currentPage ? "bg-gray-300" : ""}
-              onClick={() => setCurrentPage(i)}
+              onClick={() => {
+                setCurrentPage(i);
+                addPageParam(i);
+              }}
             >
               {i}
             </PaginationLink>
@@ -104,7 +112,10 @@ const RenderPaginationItems: React.FC<Props> = ({
           <PaginationItem key={makeid(5)}>
             <PaginationLink
               className={totalPages === currentPage ? "bg-gray-300" : ""}
-              onClick={() => setCurrentPage(totalPages)}
+              onClick={() => {
+                setCurrentPage(totalPages);
+                addPageParam(totalPages);
+              }}
             >
               {totalPages}
             </PaginationLink>
@@ -118,7 +129,10 @@ const RenderPaginationItems: React.FC<Props> = ({
           <PaginationItem key={makeid(5)}>
             <PaginationLink
               className={i === currentPage ? "bg-gray-300" : ""}
-              onClick={() => setCurrentPage(i)}
+              onClick={() => {
+                setCurrentPage(i);
+                addPageParam(i);
+              }}
             >
               {i}
             </PaginationLink>
