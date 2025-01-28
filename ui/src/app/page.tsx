@@ -66,6 +66,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     if (searchParams.get("query")) {
       setShowResults(true);
+      setPageAndResults();
     } else {
       setShowResults(false);
     }
@@ -76,12 +77,21 @@ const HomePage: React.FC = () => {
     if (searchQuery) {
       addQueryParam(searchQuery);
       setShowResults(true);
+      setPageAndResults();
+    }
+  };
 
-      setLoadingState(true);
-      // TODO: Set the fetched results here ...
-      setResults(results);
-      setTotalPages(Math.ceil(results.length / itemsPerPage)); // set the total pages that we can show (+1 so we don't lose results to show)
-      setLoadingState(false);
+  const setPageAndResults = () => {
+    setLoadingState(true);
+    // TODO: Set the fetched results here ...
+    setResults(results);
+    setTotalPages(Math.ceil(results.length / itemsPerPage)); // set the total pages that we can show (+1 so we don't lose results to show)
+    setLoadingState(false);
+
+    const pageIndex = Number(searchParams.get("pages"));
+    if (pageIndex) {
+      console.log(pageIndex);
+      setCurrentPage(pageIndex);
     }
   };
 
@@ -100,7 +110,11 @@ const HomePage: React.FC = () => {
 
   // Used to keep track of pages
   const [totalPages, setTotalPages] = useState<number>(5);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(() => {
+    const pageCount = Number(searchParams.get("pages"));
+    console.log(pageCount);
+    return pageCount || 1;
+  });
   const maxPagesToShow = 3;
   const itemsPerPage = 15;
 
