@@ -80,9 +80,13 @@ const HomePage: React.FC = () => {
       setPageAndResults();
     }
   };
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
-  const setPageAndResults = () => {
+  const setPageAndResults = async () => {
     setLoadingState(true);
+    await sleep(1 * 1000);
     // TODO: Set the fetched results here ...
     setResults(results);
     setTotalPages(Math.ceil(results.length / itemsPerPage)); // set the total pages that we can show (+1 so we don't lose results to show)
@@ -127,50 +131,63 @@ const HomePage: React.FC = () => {
     <div>
       <Header />
       {/* Show the search results  */}
-      {showResults ? (
-        <div className="mt-20">
-          <div className="flex justify-center">
-            {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
-            <Input
-              value={searchQuery || ""}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-[40vw]"
-              placeholder="Search here ..."
-            />
-          </div>
-          <div className="flex justify-center mt-3">
-            <Button onClick={onSubmit}>Search</Button>
-          </div>
-
-          {/* Set loading state to true */}
-          {currentPagesResults.map((result) => (
-            <div key={result.title} className="px-10 py-5">
-              <Link href={result.link}>
-                <Card className="p-5 shadow-lg">
-                  <CardContent>
-                    <CardTitle>{result.link}</CardTitle>
-                    {result.title}
-                  </CardContent>
-                </Card>
-              </Link>
+      {!loadingState ? (
+        showResults ? (
+          <div className="mt-20">
+            <div className="flex justify-center">
+              {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
+              <Input
+                value={searchQuery || ""}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-[40vw]"
+                placeholder="Search here ..."
+              />
             </div>
-          ))}
-          {/* Set loading state to false */}
-        </div>
-      ) : (
-        // No search results (i.e. did not click the search button, or does not have any search params in the URL)
-        <div className="h-[80vh] mt-20">
-          <div className="flex justify-center">
-            {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
-            <Input
-              value={searchQuery || ""}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-[40vw]"
-              placeholder="Search here ..."
-            />
+            <div className="flex justify-center mt-3">
+              <Button onClick={onSubmit}>Search</Button>
+            </div>
+
+            {/* Set loading state to true */}
+            {currentPagesResults.map((result) => (
+              <div key={result.title} className="px-10 py-5">
+                <Link href={result.link}>
+                  <Card className="p-5 shadow-lg">
+                    <CardContent>
+                      <CardTitle>{result.link}</CardTitle>
+                      {result.title}
+                    </CardContent>
+                  </Card>
+                </Link>
+              </div>
+            ))}
+            {/* Set loading state to false */}
           </div>
-          <div className="flex justify-center mt-3">
-            <Button onClick={onSubmit}>Search</Button>
+        ) : (
+          // No search results (i.e. did not click the search button, or does not have any search params in the URL)
+          <div className="h-[80vh] mt-20">
+            <div className="flex justify-center">
+              {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
+              <Input
+                value={searchQuery || ""}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-[40vw]"
+                placeholder="Search here ..."
+              />
+            </div>
+            <div className="flex justify-center mt-3">
+              <Button onClick={onSubmit}>Search</Button>
+            </div>
+          </div>
+        )
+      ) : (
+        <div className="flex justify-center items-center h-[50vh] ">
+          <div
+            className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+            role="status"
+          >
+            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+              Loading...
+            </span>
           </div>
         </div>
       )}
