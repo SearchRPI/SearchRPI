@@ -81,7 +81,7 @@ const HomePage: React.FC = () => {
       <Header />
       {/* Show the search results  */}
       {showResults ? (
-        <div className="h-[90vh] mt-20">
+        <div className="mt-20">
           <div className="flex justify-center">
             {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
             <Input
@@ -97,9 +97,9 @@ const HomePage: React.FC = () => {
 
           {/* Set loading state to true */}
           {searchResults.map((result) => (
-            <div key={result.title} className="gap-10">
+            <div key={result.title} className="px-10 py-5">
               <Link href={result.link}>
-                <Card>
+                <Card className="p-5 shadow-lg">
                   <CardContent>
                     <CardTitle>{result.link}</CardTitle>
                     {result.title}
