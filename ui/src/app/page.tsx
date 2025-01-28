@@ -8,6 +8,14 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import RenderPaginationItems from "@/components/pagination-pages";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 // Fake data
 const linksMap: Map<string, string> = new Map([
@@ -48,6 +56,8 @@ const HomePage: React.FC = () => {
 
   const [showResults, setShowResults] = useState<boolean>(false);
 
+  const [results, setResults] = useState<SearchResults[]>(searchResults);
+
   // determines whether the results are being loaded
   const [loadingState, setLoadingState] = useState<boolean>(false);
 
@@ -66,6 +76,12 @@ const HomePage: React.FC = () => {
     if (searchQuery) {
       addQueryParam(searchQuery);
       setShowResults(true);
+
+      setLoadingState(true);
+      // TODO: Set the fetched results here ...
+      setResults(results);
+      setTotalPages(Math.ceil(results.length / itemsPerPage)); // set the total pages that we can show (+1 so we don't lose results to show)
+      setLoadingState(false);
     }
   };
 
@@ -75,6 +91,17 @@ const HomePage: React.FC = () => {
     params.set("query", value);
     router.push(`${window.location.pathname}?${params.toString()}`);
   };
+
+  // Used to keep track of pages
+  const [totalPages, setTotalPages] = useState<number>(5);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const maxPagesToShow = 3;
+  const itemsPerPage = 15;
+
+  const currentPagesResults = results.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   return (
     <div>
@@ -96,7 +123,7 @@ const HomePage: React.FC = () => {
           </div>
 
           {/* Set loading state to true */}
-          {searchResults.map((result) => (
+          {currentPagesResults.map((result) => (
             <div key={result.title} className="px-10 py-5">
               <Link href={result.link}>
                 <Card className="p-5 shadow-lg">
@@ -128,6 +155,33 @@ const HomePage: React.FC = () => {
         </div>
       )}
 
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <Pagination className="mt-5">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() =>
+                  currentPage > 1 && setCurrentPage((prev) => prev - 1)
+                }
+              />
+            </PaginationItem>
+            <RenderPaginationItems
+              totalPages={totalPages}
+              maxPagesToShow={maxPagesToShow}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+            <PaginationItem>
+              <PaginationNext
+                onClick={() =>
+                  currentPage < totalPages && setCurrentPage((prev) => prev + 1)
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
       <Footer />
     </div>
   );
