@@ -94,7 +94,6 @@ const HomePage: React.FC = () => {
 
     const pageIndex = Number(searchParams.get("pages"));
     if (pageIndex) {
-      console.log(pageIndex);
       setCurrentPage(pageIndex);
     }
   };
@@ -116,7 +115,6 @@ const HomePage: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(5);
   const [currentPage, setCurrentPage] = useState<number>(() => {
     const pageCount = Number(searchParams.get("pages"));
-    console.log(pageCount);
     return pageCount || 1;
   });
   const maxPagesToShow = 3;
