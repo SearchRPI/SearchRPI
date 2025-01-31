@@ -3,8 +3,9 @@
 /**
  * @file  searcher.h
  * @brief Class for searching a database
-*/
+ */
 
+#include "DatabaseWrapper.h"
 #include "types.h"
 
 #include <vector>
@@ -12,26 +13,23 @@
 
 namespace SearchRPI {
 
-/** Querying session.
- *
- *  An Enquire object represents a querying session - most of the options for
- *  running a query can be set on it, and the query is run via
- *  Enquire::get_mset().
+/**
+ *  A Searcher object represents a querying session - most of the options for
+ *  running a query can be set on it, and the query is run via Searcher::Search().
  */
 class Searcher {
 public:
-    Searcher(); // Temporary, remove later
 
     /** 
      *  @param db The database to search.
      */
-    // Searcher(const SearchRPI::Database& db);
+    Searcher(const DatabaseWrapper& db);
 
     /** 
      *  @param db The database to search.
      *  @param query Query used to search.
      */
-    // Searcher(const SearchRPI::Database& db, const SearchRPI::Query query);
+    Searcher(const DatabaseWrapper& db, const SearchRPI::Query query);
 
     // Destructor
     ~Searcher();
@@ -46,11 +44,11 @@ public:
 
 
 private:
-    // SearchRPI::Database db;
-
-    // TODO: Custom Class for Handling Processed Query
-    std::vector<std::string> query; 
-
+    DatabaseWrapper db;
+    std::vector<std::string> query; // TODO: Custom Class for Handling Processed Query
+    
+    double time_limit;
+    // Additional Settings Here as needed
 
 };
 

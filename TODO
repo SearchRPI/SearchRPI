@@ -1,6 +1,6 @@
 Now:
 Generate Matching Set of Documents for a Search Query
--> Retreive "postlists" (list of documents that contain a query term)
+-> Retreive "postlists" (list of documents retrieved from index, that are relevant for a specific term)
 -> Merge "postlists"
 -> Score Documents
 -> Return top scorers
