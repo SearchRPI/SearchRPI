@@ -19,11 +19,13 @@ namespace SearchRPI {
  */
 class Searcher {
 public:
+    // Disable default constructor
+    Searcher() = delete;
 
     /** 
      *  @param db The database to search.
      */
-    Searcher(const DatabaseWrapper& db);
+    Searcher(const DatabaseWrapper& db) : db(db) {}
 
     /** 
      *  @param db The database to search.
@@ -44,12 +46,11 @@ public:
 
 
 private:
-    DatabaseWrapper db;
+    DatabaseWrapper* db;
     std::vector<std::string> query; // TODO: Custom Class for Handling Processed Query
     
-    double time_limit;
-    // Additional Settings Here as needed
-
+    // Configuration Settings Here as needed
+    // double time_limit;
 };
 
 }
