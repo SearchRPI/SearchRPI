@@ -1,5 +1,9 @@
-#ifndef DATABASEWRAPPER_H
-#define DATABASEWRAPPER_H
+#pragma once
+
+/**
+ * @file  DatabaseWrapper.h
+ * @brief Inverted index wrapper
+ */
 
 #include <lmdb.h>
 #include <string>
@@ -19,14 +23,30 @@ public:
     DatabaseWrapper(const DatabaseWrapper&) = delete;
     DatabaseWrapper& operator=(const DatabaseWrapper&) = delete;
 
-    // Add data to the database
+    /**
+     * @brief Add data to database
+     * 
+     * @param key Index to add data to.
+     * @param data Data to be added.
+     */
     void add(const std::string& key, const Data& data);
 
-    // Remove data for a specific key
+    /**
+     * @brief Remove all data for a specific key
+     * 
+     * @param key Index to remove data from.
+     */
     void remove(const std::string& key);
 
-    // Retrieve the first value for a given key
+    /**
+     * @brief Retrieve the first value for a given key
+     * 
+     * @param key Index to retrieve from.
+     * @return First entry at provided key.
+     */
     Data get(const std::string& key);
+
+    // TODO: Clarify when get is used and its purpose, add bulk get
 
 private:
     MDB_env* env = nullptr;
@@ -49,5 +69,3 @@ private:
     // Custom comparison function for ranking by priority
     static int custom_compare(const MDB_val* a, const MDB_val* b);
 };
-
-#endif // LMDBWRAPPER_H
