@@ -26,10 +26,8 @@ export default function ThemeSwitcher() {
   const handleTheme = () => {
     if (theme === "light") {
       setTheme("dark");
-      console.log("setting to dark...");
     } else {
       setTheme("light");
-      console.log("setting to light...");
     }
   };
 

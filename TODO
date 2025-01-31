@@ -1,0 +1,26 @@
+Now:
+Generate Matching Set of Documents for a Search Query
+-> Retreive "postlists" (list of documents that contain a query term)
+-> Merge "postlists"
+-> Score Documents
+-> Return top scorers
+Build Test Suite
+
+Soon:
+Query Parsing (Query Trees)
+Query Optimization
+Snippets
+Latency Evaluation / Logging
+
+Later:
+Filters
+Query Expansion
+Caching
+
+A lot later:
+Field Weighting
+Logical Operators (AND, OR, NOT, etc.)
+
+Possibly in the future:
+Sharding / Distributed System
+Implement Inverted Index from scratch instead of using LMDB (A lot of work, but will improve scalability)
