@@ -1,27 +1,28 @@
 #pragma once
 
 /**
- * @file  DatabaseWrapper.h
+ * @file  Database.h
  * @brief Inverted index wrapper
  */
 
 #include <lmdb.h>
 #include <string>
+#include <vector>
 
 // Struct to store in LMDB
 struct Data {
     int priority;         // Priority value (used for ranking)
-    std::string value;    // Actual string data
+    int docId;            // docId for specific document
 };
 
-class DatabaseWrapper {
+class Database {
 public:
     // Get the singleton instance
-    static DatabaseWrapper& getInstance();
+    static Database& getInstance();
 
     // Delete copy constructor and assignment operator
-    DatabaseWrapper(const DatabaseWrapper&) = delete;
-    DatabaseWrapper& operator=(const DatabaseWrapper&) = delete;
+    Database(const Database&) = delete;
+    Database& operator=(const Database&) = delete;
 
     /**
      * @brief Add data to database
@@ -44,7 +45,16 @@ public:
      * @param key Index to retrieve from.
      * @return First entry at provided key.
      */
-    Data get(const std::string& key);
+    std::vector<Data> get(const std::string& key);
+
+    /**
+     * @brief Retrieve the first 'n' values for a given key
+     *
+     * @param key Index to retrieve from.
+     * @param n Maximum number of values returned
+     * @return At most the first 'n' entries at provided key
+     */
+    std::vector<Data> get(const std::string& key, size_t n);
 
     // TODO: Clarify when get is used and its purpose, add bulk get
 
@@ -55,10 +65,10 @@ private:
     MDB_txn* read_txn = nullptr;
 
     // Private constructor for singleton
-    DatabaseWrapper();
+    Database();
 
     // Destructor to clean up LMDB resources
-    ~DatabaseWrapper();
+    ~Database();
 
     // Serialize the Data struct
     void serialize_data(const Data& data, MDB_val& value);
