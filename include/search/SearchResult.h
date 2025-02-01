@@ -12,24 +12,27 @@
 namespace SearchRPI {
 
 // Represents a single search result
+// NOTE: Could be struct right now, may swap later
 class SearchResult {
 public:
     // Disable default constructor
     SearchResult() = delete;
 
-    SearchResult(docid id) : id(id) {}
+    // Disable copy constructor(s)
+    SearchResult(const SearchResult&) = delete;
+    SearchResult& operator=(const SearchResult&) = delete;
 
-    // Get document associated with this result
-    docid docID() const { return id; }
+    SearchResult(double weight, docid id) : weight(weight), id(id) {}
+
+    // Get document associated with this search result
+    docid get_docid() const { return id; }
+
+    // Get the weight (score) associated with this search result.
+    double get_weight() const { return weight; }
 
 protected:
+    double weight;
     docid id;
-    std::string page_name; // NOTE: Just site name/domain for now, do something better later
-    std::string snippet;
-    std::string url;
-
-    // TODO: Add favicon
-
 };
 
 }

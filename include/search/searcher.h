@@ -8,6 +8,7 @@
 #include "types.h"
 #include "DatabaseWrapper.h"
 #include "Query.h"
+#include "Weight.h"
 
 #include <vector>
 #include <string>
@@ -24,31 +25,25 @@ public:
     Searcher() = delete;
 
     /** 
-     *  @param db The database to search.
+     * @param db The database to search.
+     * @param weight The weighting scheme to use for ranking results.
      */
-    Searcher(const DatabaseWrapper& db) : db(db) {}
-
-    /** 
-     *  @param db The database to search.
-     *  @param query Query used to search.
-     */
-    Searcher(const DatabaseWrapper& db, const SearchRPI::Query query);
-
-    // Destructor
-    ~Searcher();
+    Searcher(const DatabaseWrapper& db,
+             const Weight& weight) 
+             : db(db), weight_scheme(weight) {}
 
     /**
      *  @brief Search database using query and any other internal settings.
+     *  @param query Query used to search database.
      *  @param max_items Maximum number of documents to return.
      *  @return Ordered list of documents that match query.
-     *  TODO: FIX RETURN DATATYPE
      */
-    // SearchRPI:ResultsDataType Search(unsigned int max_items);
+    MatchingDocs Search(const Query& query, unsigned int max_items);
 
 
 private:
     DatabaseWrapper* db;
-    Query query;
+    Weight* weight_scheme;
     
     // Configuration Settings Here as needed
     // double time_limit;
