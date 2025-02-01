@@ -5,8 +5,9 @@
  * @brief Class for searching a database
  */
 
-#include "DatabaseWrapper.h"
 #include "types.h"
+#include "DatabaseWrapper.h"
+#include "Query.h"
 
 #include <vector>
 #include <string>
@@ -47,7 +48,7 @@ public:
 
 private:
     DatabaseWrapper* db;
-    std::vector<std::string> query; // TODO: Custom Class for Handling Processed Query
+    Query query;
     
     // Configuration Settings Here as needed
     // double time_limit;
