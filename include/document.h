@@ -17,11 +17,12 @@ public:
     Document() = delete;
 
 protected:
-    SearchRPI::docid id;
+    docid id;
     std::unordered_map<std::string, int> term_freqs;
     double url_rating;
 
-    // TODO: age?
+    // Other fields USED TO RANK here
+    // Age?
 };
 
 }
