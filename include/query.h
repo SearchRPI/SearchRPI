@@ -2,12 +2,20 @@
 
 /**
  * @file  query.h
- * @brief Class for searching a database
+ * @brief Query Class
 */
+
+#include <string>
+#include <vector>
 
 namespace SearchRPI {
 
+// Class representing a query
 class Query {
+public:
+
+private:
+    std::vector<std::string> query;
 
 };
 

@@ -127,7 +127,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div>
-      <Header />
+      <Header setSearchQuery={setSearchQuery} />
       {/* Show the search results  */}
       {!loadingState ? (
         showResults ? (
@@ -139,6 +139,7 @@ const HomePage: React.FC = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-[40vw]"
                 placeholder="Search here ..."
+                id="SearchBox"
               />
             </div>
             <div className="flex justify-center mt-3">
@@ -170,6 +171,7 @@ const HomePage: React.FC = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-[40vw]"
                 placeholder="Search here ..."
+                id="SearchBox"
               />
             </div>
             <div className="flex justify-center mt-3">
