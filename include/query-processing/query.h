@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 #include <unordered_set>
-// #include <libstemmer.h>
 #include "bkTree.h"
 
 /**

@@ -14,13 +14,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
-# Fetch Snowball library
-FetchContent_Declare(
-    snowball
-    GIT_REPOSITORY https://github.com/snowballstem/snowball.git
-    GIT_TAG master
-)
-FetchContent_MakeAvailable(snowball)
 
 FetchContent_Declare(
   googletest

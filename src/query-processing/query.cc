@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <climits>
 
+#include "../../include/query-processing/stemmer.h"
+
 namespace query {
 
 // NOTE: This function might fit better elsewhere
@@ -98,8 +100,13 @@ TokenList processQuery(const std::string& rawQuery,
                        const bk::BKTree& tree) {
     TokenList tokens = tokenize(rawQuery);
     TokenList correctedTokens = findSuggestion(tokens, tree, dictionary);
-    // TODO: Apply stemming here if needed
-    return correctedTokens;
+
+    TokenList stemmedTokens;
+    for (const std::string& token : correctedTokens) {
+        stemmedTokens.push_back(stemmer::stem(token));
+    }
+
+    return stemmedTokens;
 }
 
 } // namespace query
