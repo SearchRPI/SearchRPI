@@ -1,45 +1,87 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
-#include "../src/query-processing/query.hpp"
+#include <unordered_set>
+#include "../include/query-processing/query.h"
 
-TEST(QueryTest, TokenizationWorksCorrectly) {
-    Query query("hello world test query");
+class QueryTestFixture : public ::testing::Test {
+protected:
+    static std::unordered_set<std::string> dict;
+    static bk::BKTree* tree;
 
-    // Tokenizes into words
-    auto tokens = query.tokenize();
-    ASSERT_EQ(tokens.size(), 4);
-    EXPECT_EQ(tokens[0], "hello");
-    EXPECT_EQ(tokens[1], "world");
-    EXPECT_EQ(tokens[2], "test");
-    EXPECT_EQ(tokens[3], "query");
+    static void SetUpTestSuite() {
+        // Define a small dictionary directly in the test
+        dict = {"hello", "world", "run", "happy", "children", "toy", "apple",
+                "banana"};
+
+        // Initialize BKTree with the small dictionary
+        tree = new bk::BKTree(dict);
+    }
+
+    static void TearDownTestSuite() {
+        delete tree;
+    }
+};
+
+// Initialize static members
+std::unordered_set<std::string> QueryTestFixture::dict;
+bk::BKTree* QueryTestFixture::tree = nullptr;
+
+// Test that BKTree root is valid
+TEST_F(QueryTestFixture, GetRootReturnsValidNode) {
+    const auto* root = tree->getRoot();
+    ASSERT_NE(root, nullptr);
+    EXPECT_FALSE(root->word.empty());
+    EXPECT_TRUE(dict.find(root->word) != dict.end());
 }
 
-// TEST_CASE("Query typo correction works correctly", "[Query]") {
-//     Query query("helo wrld");
-//
-//     SECTION("Corrects simple typos") {
-//         auto corrected = query.correctTypos();
-//         REQUIRE(corrected == "hello world");
-//     }
-// }
-//
-// TEST_CASE("Query expansion adds related terms", "[Query]") {
-//     Query query("fast car");
-//
-//     SECTION("Expands with synonyms") {
-//         auto expanded = query.expandQuery();
-//         REQUIRE_FALSE(expanded.empty());
-//         REQUIRE(std::find(expanded.begin(), expanded.end(), "quick vehicle") != expanded.end());
-//     }
-// }
-//
-// TEST_CASE("Query retrieves relevant document IDs", "[Query]") {
-//     Query query("example query");
-//
-//     SECTION("Returns non-empty list of document IDs") {
-//         auto doc_ids = query.getRelevantDocIDs();
-//         REQUIRE_FALSE(doc_ids.empty());
-//         REQUIRE(doc_ids[0] == 1);
-//     }
-// }
+// Test that processQuery corrects spelling errors
+TEST_F(QueryTestFixture, ProcessQueryReturnsCorrections) {
+    std::string query = "Runnning happyness childrns toy";
+    auto tokens = query::processQuery(query, dict, *tree);
+    ASSERT_EQ(tokens.size(), 4);
+    EXPECT_EQ(tokens[0], "runn");
+    EXPECT_EQ(tokens[1], "happy");
+    EXPECT_EQ(tokens[2], "children");
+    EXPECT_EQ(tokens[3], "toy");
+}
+
+// Test that processQuery handles punctuation and case correctly
+TEST_F(QueryTestFixture, ProcessQueryHandlesPunctuationAndCase) {
+    std::string query = "HeLLo, WoRLD!";
+    auto tokens = query::processQuery(query, dict, *tree);
+    ASSERT_EQ(tokens.size(), 2);
+    EXPECT_EQ(tokens[0], "hello");
+    EXPECT_EQ(tokens[1], "world");
+}
+
+// Test that an empty query returns an empty result
+TEST_F(QueryTestFixture, ProcessQueryHandlesEmptyInput) {
+    std::string query = "";
+    auto tokens = query::processQuery(query, dict, *tree);
+    EXPECT_TRUE(tokens.empty());
+}
+
+// Test that stop words are removed correctly
+TEST_F(QueryTestFixture, ProcessQueryRemovesOnlyStopWords) {
+    std::string query = "the and in on at";
+    auto tokens = query::processQuery(query, dict, *tree);
+    EXPECT_TRUE(tokens.empty()); // Assuming stop words are removed
+}
+
+// Test that processQuery handles Unicode input
+TEST_F(QueryTestFixture, ProcessQueryHandlesUnicodeCharacters) {
+    std::string query = "你好 世界"; // "Hello World" in Chinese
+    auto tokens = query::processQuery(query, dict, *tree);
+    ASSERT_FALSE(tokens.empty()); // Expecting some processing
+}
+
+// Test that words without typos remain unchanged
+TEST_F(QueryTestFixture, ProcessQueryNoCorrectionsNeeded) {
+    std::string query = "perfectli correct sentenc";
+    auto tokens = query::processQuery(query, dict, *tree);
+    ASSERT_EQ(tokens.size(), 3);
+    EXPECT_EQ(tokens[0], "perfectli");
+    EXPECT_EQ(tokens[1], "correct");
+    EXPECT_EQ(tokens[2], "sentenc");
+}

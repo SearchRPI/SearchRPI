@@ -26,14 +26,14 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 # Find all test source files in the tests directory
+file(GLOB_RECURSE SOURCES "src/*.cc")
 file(GLOB TEST_SOURCES "tests/*.cc")
-file(GLOB QUERY_PROCESSING_SOURCES "src/*.cpp" "src/*.cc")
 
 # Create an executable for all tests
 add_executable(
   all_tests
+  ${SOURCES}
   ${TEST_SOURCES}
-  ${QUERY_PROCESSING_SOURCES}
 )
 
 target_include_directories(

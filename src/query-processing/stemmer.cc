@@ -114,7 +114,7 @@ void step1b(std::string &word) {
 }
 
 void step1c(std::string &word) {
-    if (endsWith(word, "y") && containsVowel(word.substr(0, word.size() - 1))) {
+    if (endsWith(word, "y") && word.size() > 1 && isConsonant(word, word.size() - 2)) {
         word[word.size() - 1] = 'i';
     }
 }

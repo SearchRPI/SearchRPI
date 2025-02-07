@@ -6,6 +6,12 @@ namespace bk {
 
 BKTree::BKTree() : root(nullptr) {}
 
+BKTree::BKTree(const Dictionary& dict) : root(nullptr) {
+    for (const auto& word : dict) {
+        insert(word);
+    }
+}
+
 void BKTree::insert(const std::string& word) {
     if (!root) {
         root = std::make_unique<Node>(word);
@@ -23,11 +29,15 @@ void BKTree::insert(const std::string& word) {
 }
 
 std::string BKTree::findClosest(const std::string& query, int threshold) const {
-    if (!root) return query;
+    if (!root || query.empty()) return query;
+
     std::string bestMatch = query;
-    int bestDistance = std::numeric_limits<int>::max();
+    int bestDistance = threshold + 1;
+
     search(root.get(), query, threshold, bestMatch, bestDistance);
-    return bestMatch;
+
+    // If no valid match was found within the threshold, return the original query
+    return (bestDistance <= threshold) ? bestMatch : query;
 }
 
 void BKTree::search(const Node* node, const std::string& query, int threshold,
