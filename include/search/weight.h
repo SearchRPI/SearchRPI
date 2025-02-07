@@ -1,5 +1,7 @@
 #pragma once
 
+#include <math.h>
+
 /**
  * @file  weight.h
  * @brief Weighting schemes
@@ -15,6 +17,7 @@ class Weight {
 public:
 
     Weight() = default;
+    virtual ~Weight() = default;
 
     /**
      * @brief Virtual method to calculate the score of a document.
@@ -27,7 +30,7 @@ public:
      * 
      * @return The calculated score as a double.
      */
-    virtual double get_score();
+    virtual double get_score() const = 0;
 
 };
 
@@ -53,7 +56,8 @@ public:
     double get_score(unsigned int doc_len,
                      unsigned int term_freq,
                      double avg_doc_len,
-                     unsigned int collection_size) const;
+                     unsigned int collection_size,
+                     unsigned int doc_freq) const;
 
 protected:
     // Scale Factor
@@ -85,7 +89,8 @@ public:
      */
     double get_score(unsigned int term_freq,
                      double avg_doc_len,
-                     unsigned int collection_size) const;
+                     unsigned int collection_size,
+                     unsigned int doc_freq) const;
 
 protected:
     // Base of the logarithm used in IDF calculation.
