@@ -15,7 +15,7 @@ struct Data {
     int docId;            // docId for specific document
 };
 
-class Database {
+class Database : IDatabase {
 public:
     // Get the singleton instance
     static Database& getInstance();

@@ -42,7 +42,7 @@ public:
 
 
 private:
-    DatabaseWrapper* db;
+    Database* db;
     Weight* weight_scheme;
     
     // Configuration Settings Here as needed
