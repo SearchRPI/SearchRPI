@@ -1,27 +1,16 @@
-# Minimum CMake version
 cmake_minimum_required(VERSION 3.14)
 
-# Project name and version
 project(SearchRPI VERSION 1.0)
-
-# Enable testing
-# include(CTest)
-
-# Add the main program
-# add_executable(my_program src/main.cpp)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include(FetchContent)
-# Fetch Snowball library
-FetchContent_Declare(
-    snowball
-    GIT_REPOSITORY https://github.com/snowballstem/snowball.git
-    GIT_TAG master
-)
-FetchContent_MakeAvailable(snowball)
+enable_testing()
 
+# Add the include directory (avoids needing relative paths)
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+include(FetchContent)
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
@@ -30,27 +19,37 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-enable_testing()
+# Find all source files in the src directory
+file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/src/*.cc)
 
 # Find all test source files in the tests directory
-file(GLOB TEST_SOURCES "tests/*.cc")
-file(GLOB QUERY_PROCESSING_SOURCES "src/*.cpp" "src/*.cc")
+file(GLOB_RECURSE TEST_FILES ${CMAKE_SOURCE_DIR}/tests/*.cc)
+
+# Create a library from source files
+add_library(SearchRPI ${SRC_FILES})
 
 # Create an executable for all tests
-add_executable(
-  all_tests
-  ${TEST_SOURCES}
-  ${QUERY_PROCESSING_SOURCES}
+add_executable(all_tests ${TEST_FILES})
+
+target_include_directories(
+  SearchRPI PUBLIC
+  ${CMAKE_SOURCE_DIR}/include
+  ${CMAKE_SOURCE_DIR}/src
 )
 
 target_include_directories(
   all_tests PRIVATE
-  src
+  ${CMAKE_SOURCE_DIR}/include    # Allows `#include <search/searcher.h>`
+  ${CMAKE_SOURCE_DIR}/tests/mock # Allows `#include "MockDatabase.h"`
 )
-# Link GTest library
+
+# Link the test executable to SearchRPI and GTest
 target_link_libraries(
-  all_tests
+  all_tests PRIVATE
+  SearchRPI
   GTest::gtest_main
+  GTest::gmock
+  GTest::gmock_main
 )
 
 # Include GoogleTest and discover all tests
