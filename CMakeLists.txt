@@ -39,8 +39,8 @@ target_include_directories(
 
 target_include_directories(
   all_tests PRIVATE
-  ${CMAKE_SOURCE_DIR}/include    # Allows `#include <search/searcher.h>`
-  ${CMAKE_SOURCE_DIR}/tests/mock # Allows `#include "MockDatabase.h"`
+  ${CMAKE_SOURCE_DIR}/include
+  ${CMAKE_SOURCE_DIR}/tests/mock
 )
 
 # Link the test executable to SearchRPI and GTest
