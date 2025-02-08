@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IDatabase.h"
+#include "index/IDatabase.h"
 #include <gmock/gmock.h>
 
 /**

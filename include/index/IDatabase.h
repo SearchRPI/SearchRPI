@@ -3,12 +3,14 @@
 #include <string>
 #include <vector>
 
-struct Data;
+// Struct stored in database
+struct Data {
+    int priority; // Priority value (used for ranking) // TODO: Swap to term frequency
+    int docId;    // docId for specific document
+};
 
 /**
  * @brief Interface for Database operations
- *
- * This allows mocking and dependency injection in tests.
  */
 class IDatabase {
 public:

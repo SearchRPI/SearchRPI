@@ -9,12 +9,6 @@
 #include <string>
 #include <vector>
 
-// Struct to store in LMDB
-struct Data {
-    int priority;         // Priority value (used for ranking)
-    int docId;            // docId for specific document
-};
-
 class Database : IDatabase {
 public:
     // Get the singleton instance

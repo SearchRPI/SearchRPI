@@ -6,12 +6,14 @@
  */
 
 #include "types.h"
-#include "DatabaseWrapper.h"
-#include "Query.h"
-#include "Weight.h"
+#include "index/IDatabase.h"
+#include "query.h"
+#include "search/weight.h"
+#include "search/MatchingDocs.h"
 
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace SearchRPI {
 
@@ -28,7 +30,7 @@ public:
      * @param db The database to search.
      * @param weight The weighting scheme to use for ranking results.
      */
-    Searcher(const DatabaseWrapper& db,
+    Searcher(std::shared_ptr<IDatabase> db,
              const Weight& weight) 
              : db(db), weight_scheme(weight) {}
 
@@ -42,8 +44,8 @@ public:
 
 
 private:
-    Database* db;
-    Weight* weight_scheme;
+    std::shared_ptr<IDatabase> db;
+    Weight weight_scheme;
     
     // Configuration Settings Here as needed
     // double time_limit;

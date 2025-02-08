@@ -21,7 +21,7 @@ public:
     MatchingDocs();
 
     // Returns the number of search results in the collection.
-    unsigned int size() const { return results.size(); }
+    unsigned int size() const { return (unsigned int) results.size(); }
     
     // Checks if size of collection is zero.
     bool empty() const { return size() == 0; }
