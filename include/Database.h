@@ -17,12 +17,17 @@ struct Data {
 
 class Database {
 public:
-    // Get the singleton instance
-    static Database& getInstance();
+    /**
+     * @brief Constructor with database path
+     * 
+     * @param db_path Path to the database file.
+     */
+    Database(const std::string& db_path);
 
-    // Delete copy constructor and assignment operator
-    Database(const Database&) = delete;
-    Database& operator=(const Database&) = delete;
+    /**
+     * @brief Destructor to clean up LMDB resources
+     */
+    ~Database();
 
     /**
      * @brief Add data to database
@@ -56,19 +61,11 @@ public:
      */
     std::vector<Data> get(const std::string& key, size_t n);
 
-    // TODO: Clarify when get is used and its purpose, add bulk get
-
 private:
     MDB_env* env = nullptr;
     MDB_dbi dbi;
     MDB_txn* write_txn = nullptr;
     MDB_txn* read_txn = nullptr;
-
-    // Private constructor for singleton
-    Database();
-
-    // Destructor to clean up LMDB resources
-    ~Database();
 
     // Serialize the Data struct
     void serialize_data(const Data& data, MDB_val& value);

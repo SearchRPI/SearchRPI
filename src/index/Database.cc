@@ -2,16 +2,8 @@
 #include <cstring>
 #include <stdexcept>
 
-// Get the singleton instance
-Database& Database::getInstance() {
-    static Database instance;
-    return instance;
-}
-
-// Private constructor for singleton
-Database::Database() {
-    const char* db_path = "../testdb";
-
+// Constructor with database path
+Database::Database(const std::string& db_path) {
     // Initialize LMDB environment
     if (mdb_env_create(&env) != 0) {
         throw std::runtime_error("Failed to create LMDB environment.");
@@ -19,7 +11,7 @@ Database::Database() {
     if (mdb_env_set_mapsize(env, 10 * 1024 * 1024) != 0) {
         throw std::runtime_error("Failed to set map size.");
     }
-    if (mdb_env_open(env, db_path, MDB_CREATE, 0664) != 0) {
+    if (mdb_env_open(env, db_path.c_str(), MDB_CREATE, 0664) != 0) {
         throw std::runtime_error("Failed to open LMDB environment.");
     }
 
@@ -51,7 +43,6 @@ Database::~Database() {
 // Serialize the Data struct
 void Database::serialize_data(const Data& data, MDB_val& value) {
     size_t total_size = sizeof(int) * 2; // Two integers
-
     void* data_blob = malloc(total_size);
     if (!data_blob) {
         throw std::bad_alloc();
@@ -68,7 +59,6 @@ void Database::deserialize_data(const MDB_val& value, Data& data) {
     if (value.mv_size != sizeof(int) * 2) {
         throw std::runtime_error("Invalid data size during deserialization");
     }
-
     std::memcpy(&data.first_int, value.mv_data, sizeof(int));
     std::memcpy(&data.second_int, (char*)value.mv_data + sizeof(int), sizeof(int));
 }
