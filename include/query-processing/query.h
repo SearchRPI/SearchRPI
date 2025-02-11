@@ -15,7 +15,7 @@
 
 /**
  * @namespace query
- * @brief Contains utility functions for processing queries, including tokenization, typo detection, and query expansion.
+ * @brief Contains utility functions for processing queries.
  */
 namespace query {
 

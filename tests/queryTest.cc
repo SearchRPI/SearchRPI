@@ -85,3 +85,13 @@ TEST_F(QueryTestFixture, ProcessQueryNoCorrectionsNeeded) {
     EXPECT_EQ(tokens[1], "correct");
     EXPECT_EQ(tokens[2], "sentenc");
 }
+
+// Fake testr
+TEST_F(QueryTestFixture, FAKE) {
+    std::string query = "What are good skis?";
+    auto tokens = query::processQuery(query, dict, *tree);
+    for (auto token : tokens) {
+        std::cout << token << " ";
+    }
+    std::cout << std::endl;
+}
