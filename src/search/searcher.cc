@@ -21,6 +21,21 @@ MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
         }        
     }
 
+    // Convert map to a MatchingDocs object
+    MatchingDocs results;
+    for (const auto& [doc_id, score] : mdocs) {
+        results.add_result(SearchResult(score, doc_id));
+    }
+
+    // Sort descending
+    results.sort_by_score_desc();
+
+    // Optionally trim to max_items if needed
+    // If you'd like to enforce max_items in MatchingDocs itself, you can do so.
+    // Otherwise, do it here by building a new MatchingDocs with truncated results.
+
+    // Return final results
+    return results;
     
 
 }

@@ -9,6 +9,7 @@
 #include "SearchResult.h"
 
 #include <vector>
+#include <algorithm>
 
 namespace SearchRPI {
 
