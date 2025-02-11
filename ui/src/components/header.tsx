@@ -3,7 +3,11 @@ import ThemeSwitcher from "./theme-switcher";
 import { Button } from "./ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const Header: React.FC = () => {
+interface Props {
+  setSearchQuery: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+const Header: React.FC<Props> = ({ setSearchQuery }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -11,6 +15,7 @@ const Header: React.FC = () => {
   const removeParam = () => {
     const params = new URLSearchParams(searchParams.toString());
     router.push(`${window.location.pathname}?${params.toString()}`);
+    setSearchQuery("");
   };
 
   return (
