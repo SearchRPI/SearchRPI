@@ -1,18 +1,27 @@
 #include "search/searcher.h"
 #include "index/IDatabase.h"
 
+#include <unordered_map>
+
 namespace SearchRPI {
 
 MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
 
-    // get query terms
-    std::vector<std::string> terms;
+    std::vector<std::string> terms = query.terms();
+    std::unordered_map<int, int> mdocs; // mdocs[docid] = score;
+    
     for (const std::string& term : terms) {
         std::vector<Data> docs = db->get(term, 100000);
-        int freq = Data.priority;
-        int docid = Data.docid;
-        double score = weight_scheme.get_score()
+
+        for (const Data& doc : docs) {
+            int freq = doc.priority;
+            int docid = doc.docId;
+            double score = weight_scheme.get_score();
+            mdocs[docid] += score;
+        }        
     }
+
+    
 
 }
 
