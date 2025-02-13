@@ -21,12 +21,8 @@ class MatchingDocs {
 public:
     MatchingDocs();
 
-    // Add a single search result
-    void add_result(const SearchResult& sr) {
-        results.push_back(sr);
-    }
-
-    // Sort search results by descending weight (score)
+    // Temporary Functions
+    void add_result(const SearchResult& sr) { results.push_back(sr); }
     void sort_by_score_desc() {
         std::sort(results.begin(), results.end(),
             [](const SearchResult& a, const SearchResult& b) {
@@ -34,6 +30,7 @@ public:
             }
         );
     }
+    const std::vector<SearchResult>& get_all_results() const { return results; }
 
     // Returns the number of search results in the collection.
     unsigned int size() const { return (unsigned int) results.size(); }

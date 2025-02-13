@@ -6,8 +6,12 @@
 #include "search/query.h"
 #include "search/weight.h"
 
+#include <memory>
+
 using ::testing::_;
 using ::testing::Return;
+
+namespace SearchRPI {
 
 TEST(SearcherTest, SearchReturnsExpectedDocs) {
     // 1. Create a mock database object
@@ -25,15 +29,14 @@ TEST(SearcherTest, SearchReturnsExpectedDocs) {
         .WillOnce(Return(fakeData));
 
     // 3. Construct a Weight object (stub or real, up to you)
-    Weight weightScheme;
-    // Possibly configure weightScheme ...
+    Weight weightScheme();
 
     // 4. Construct the Searcher with the mock DB
-    SearchRPI::Searcher searcher(&mockDb, weightScheme);
+    Searcher searcher(std::make_shared<IDatabase>(mockDb), weightScheme);
 
-    // 5. Create a query. Let's say it’s just a single term "foo".
+    // 5. Create Query
     Query query;
-    query.someQueryKey = "foo"; // or however your Query is built
+    query.addTerm("foo");
 
     // 6. Call the method under test
     unsigned int maxDocs = 10;
@@ -46,4 +49,6 @@ TEST(SearcherTest, SearchReturnsExpectedDocs) {
 
     // The mock expectations (get("foo")) are verified automatically 
     // when the test ends.
+}
+
 }

@@ -16,8 +16,9 @@ public:
 
     Query();
 
-    // Temporary function while implementation is not concrete
+    // Temporary functions while implementation is not concrete
     std::vector<std::string> terms() const { return query; }
+    void addTerm(std::string term) { query.push_back(term); }
 
 private:
     std::vector<std::string> query;
