@@ -7,7 +7,11 @@ const std::string TEST_DB_PATH = "./testdb";
 class DatabaseTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        std::filesystem::remove_all(TEST_DB_PATH); // Clean up previous test data
+        if (std::filesystem::exists(TEST_DB_PATH)) {
+            std::filesystem::remove_all(TEST_DB_PATH); // Remove all existing contents
+        } else {
+            std::filesystem::create_directories(TEST_DB_PATH); // Create the directory
+        }
         db = new Database(TEST_DB_PATH);
     }
 
