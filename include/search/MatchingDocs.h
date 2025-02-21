@@ -11,7 +11,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace SearchRPI {
+namespace Ranking {
 
 /**
  * @class MatchingDocs

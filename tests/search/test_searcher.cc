@@ -93,7 +93,6 @@ TEST_F(SearcherTest, SearchWithMultipleTerms) {
         {7, 789}, {3, 111}
     };
 
-    // The searcher will call get() once for each term.
     EXPECT_CALL(*mockDB, get("foo", _))
         .Times(1)
         .WillOnce(Return(fooData));

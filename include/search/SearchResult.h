@@ -9,7 +9,7 @@
 
 #include <string>
 
-namespace SearchRPI {
+namespace Ranking {
 
 // Represents a single search result
 // NOTE: Could be struct right now, may swap later
@@ -22,17 +22,17 @@ public:
     // SearchResult(const SearchResult&) = delete;
     // SearchResult& operator=(const SearchResult&) = delete;
 
-    SearchResult(double weight, docid id) : weight(weight), id(id) {}
+    SearchResult(double weight, SearchRPI::docid id) : weight(weight), id(id) {}
 
     // Get document associated with this search result
-    docid get_docid() const { return id; }
+    SearchRPI::docid get_docid() const { return id; }
 
     // Get the weight (score) associated with this search result.
     double get_weight() const { return weight; }
 
 protected:
     double weight;
-    docid id;
+    SearchRPI::docid id;
 };
 
 }

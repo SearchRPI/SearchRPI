@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-namespace SearchRPI {
+namespace Ranking {
 
 // Class representing a query
 class Query {

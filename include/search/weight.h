@@ -5,7 +5,7 @@
  * @brief Weighting schemes
 */
 
-namespace SearchRPI {
+namespace Ranking {
 
 /**
  * @class Weight

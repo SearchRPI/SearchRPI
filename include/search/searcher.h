@@ -15,7 +15,7 @@
 #include <string>
 #include <memory>
 
-namespace SearchRPI {
+namespace Ranking {
 
 /**
  *  A Searcher object represents a querying session - most of the options for
