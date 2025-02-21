@@ -6,6 +6,9 @@
  */
 
 #include <lmdb.h>
+
+#include "index/IDatabase.h"
+
 #include <string>
 #include <vector>
 

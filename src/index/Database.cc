@@ -57,8 +57,8 @@ void Database::serialize_data(const Data& data, MDB_val& value) {
         throw std::bad_alloc();
     }
 
-    std::memcpy(data_blob, &data.first_int, sizeof(int));
-    std::memcpy((char*)data_blob + sizeof(int), &data.second_int, sizeof(int));
+    std::memcpy(data_blob, &data.priority, sizeof(int));
+    std::memcpy((char*)data_blob + sizeof(int), &data.docId, sizeof(int));
 
     value.mv_size = total_size;
     value.mv_data = data_blob;
@@ -69,8 +69,8 @@ void Database::deserialize_data(const MDB_val& value, Data& data) {
         throw std::runtime_error("Invalid data size during deserialization");
     }
 
-    std::memcpy(&data.first_int, value.mv_data, sizeof(int));
-    std::memcpy(&data.second_int, (char*)value.mv_data + sizeof(int), sizeof(int));
+    std::memcpy(&data.priority, value.mv_data, sizeof(int));
+    std::memcpy(&data.docId, (char*)value.mv_data + sizeof(int), sizeof(int));
 }
 
 // Custom comparison function for ranking by priority

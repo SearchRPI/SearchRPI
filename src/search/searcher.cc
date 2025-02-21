@@ -3,7 +3,7 @@
 
 #include <unordered_map>
 
-namespace SearchRPI {
+namespace Ranking {
 
 MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
 
@@ -12,8 +12,8 @@ MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
     std::vector<std::string> terms = query.terms();
     std::unordered_map<int, double> mdocs; // mdocs[docid] = score;
     
-    int avg_doc_len = 0;
-    int collection_size = 0;
+    int avg_doc_len = 1;
+    int collection_size = 2;
 
     for (const std::string& term : terms) {
         std::vector<Data> docs = db->get(term, 100000);
@@ -22,8 +22,8 @@ MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
             int freq = doc.priority;
             int docid = doc.docId;
 
-            int doc_len = 0;
-            int doc_freq = 0;
+            int doc_len = 1;
+            int doc_freq = 1;
 
             double score = weight_scheme.get_score(doc_len, freq, avg_doc_len, collection_size, doc_freq);
             mdocs[docid] += score;

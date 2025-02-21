@@ -12,7 +12,7 @@
 using ::testing::_;
 using ::testing::Return;
 
-namespace SearchRPI {
+namespace Ranking {
 
 class SearcherTest : public ::testing::Test {
 protected:
