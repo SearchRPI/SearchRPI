@@ -19,7 +19,7 @@ namespace SearchRPI {
  */
 class MatchingDocs {
 public:
-    MatchingDocs();
+    MatchingDocs() {}
 
     // Temporary Functions
     void add_result(const SearchResult& sr) { results.push_back(sr); }

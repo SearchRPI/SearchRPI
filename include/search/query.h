@@ -14,7 +14,7 @@ namespace SearchRPI {
 class Query {
 public:
 
-    Query();
+    Query() {}
 
     // Temporary functions while implementation is not concrete
     std::vector<std::string> terms() const { return query; }

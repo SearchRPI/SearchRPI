@@ -7,18 +7,27 @@ namespace SearchRPI {
 
 MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
 
+    // NOTE: CURRENT IMPLEMENTATION IS TEMPORARY
+
     std::vector<std::string> terms = query.terms();
-    std::unordered_map<int, int> mdocs; // mdocs[docid] = score;
+    std::unordered_map<int, double> mdocs; // mdocs[docid] = score;
     
+    int avg_doc_len = 0;
+    int collection_size = 0;
+
     for (const std::string& term : terms) {
         std::vector<Data> docs = db->get(term, 100000);
 
         for (const Data& doc : docs) {
             int freq = doc.priority;
             int docid = doc.docId;
-            double score = weight_scheme.get_score();
+
+            int doc_len = 0;
+            int doc_freq = 0;
+
+            double score = weight_scheme.get_score(doc_len, freq, avg_doc_len, collection_size, doc_freq);
             mdocs[docid] += score;
-        }        
+        }
     }
 
     // Convert map to a MatchingDocs object
@@ -30,38 +39,8 @@ MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
     // Sort descending
     results.sort_by_score_desc();
 
-    // Optionally trim to max_items if needed
-    // If you'd like to enforce max_items in MatchingDocs itself, you can do so.
-    // Otherwise, do it here by building a new MatchingDocs with truncated results.
-
     // Return final results
     return results;
-    
-
 }
-
-// MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) 
-// {
-//     // Example: assume the query has 1 term "foo"
-//     // or you iterate over query terms, etc.
-//     std::string key = query.someQueryKey;
-//     std::vector<Data> rawDocs = db->get(key);
-    
-//     // "Ranking" or weighting using weight_scheme_ ...
-//     // transform into MatchingDocs ... 
-//     // for example:
-//     MatchingDocs results;
-//     for (const auto& d : rawDocs) {
-//         results.push_back({d.docId, /*some score based on weight_scheme_*/ 1.0});
-//     }
-
-//     // Sort results by some criterion or do something else
-//     // Then trim to max_items
-//     if (results.size() > max_items) {
-//         results.resize(max_items);
-//     }
-
-//     return results;
-// }
 
 }

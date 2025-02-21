@@ -14,41 +14,31 @@ using ::testing::Return;
 namespace SearchRPI {
 
 TEST(SearcherTest, SearchReturnsExpectedDocs) {
-    // 1. Create a mock database object
-    MockDatabase mockDb;
+    std::shared_ptr<MockDatabase> mockDB = std::make_shared<MockDatabase>();
 
-    // 2. Set up expectations: what calls do we expect on the mock?
-    //    Suppose we expect db_->get("foo") to be called exactly once
-    //    and return some data.
     std::vector<Data> fakeData = {
         {10, 123}, // priority=10, docId=123
         {5, 456},
     };
-    EXPECT_CALL(mockDb, get("foo"))
+    EXPECT_CALL(*mockDB, get("foo", _))
         .Times(1)
         .WillOnce(Return(fakeData));
 
-    // 3. Construct a Weight object (stub or real, up to you)
-    Weight weightScheme();
+    Weight weightScheme;
+    Searcher searcher(mockDB, weightScheme);
 
-    // 4. Construct the Searcher with the mock DB
-    Searcher searcher(std::make_shared<IDatabase>(mockDb), weightScheme);
-
-    // 5. Create Query
+    // TEMPORARY, until Query behavior is figured out
     Query query;
     query.addTerm("foo");
 
-    // 6. Call the method under test
     unsigned int maxDocs = 10;
     MatchingDocs results = searcher.Search(query, maxDocs);
 
-    // 7. Verify: did we get the correct results?
-    ASSERT_EQ(results.size(), 2u);
-    EXPECT_EQ(results[0].docId, 123);
-    EXPECT_EQ(results[1].docId, 456);
-
-    // The mock expectations (get("foo")) are verified automatically 
-    // when the test ends.
+    // TEMPORARY
+    std::vector<SearchResult> docs = results.get_all_results(); 
+    ASSERT_EQ(docs.size(), 2u);
+    EXPECT_EQ(docs[0].get_docid(), 123);
+    EXPECT_EQ(docs[1].get_docid(), 456);
 }
 
 }

@@ -30,9 +30,8 @@ public:
      * @param db The database to search.
      * @param weight The weighting scheme to use for ranking results.
      */
-    Searcher(std::shared_ptr<IDatabase> db,
-             const Weight& weight) 
-             : db(db), weight_scheme(weight) {}
+    Searcher(std::shared_ptr<IDatabase> db, const Weight& weight) 
+            : db(db), weight_scheme(weight) {}
 
     /**
      *  @brief Search database using query and any other internal settings.

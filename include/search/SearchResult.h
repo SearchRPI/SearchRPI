@@ -19,8 +19,8 @@ public:
     SearchResult() = delete;
 
     // Disable copy constructor(s)
-    SearchResult(const SearchResult&) = delete;
-    SearchResult& operator=(const SearchResult&) = delete;
+    // SearchResult(const SearchResult&) = delete;
+    // SearchResult& operator=(const SearchResult&) = delete;
 
     SearchResult(double weight, docid id) : weight(weight), id(id) {}
 

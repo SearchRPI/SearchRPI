@@ -1,5 +1,7 @@
 #include "search/weight.h"
 
+#include <cmath>
+
 double SearchRPI::BM25Weight::get_score(unsigned int doc_len, unsigned int term_freq, double avg_doc_len, unsigned int collection_size, unsigned int doc_freq) const {
     if (doc_freq == 0){
         return 0.0;
@@ -11,7 +13,7 @@ double SearchRPI::BM25Weight::get_score(unsigned int doc_len, unsigned int term_
     return idf * tf;
 }
 
-double SearchRPI::TFIDFWeight::get_score(unsigned int term_freq, double avg_doc_len, unsigned int collection_size, unsigned int doc_freq) const {
+double SearchRPI::TFIDFWeight::get_score(unsigned int doc_len, unsigned int term_freq, double avg_doc_len, unsigned int collection_size, unsigned int doc_freq) const {
     if (avg_doc_len == 0){
         return 0.0;
     }
