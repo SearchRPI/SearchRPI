@@ -13,24 +13,26 @@ using query::TokenList;
 
 /**
  * @brief Checks if a given word is a stop word.
- * 
+ *
  * @param word The word to check.
  * @return True if the word is a stop word, false otherwise.
  */
+// TODO: UPDATE TO READ FROM STOPWORDS.TXT
 bool isStopWord(const std::string& word) {
     static const Dictionary stopWords = {
         "the", "of", "to", "a", "and", "in", "said", "for", "that", "was", "on",
         "he", "is", "with", "at", "by", "it", "from", "as", "be", "were", "an",
         "have", "his", "but", "has", "are", "not", "who", "they", "its", "had",
         "will", "would", "about", "i", "been", "this", "their", "new", "or",
-        "which", "we", "more", "after", "us", "percent", "up", "one", "people"
+        "which", "we", "more", "after", "us", "percent", "up", "one", "people",
+        "what"
     };
     return stopWords.find(word) != stopWords.end();
 }
 
 /**
  * @brief Converts a word to lowercase.
- * 
+ *
  * @param word The word to convert.
  * @return The lowercase version of the word.
  */
@@ -45,7 +47,7 @@ std::string toLower(const std::string& word) {
 
 /**
  * @brief Removes punctuation from a given word.
- * 
+ *
  * @param word The word to process.
  * @return The word without punctuation.
  */
@@ -57,7 +59,7 @@ std::string removePunctuation(std::string word) {
 
 /**
  * @brief Tokenizes a raw query string into individual words.
- * 
+ *
  * @param rawQuery The raw query string to tokenize.
  * @return A vector of tokens (words) from the query.
  */
@@ -79,7 +81,7 @@ TokenList tokenize(const std::string& rawQuery) {
 
 /**
  * @brief Finds the closest word in the dictionary to a given word.
- * 
+ *
  * @param word The word to find a match for.
  * @param tree The BK-Tree containing dictionary words.
  * @param dictionary The set of dictionary words.
@@ -91,7 +93,7 @@ std::string findClosestWord(const std::string& word, const bk::BKTree& tree) {
 
 /**
  * @brief Finds typos in a list of tokens and suggests corrections.
- * 
+ *
  * @param tokens The list of tokens to check.
  * @param tree The BK-Tree containing dictionary words.
  * @param dictionary The dictionary for typo detection.
@@ -114,20 +116,29 @@ TokenList findSuggestion(const TokenList& tokens,
 }
 
 namespace query {
-    
-TokenList processQuery(const std::string& rawQuery,
-                       const Dictionary& dictionary,
-                       const bk::BKTree& tree) {
+
+std::shared_ptr<queryTree::QueryNode> processQuery(
+    const std::string& rawQuery,
+    const Dictionary& dictionary,
+    const bk::BKTree& tree,
+    const queryTree::TermDictionary& termDictionary,
+    const queryTree::TermDictionary& thesaurus
+) {
+    // Tokenization
     TokenList tokens = tokenize(rawQuery);
+
+    // Spelling correction
     TokenList correctedTokens = findSuggestion(tokens, tree, dictionary);
 
-    TokenList stemmedTokens;
+    // Normalization: punctuation removal & stemming
+    TokenList processedTokens;
     for (std::string& token : correctedTokens) {
         token = removePunctuation(token);
-        stemmedTokens.push_back(stemmer::stem(token));
+        processedTokens.push_back(stemmer::stem(token));
     }
 
-    return stemmedTokens;
+    // Build and return the query tree
+    return queryTree::buildQueryTree(processedTokens, termDictionary, thesaurus);
 }
 
 // NOTE: This function might fit better elsewhere

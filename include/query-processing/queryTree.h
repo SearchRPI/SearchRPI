@@ -4,7 +4,7 @@
   ******************************************************************************
   * @file           : queryTree.h
   * @brief          : Processes query into a tree for optimized ranking.
-  * @date           : 2/11/2025
+  * @date           : 2/21/2025
   ******************************************************************************
 */
 
@@ -26,9 +26,9 @@ using TokenList = std::vector<std::string>;
  * @brief Represents a node in the structured query tree.
  */
 struct QueryNode {
-    std::string operation;///< Operator (e.g., "#combine", "#od:1", "#syn")
-    std::vector<std::shared_ptr<QueryNode>> children; ///< Child nodes in the query tree
-    std::string value; ///< Token value for leaf nodes
+    std::string operation;
+    std::vector<std::shared_ptr<QueryNode>> children;
+    std::string value;
 
     /**
      * @brief Constructs a QueryNode with an operation only.

@@ -12,6 +12,7 @@
 #include <vector>
 #include <unordered_set>
 #include "bkTree.h"
+#include "queryTree.h"
 
 /**
  * @namespace query
@@ -24,20 +25,27 @@ using TokenList = std::vector<std::string>;
 
 /**
  * @brief Loads a dictionary from a given file path.
- * 
+ *
  * @param filepath The path to the file containing the dictionary.
  * @return A set of words loaded from the file.
  */
 Dictionary loadDictionary(const std::string& filepath);
 
 /**
- * @brief Processes a query string by tokenizing, correcting typos, and normalizing it.
- * 
+ * @brief Processes a query string
+ *
  * @param rawQuery The raw query string to process.
  * @param dictionary The dictionary for typo detection.
  * @param tree The BK-Tree containing dictionary words.
- * @return A vector of corrected query tokens.
+ * @param termDictionary The dictionary for identifying multi-word phrases.
+ * @param thesaurus The thesaurus for synonym expansion.
+ * @return A shared pointer to the root of the constructed query tree.
  */
-TokenList processQuery(const std::string& rawQuery,
-                       const Dictionary& dictionary, const bk::BKTree& tree);
+std::shared_ptr<queryTree::QueryNode> processQuery(
+    const std::string& rawQuery,
+    const Dictionary& dictionary,
+    const bk::BKTree& tree,
+    const queryTree::TermDictionary& termDictionary,
+    const queryTree::TermDictionary& thesaurus
+);
 } // namespace query
