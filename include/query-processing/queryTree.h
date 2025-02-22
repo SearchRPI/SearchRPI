@@ -38,7 +38,7 @@ struct QueryNode {
 
     /**
      * @brief Constructs a QueryNode with an operation and value.
-     * @param op The query operator (e.g., "#syn").
+     * @param op The query operator
      * @param val The term associated with this node.
      */
     QueryNode(const std::string& op, const std::string& val);
@@ -47,12 +47,12 @@ struct QueryNode {
 /**
  * @brief Builds a structured query tree from a processed list of tokens.
  * @param tokens The list of processed tokens.
- * @param dictionary The dictionary object to check for phrases and synonyms.
+ * @param dict The dictionary object to check for phrases.
  * @return A shared pointer to the root of the query tree.
+ * @note https://sourceforge.net/p/lemur/wiki/Galago%20Query%20Language/
  */
 std::shared_ptr<QueryNode> buildQueryTree(const TokenList& tokens, 
-                                          const TermDictionary& dict,
-                                          const TermDictionary& thesaurus);
+                                          const TermDictionary& dict);
 
 /**
  * @brief Prints the structured query tree for debugging.

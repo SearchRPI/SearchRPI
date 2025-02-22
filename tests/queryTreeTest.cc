@@ -5,24 +5,15 @@
 class QueryTreeTest : public ::testing::Test {
 protected:
     queryTree::TermDictionary termDictionary;
-    queryTree::TermDictionary thesaurus;
     queryTree::TokenList tokens;
 
     void SetUp() override {
         // Define a small term dictionary (manual phrases)
         termDictionary = {
-            {"good skis", {"high-quality skis", "premium skis"}},
-            {"mountain", {"hill", "peak", "summit"}}
+            {"good skis", {}},  // Ensures "good skis" is detected as a phrase
         };
 
-        // Define a small thesaurus (manual synonyms)
-        thesaurus = {
-            {"good", {"great", "excellent", "decent"}},
-            {"skis", {"ski gear", "snowboard"}},
-            {"fast", {"quick", "speedy", "rapid"}}
-        };
-
-        // Sample processed query tokens
+        // Sample processed query tokens (unaltered)
         tokens = {"good", "skis"};
     }
 };
@@ -37,34 +28,34 @@ TEST_F(QueryTreeTest, QueryNodeOperationConstructor) {
 
 // Test QueryNode constructor with an operation and value
 TEST_F(QueryTreeTest, QueryNodeOperationValueConstructor) {
-    queryTree::QueryNode node("#syn", "good");
-    EXPECT_EQ(node.operation, "#syn");
+    queryTree::QueryNode node("#text", "good");
+    EXPECT_EQ(node.operation, "#text");
     EXPECT_EQ(node.value, "good");
     EXPECT_TRUE(node.children.empty());
 }
 
-// Test building a query tree with simple tokens
+// Test building a query tree with phrase and term weighting
 TEST_F(QueryTreeTest, BuildQueryTreeBasic) {
-    auto root = queryTree::buildQueryTree(tokens, termDictionary, thesaurus);
+    auto root = queryTree::buildQueryTree(tokens, termDictionary);
     ASSERT_NE(root, nullptr);
 
+    // Assertions
     EXPECT_EQ(root->operation, "#combine");
-    EXPECT_EQ(root->children.size(), 2);
+    EXPECT_EQ(root->children.size(), 1);  // "good skis" should be merged into one phrase
 
-    // Check the first child (good)
+    // Check the first child (should be an ordered phrase `#od:1`)
     auto firstChild = root->children[0];
-    EXPECT_EQ(firstChild->operation, "#syn");
-    EXPECT_EQ(firstChild->children.size(), 4);
-
-    // Check the second child (skis)
-    auto secondChild = root->children[1];
-    EXPECT_EQ(secondChild->operation, "#syn");
-    EXPECT_EQ(secondChild->children.size(), 3);
+    EXPECT_EQ(firstChild->operation, "#od:1");
+    EXPECT_EQ(firstChild->children.size(), 2);
+    EXPECT_EQ(firstChild->children[0]->operation, "#text");
+    EXPECT_EQ(firstChild->children[0]->value, "good");
+    EXPECT_EQ(firstChild->children[1]->operation, "#text");
+    EXPECT_EQ(firstChild->children[1]->value, "skis");
 }
 
-/*// Test printing the query tree (redirects output for verification)*/
+// Test printing the query tree
 TEST_F(QueryTreeTest, PrintQueryTreeOutput) {
-    auto root = queryTree::buildQueryTree(tokens, termDictionary, thesaurus);
+    auto root = queryTree::buildQueryTree(tokens, termDictionary);
     ASSERT_NE(root, nullptr);
 
     // Redirect cout to a string stream
@@ -80,6 +71,7 @@ TEST_F(QueryTreeTest, PrintQueryTreeOutput) {
     // Verify output structure (approximate)
     std::string printedTree = output.str();
     EXPECT_NE(printedTree.find("#combine"), std::string::npos);
-    EXPECT_NE(printedTree.find("#syn"), std::string::npos);
-    EXPECT_NE(printedTree.find("#syn"), std::string::npos);
+    EXPECT_NE(printedTree.find("#od:1"), std::string::npos);
+    EXPECT_NE(printedTree.find("#text (good)"), std::string::npos);
+    EXPECT_NE(printedTree.find("#text (skis)"), std::string::npos);
 }

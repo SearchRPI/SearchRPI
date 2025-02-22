@@ -16,12 +16,14 @@ queryTree::QueryNode::QueryNode(const std::string& op, const std::string& val)
  */
 bool isOperator(const std::string& token) {
     static const std::unordered_set<std::string> operators = {
-        "#combine", "#syn", "#od:1", "#uw:3", "#and", "#or"
+        "#combine", "#weight", "#and", "#or", "#max", "#dirichlet", "#bm25",
+        "#lengths"
     };
 
-    return operators.find(token) != operators.end();
+    return operators.find(token) != operators.end() 
+        || token.rfind("#od:", 0) == 0
+        || token.rfind("#uw:", 0) == 0;
 }
-
 /**
  * @brief Creates a QueryNode based on the token type.
  *
@@ -31,24 +33,28 @@ bool isOperator(const std::string& token) {
 std::shared_ptr<queryTree::QueryNode> createNode(const std::string& token) {
     if (isOperator(token)) {
         return std::make_shared<queryTree::QueryNode>(token);
+    } 
+    
+    // Handle proximity operators like #od:N or #uw:N
+    else if (token.rfind("#od:", 0) == 0 || token.rfind("#uw:", 0) == 0) {
+        return std::make_shared<queryTree::QueryNode>(token);
     }
-    return std::make_shared<queryTree::QueryNode>("term", token);
-}
 
-/**
- * @brief Retrieves synonyms for a given term from the thesaurus.
- *
- * @param term The input term for which synonyms are needed.
- * @param thesaurus The dictionary containing term-to-synonym mappings.
- * @return A list of synonyms for the given term. Empty vector if none found.
- */
-std::vector<std::string> findSynonyms(const std::string& term,
-                                  const queryTree::TermDictionary& thesaurus) {
-    auto it = thesaurus.find(term);
-    if (it != thesaurus.end()) {
-        return it->second;
+    // Handle weighted queries #weight(2.0 fish)
+    else if (token.rfind("#weight", 0) == 0) {
+        return std::make_shared<queryTree::QueryNode>("#weight");
     }
-    return {};
+
+    // Handle parameterized operators like #dirichlet:1500(term)
+    else if (token.find(':') != std::string::npos) {
+        size_t pos = token.find(':');
+        std::string op = token.substr(0, pos);
+        std::string val = token.substr(pos + 1);
+        return std::make_shared<queryTree::QueryNode>(op, val);
+    }
+
+    // Default case: treat it as a term
+    return std::make_shared<queryTree::QueryNode>("#text", token);
 }
 
 /**
@@ -61,17 +67,19 @@ std::vector<std::string> findSynonyms(const std::string& term,
 std::vector<std::string> findPhrases(const queryTree::TokenList& tokens,
                                      const queryTree::TermDictionary& dict) {
     std::vector<std::string> phrases;
+    std::unordered_set<std::string> foundPhrases;
 
-    // FIXME: O(n^2) Make faster if required.
     for (size_t i = 0; i < tokens.size(); ++i) {
         std::string phrase = tokens[i];
 
         for (size_t j = i + 1; j < tokens.size(); ++j) {
-            // Build phrase incrementally.
             phrase += " " + tokens[j];
 
-            if (dict.find(phrase) != dict.end()) {
+            if (dict.find(phrase) != dict.end() && foundPhrases.find(phrase) == foundPhrases.end()) {
                 phrases.push_back(phrase);
+                foundPhrases.insert(phrase);
+                i = j;  // Skip the next token as it's part of the phrase
+                break;
             }
         }
     }
@@ -81,25 +89,34 @@ std::vector<std::string> findPhrases(const queryTree::TokenList& tokens,
 
 namespace queryTree {
 
-std::shared_ptr<QueryNode> buildQueryTree(const TokenList& tokens,
-                                          const TermDictionary& dict,
-                                          const TermDictionary& thesaurus) {
+std::shared_ptr<queryTree::QueryNode> buildQueryTree(const TokenList& tokens,
+                                                     const TermDictionary& dict) {
     if (tokens.empty()) return nullptr;
 
     auto root = std::make_shared<QueryNode>("#combine");
 
-    for (const auto& token : tokens) {
-        auto node = createNode(token);
+    std::vector<std::string> phraseTokens = findPhrases(tokens, dict);
+    std::unordered_set<std::string> usedTokens(phraseTokens.begin(), phraseTokens.end());
 
-        if (!isOperator(token)) {
-            auto synonyms = findSynonyms(token, thesaurus);
-            if (!synonyms.empty()) {
-                auto synonymNode = std::make_shared<QueryNode>("#syn");
-                synonymNode->children.push_back(node);
-                for (const auto& synonym : synonyms) {
-                    synonymNode->children.push_back(std::make_shared<QueryNode>("term", synonym));
-                }
-                node = synonymNode;
+    for (size_t i = 0; i < tokens.size(); ++i) {
+        if (usedTokens.find(tokens[i]) != usedTokens.end()) {
+            continue;  // Skip tokens that are part of a detected phrase
+        }
+
+        auto node = createNode(tokens[i]);
+
+        // If the token is the start of a phrase, build an #od:1() node
+        if (i < tokens.size() - 1) {
+            std::string phrase = tokens[i] + " " + tokens[i + 1];
+
+            if (dict.find(phrase) != dict.end()) {
+                auto phraseNode = std::make_shared<QueryNode>("#od:1");
+                phraseNode->children.push_back(createNode(tokens[i]));
+                phraseNode->children.push_back(createNode(tokens[i + 1]));
+
+                root->children.push_back(phraseNode);
+                ++i;  // Skip the next token as it's part of the phrase
+                continue;
             }
         }
 

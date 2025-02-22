@@ -121,8 +121,7 @@ std::shared_ptr<queryTree::QueryNode> processQuery(
     const std::string& rawQuery,
     const Dictionary& dictionary,
     const bk::BKTree& tree,
-    const queryTree::TermDictionary& termDictionary,
-    const queryTree::TermDictionary& thesaurus
+    const queryTree::TermDictionary& termDictionary
 ) {
     // Tokenization
     TokenList tokens = tokenize(rawQuery);
@@ -138,7 +137,7 @@ std::shared_ptr<queryTree::QueryNode> processQuery(
     }
 
     // Build and return the query tree
-    return queryTree::buildQueryTree(processedTokens, termDictionary, thesaurus);
+    return queryTree::buildQueryTree(processedTokens, termDictionary);
 }
 
 // NOTE: This function might fit better elsewhere
