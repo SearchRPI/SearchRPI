@@ -14,6 +14,7 @@ cmake_install.cmake
 *.so
 *.dll
 
-# Catch2 testing reports
-Testing/
-CTestTestfile.cmake
+# Misc
+.vscode
+.vs
+.DS_Store
