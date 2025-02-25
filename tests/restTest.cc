@@ -1,4 +1,4 @@
-#include "../include/search/Server.h"
+#include "api/Server.h"
 
 int main(){
     SearchRPI::Server server;

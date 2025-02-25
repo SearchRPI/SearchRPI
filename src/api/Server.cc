@@ -1,5 +1,5 @@
-#include "../../include/search/Server.h"
-#include "../../include/search/Router.h"
+#include "api/Server.h"
+#include "api/Router.h"
 
 namespace SearchRPI {
     void Server::start(){

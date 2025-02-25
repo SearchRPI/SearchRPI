@@ -1,4 +1,4 @@
-#include "../../include/search/Router.h"
+#include "api/Router.h"
 
 namespace SearchRPI {
     void Router::setupRoutes(crow::SimpleApp& app){
