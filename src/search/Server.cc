@@ -1,10 +1,10 @@
-#include "Server.h"
-#include "Router.cc"
+#include "../../include/search/Server.h"
+#include "../../include/search/Router.h"
 
-SearchRPI::Server::start(){
-    crow::SimpleApp app;
-
-    Router::setupRoutes(app);
-
-    app.port(8080).multithreaded().run();
+namespace SearchRPI {
+    void Server::start(){
+        crow::SimpleApp app;
+        Router::setupRoutes(app);
+        app.port(8080).multithreaded().run();
+    }
 }
