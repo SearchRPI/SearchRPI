@@ -10,14 +10,14 @@
 #include<string>
 #include<unordered_map>
 
-namespace SearchRPI {
+namespace Ranking {
 
 class Document {
 public:
     Document() = delete;
 
 protected:
-    docid id;
+    SearchRPI::docid id;
     std::unordered_map<std::string, int> term_freqs;
     double url_rating;
 

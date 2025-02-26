@@ -1,15 +1,15 @@
-#include "DatabaseWrapper.h"
+#include "Database.h"
 #include <cstring>
 #include <stdexcept>
 
 // Get the singleton instance
-DatabaseWrapper& DatabaseWrapper::getInstance() {
-    static DatabaseWrapper instance;
+Database& Database::getInstance() {
+    static Database instance;
     return instance;
 }
 
 // Private constructor for singleton
-DatabaseWrapper::DatabaseWrapper() {
+Database::Database() {
     const char* db_path = "../testdb";
 
     // Initialize LMDB environment
@@ -41,7 +41,7 @@ DatabaseWrapper::DatabaseWrapper() {
 }
 
 // Destructor to clean up LMDB resources
-DatabaseWrapper::~DatabaseWrapper() {
+Database::~Database() {
     if (read_txn) mdb_txn_abort(read_txn);
     if (write_txn) mdb_txn_commit(write_txn);
     mdb_dbi_close(env, dbi);
@@ -49,27 +49,32 @@ DatabaseWrapper::~DatabaseWrapper() {
 }
 
 // Serialize the Data struct
-void DatabaseWrapper::serialize_data(const Data& data, MDB_val& value) {
-    size_t value_size = data.value.size();
-    size_t total_size = sizeof(int) + value_size;
+void Database::serialize_data(const Data& data, MDB_val& value) {
+    size_t total_size = sizeof(int) * 2; // Two integers
+
     void* data_blob = malloc(total_size);
+    if (!data_blob) {
+        throw std::bad_alloc();
+    }
 
     std::memcpy(data_blob, &data.priority, sizeof(int));
-    std::memcpy((char*)data_blob + sizeof(int), data.value.c_str(), value_size);
+    std::memcpy((char*)data_blob + sizeof(int), &data.docId, sizeof(int));
 
     value.mv_size = total_size;
     value.mv_data = data_blob;
 }
 
-// Deserialize the Data struct
-void DatabaseWrapper::deserialize_data(const MDB_val& value, Data& data) {
+void Database::deserialize_data(const MDB_val& value, Data& data) {
+    if (value.mv_size != sizeof(int) * 2) {
+        throw std::runtime_error("Invalid data size during deserialization");
+    }
+
     std::memcpy(&data.priority, value.mv_data, sizeof(int));
-    size_t value_size = value.mv_size - sizeof(int);
-    data.value = std::string((char*)value.mv_data + sizeof(int), value_size);
+    std::memcpy(&data.docId, (char*)value.mv_data + sizeof(int), sizeof(int));
 }
 
 // Custom comparison function for ranking by priority
-int DatabaseWrapper::custom_compare(const MDB_val* a, const MDB_val* b) {
+int Database::custom_compare(const MDB_val* a, const MDB_val* b) {
     int priority_a, priority_b;
     std::memcpy(&priority_a, a->mv_data, sizeof(int));
     std::memcpy(&priority_b, b->mv_data, sizeof(int));
@@ -77,7 +82,7 @@ int DatabaseWrapper::custom_compare(const MDB_val* a, const MDB_val* b) {
 }
 
 // Add data to the database
-void DatabaseWrapper::add(const std::string& key, const Data& data) {
+void Database::add(const std::string& key, const Data& data) {
     MDB_val mdb_key, mdb_value;
     mdb_key.mv_size = key.size();
     mdb_key.mv_data = (void*)key.c_str();
@@ -85,7 +90,7 @@ void DatabaseWrapper::add(const std::string& key, const Data& data) {
     serialize_data(data, mdb_value);
 
     int rc = mdb_put(write_txn, dbi, &mdb_key, &mdb_value, 0);
-    free(mdb_value.mv_data); // Free allocated memory
+    free(mdb_value.mv_data);
 
     if (rc != 0) {
         throw std::runtime_error("Failed to add data: " + std::string(mdb_strerror(rc)));
@@ -97,7 +102,7 @@ void DatabaseWrapper::add(const std::string& key, const Data& data) {
 }
 
 // Remove data for a specific key
-void DatabaseWrapper::remove(const std::string& key) {
+void Database::remove(const std::string& key) {
     MDB_val mdb_key;
     mdb_key.mv_size = key.size();
     mdb_key.mv_data = (void*)key.c_str();
@@ -120,17 +125,61 @@ void DatabaseWrapper::remove(const std::string& key) {
     mdb_txn_begin(env, nullptr, 0, &write_txn);
 }
 
-// Retrieve the first value for a given key
-Data DatabaseWrapper::get(const std::string& key) {
+std::vector<Data> Database::get(const std::string& key) {
     MDB_val mdb_key, mdb_value;
     mdb_key.mv_size = key.size();
     mdb_key.mv_data = (void*)key.c_str();
 
-    if (mdb_get(read_txn, dbi, &mdb_key, &mdb_value) == 0) {
-        Data data;
-        deserialize_data(mdb_value, data);
-        return data;
-    } else {
+    MDB_cursor* cursor;
+    if (mdb_cursor_open(read_txn, dbi, &cursor) != 0) {
+        throw std::runtime_error("Failed to open LMDB cursor");
+    }
+
+    std::vector<Data> results;
+    if (mdb_cursor_get(cursor, &mdb_key, &mdb_value, MDB_SET) == 0) {
+        do {
+            Data data;
+            deserialize_data(mdb_value, data);
+            results.push_back(data);
+        } while (mdb_cursor_get(cursor, &mdb_key, &mdb_value, MDB_NEXT_DUP) == 0);
+    }
+
+    mdb_cursor_close(cursor);
+
+    if (results.empty()) {
         throw std::runtime_error("Key not found: " + key);
     }
+
+    return results;
+}
+
+std::vector<Data> Database::get(const std::string& key, size_t n) {
+    MDB_val mdb_key, mdb_value;
+    mdb_key.mv_size = key.size();
+    mdb_key.mv_data = (void*)key.c_str();
+
+    MDB_cursor* cursor;
+    if (mdb_cursor_open(read_txn, dbi, &cursor) != 0) {
+        throw std::runtime_error("Failed to open LMDB cursor");
+    }
+
+    std::vector<Data> results;
+    size_t count = 0;
+
+    if (mdb_cursor_get(cursor, &mdb_key, &mdb_value, MDB_SET) == 0) {
+        do {
+            Data data;
+            deserialize_data(mdb_value, data);
+            results.push_back(data);
+            count++;
+        } while (count < n && mdb_cursor_get(cursor, &mdb_key, &mdb_value, MDB_NEXT_DUP) == 0);
+    }
+
+    mdb_cursor_close(cursor);
+
+    if (results.empty()) {
+        throw std::runtime_error("Key not found: " + key);
+    }
+
+    return results;
 }
