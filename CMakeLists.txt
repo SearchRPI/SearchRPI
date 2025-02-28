@@ -9,26 +9,14 @@ enable_testing()
 
 include(FetchContent)
 FetchContent_Declare(
-  asio
-  GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
-  GIT_TAG asio-1-24-0
-)
-FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
 )
 
-FetchContent_GetProperties(asio)
-if(NOT asio_POPULATED)
-  FetchContent_Populate(asio)
-  add_library(asio INTERFACE)
-  target_include_directories(asio INTERFACE "${asio_SOURCE_DIR}/asio/include")
-endif()
-
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-FetchContent_MakeAvailable(asio googletest)
+FetchContent_MakeAvailable(googletest)
 
 # Add the include directory (avoids needing relative paths)
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -88,11 +76,10 @@ target_include_directories(all_tests PRIVATE ${LMDB_INCLUDE_DIRS})
 target_link_libraries(SearchRPI PUBLIC ${LMDB_LIBRARIES})
 target_link_libraries(all_tests PRIVATE ${LMDB_LIBRARIES})
 
-# Link Asio
-target_link_libraries(SearchRPI
-  PUBLIC
-    asio
-)
+# Crow Integration https://crowcpp.org/master/getting_started/setup/linux/
+find_package(Crow)
+target_link_libraries(SearchRPI PUBLIC Crow::Crow)
+target_link_libraries(all_tests PRIVATE Crow::Crow)
 
 # GoogleTest
 include(GoogleTest)
