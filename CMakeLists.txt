@@ -7,24 +7,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 enable_testing()
 
-# Add the include directory (avoids needing relative paths)
-include_directories(${CMAKE_SOURCE_DIR}/include)
-
 include(FetchContent)
-# -------------------------------------------------------------------
-# Asio
-# -------------------------------------------------------------------
 FetchContent_Declare(
   asio
   GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
   GIT_TAG asio-1-24-0
 )
-
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
 )
-# ...
 
 FetchContent_GetProperties(asio)
 if(NOT asio_POPULATED)
@@ -38,16 +30,33 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(asio googletest)
 
+# Add the include directory (avoids needing relative paths)
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
 # Find all source files in the src directory
 file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/src/*.cc)
 
 # Find all test source files in the tests directory
 file(GLOB_RECURSE TEST_FILES ${CMAKE_SOURCE_DIR}/tests/*.cc)
 
-# Create a library from source files
-add_library(SearchRPI ${SRC_FILES})
+# Create an object library from source files
+add_library(SearchRPI_obj OBJECT ${SRC_FILES})
 
-# Create an executable for all tests
+# Production library (without TEST_MODE)
+add_library(SearchRPI $<TARGET_OBJECTS:SearchRPI_obj>)
+target_include_directories(SearchRPI PUBLIC
+  ${CMAKE_SOURCE_DIR}/include
+  ${CMAKE_SOURCE_DIR}/src
+)
+
+# Test library (with TEST_MODE)
+add_library(SearchRPI_test $<TARGET_OBJECTS:SearchRPI_obj>)
+target_compile_definitions(SearchRPI_test PRIVATE TEST_MODE)
+target_include_directories(SearchRPI_test PUBLIC
+  ${CMAKE_SOURCE_DIR}/include
+  ${CMAKE_SOURCE_DIR}/src
+)
+
 add_executable(all_tests ${TEST_FILES})
 
 target_include_directories(
@@ -62,8 +71,10 @@ target_include_directories(
   ${CMAKE_SOURCE_DIR}/tests/mock
 )
 
-target_link_libraries(all_tests PRIVATE
-  SearchRPI
+# Link the test executable to SearchRPI and GTest
+target_link_libraries(
+  all_tests PRIVATE
+  SearchRPI_test
   GTest::gtest_main
   GTest::gmock
   GTest::gmock_main
