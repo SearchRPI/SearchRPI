@@ -1,72 +1,58 @@
 #include "../../include/query-processing/queryTree.h"
-#include <iostream>
-#include <stack>
 #include <unordered_set>
-
-queryTree::QueryNode::QueryNode(const std::string& op) : operation(op) {}
-
-queryTree::QueryNode::QueryNode(const std::string& op, const std::string& val)
-    : operation(op), value(val) {}
+#include <fstream>
+#include <iostream>
+#include <string>
 
 /**
- * @brief Checks if a given token is a recognized query operator.
- *
- * @param token The token to check.
- * @return True if the token is an operator, false otherwise.
+ * @brief Loads query operators from a file into an unordered_set.
+ * @param filename The path to the operator list file.
+ * @return A set containing all recognized query operators.
  */
-bool isOperator(const std::string& token) {
-    static const std::unordered_set<std::string> operators = {
-        "#combine", "#weight", "#and", "#or", "#max", "#dirichlet", "#bm25",
-        "#lengths"
-    };
+std::unordered_set<std::string> loadOperators(const std::string& filename) {
+    std::unordered_set<std::string> operators;
+    std::ifstream file(filename);
 
-    return operators.find(token) != operators.end() 
-        || token.rfind("#od:", 0) == 0
-        || token.rfind("#uw:", 0) == 0;
-}
-/**
- * @brief Creates a QueryNode based on the token type.
- *
- * @param token The token to process.
- * @return A shared pointer to the created QueryNode.
- */
-std::shared_ptr<queryTree::QueryNode> createNode(const std::string& token) {
-    if (isOperator(token)) {
-        return std::make_shared<queryTree::QueryNode>(token);
-    } 
-    
-    // Handle proximity operators like #od:N or #uw:N
-    else if (token.rfind("#od:", 0) == 0 || token.rfind("#uw:", 0) == 0) {
-        return std::make_shared<queryTree::QueryNode>(token);
+    if (!file) {
+        std::cerr << "Error: Could not open operator file: " << filename << std::endl;
+        return operators;
     }
 
-    // Handle weighted queries #weight(2.0 fish)
-    else if (token.rfind("#weight", 0) == 0) {
-        return std::make_shared<queryTree::QueryNode>("#weight");
+    std::string line;
+    while (std::getline(file, line)) {
+        if (!line.empty()) {
+            operators.insert(line);
+        }
     }
 
-    // Handle parameterized operators like #dirichlet:1500(term)
-    else if (token.find(':') != std::string::npos) {
-        size_t pos = token.find(':');
-        std::string op = token.substr(0, pos);
-        std::string val = token.substr(pos + 1);
-        return std::make_shared<queryTree::QueryNode>(op, val);
-    }
-
-    // Default case: treat it as a term
-    return std::make_shared<queryTree::QueryNode>("#text", token);
+    return operators;
 }
 
 /**
- * @brief Checks if a sequence of tokens forms a phrase in the dictionary.
- *
- * @param tokens The list of processed query tokens.
- * @param dict The dictionary containing predefined phrases.
- * @return A list of recognized phrases found in the token list.
+ * @brief Extracts an operation and its parameters from a token.
+ * @param token The input token (e.g., "#dirichlet:1500").
+ * @param operation The extracted operation name.
+ * @param value The extracted value (if any).
  */
-std::vector<std::string> findPhrases(const queryTree::TokenList& tokens,
-                                     const queryTree::TermDictionary& dict) {
-    std::vector<std::string> phrases;
+void extractOperationDetails(const std::string& token, std::string& operation, std::string& value) {
+    size_t paramPos = token.find(':');
+    if (paramPos != std::string::npos) {
+        operation = token.substr(0, paramPos);
+        value = token.substr(paramPos + 1);
+    } else {
+        operation = token;
+        value = "";
+    }
+}
+
+/**
+ * @brief Finds multi-word phrases in the token list based on a dictionary.
+ * @param tokens The list of query tokens.
+ * @param dict The dictionary containing valid phrases.
+ * @return A set of recognized phrases.
+ */
+std::unordered_set<std::string> findPhrases(const TokenList& tokens,
+                                            const TermDictionary& dict) {
     std::unordered_set<std::string> foundPhrases;
 
     for (size_t i = 0; i < tokens.size(); ++i) {
@@ -75,71 +61,63 @@ std::vector<std::string> findPhrases(const queryTree::TokenList& tokens,
         for (size_t j = i + 1; j < tokens.size(); ++j) {
             phrase += " " + tokens[j];
 
-            if (dict.find(phrase) != dict.end() && foundPhrases.find(phrase) == foundPhrases.end()) {
-                phrases.push_back(phrase);
+            if (dict.find(phrase) != dict.end()) {
                 foundPhrases.insert(phrase);
-                i = j;  // Skip the next token as it's part of the phrase
+                i = j;  // Skip the next token since it's part of a phrase
                 break;
             }
         }
     }
 
-    return phrases;
+    return foundPhrases;
 }
 
 namespace queryTree {
+bool QueryTree::isOperation(const std::string& token) {
+    std::unordered_set<std::string> OPERATORS = loadOperators("operators.txt");
 
-std::shared_ptr<queryTree::QueryNode> buildQueryTree(const TokenList& tokens,
-                                                     const TermDictionary& dict) {
-    if (tokens.empty()) return nullptr;
-
-    auto root = std::make_shared<QueryNode>("#combine");
-
-    std::vector<std::string> phraseTokens = findPhrases(tokens, dict);
-    std::unordered_set<std::string> usedTokens(phraseTokens.begin(), phraseTokens.end());
-
-    for (size_t i = 0; i < tokens.size(); ++i) {
-        if (usedTokens.find(tokens[i]) != usedTokens.end()) {
-            continue;  // Skip tokens that are part of a detected phrase
-        }
-
-        auto node = createNode(tokens[i]);
-
-        // If the token is the start of a phrase, build an #od:1() node
-        if (i < tokens.size() - 1) {
-            std::string phrase = tokens[i] + " " + tokens[i + 1];
-
-            if (dict.find(phrase) != dict.end()) {
-                auto phraseNode = std::make_shared<QueryNode>("#od:1");
-                phraseNode->children.push_back(createNode(tokens[i]));
-                phraseNode->children.push_back(createNode(tokens[i + 1]));
-
-                root->children.push_back(phraseNode);
-                ++i;  // Skip the next token as it's part of the phrase
-                continue;
-            }
-        }
-
-        root->children.push_back(node);
+    bool isOperation(const std::string& token) {
+        return OPERATORS.find(token) != OPERATORS.end()
+            || token.rfind("#od:", 0) == 0
+            || token.rfind("#uw:", 0) == 0;
     }
-
-    return root;
 }
 
-void printQueryTree(const std::shared_ptr<QueryNode>& root, int depth) {
-    if (!root) return;
+QueryTree::QueryTree(const TokenList& tokens, const TermDictionary& dict) {
+    if (tokens.empty()) return;
 
-    for (int i = 0; i < depth; ++i) {
-        std::cout << "  ";
-    }
-    std::cout << root->operation;
-    if (!root->value.empty()) {
-        std::cout << " (" << root->value << ")";
-    }
-    std::cout << std::endl;
+    nodes.reserve(tokens.size()); // Preallocate for efficiency
 
-    for (const auto& child : root->children) {
-        printQueryTree(child, depth + 1);
+    std::unordered_set<std::string> usedTokens = findPhrases(tokens, dict);
+    int nodeIndex = 0;
+
+    // Process tokens and create nodes
+    for (size_t i = 0; i < tokens.size(); ++i) {
+        if (usedTokens.find(tokens[i]) != usedTokens.end()) {
+            continue;
+        }
+
+        std::string operation, value;
+        extractOperationDetails(tokens[i], operation, value);
+
+        nodes.emplace_back(nodeIndex++, operation, value, -1, 0);
+    }
+}
+
+const QueryNode* QueryTree::getNode(int index) const {
+    if (index < 0 || static_cast<size_t>(index) >= nodes.size()) {
+        return nullptr;
+    }
+    return &nodes[index];
+}
+
+void QueryTree::print() const {
+    for (const auto& node : nodes) {
+        std::cout << "Node " << node.getNodeIndex() << ": " << node.getOperation();
+        if (!node.getValue().empty()) {
+            std::cout << " (" << node.getValue() << ")";
+        }
+        std::cout << std::endl;
     }
 }
 

@@ -3,19 +3,18 @@
 /**
   ******************************************************************************
   * @file           : queryTree.h
-  * @brief          : Processes query into a tree for optimized ranking.
-  * @date           : 2/21/2025
+  * @brief          : Efficient indexed query structure for ranking.
   ******************************************************************************
 */
 
-#include <memory>
-#include <string>
 #include <vector>
 #include <unordered_map>
+#include <string>
+#include "queryNode.h"
 
 /**
- * @namespace query
- * @brief Contains the Node and structure for a query tree and debugging help.
+ * @namespace queryTree
+ * @brief Contains the core structures for query processing.
  */
 namespace queryTree {
 
@@ -23,41 +22,39 @@ using TermDictionary = std::unordered_map<std::string, std::vector<std::string>>
 using TokenList = std::vector<std::string>;
 
 /**
- * @brief Represents a node in the structured query tree.
+ * @class QueryTree
+ * @brief Represents a structured, indexed query for traversal and ranking.
  */
-struct QueryNode {
-    std::string operation;
-    std::vector<std::shared_ptr<QueryNode>> children;
-    std::string value;
+class QueryTree {
+public:
+  /**
+    * @brief Constructs a QueryTree from tokenized input.
+    * @param tokens The list of processed tokens.
+    * @param dict The dictionary for phrase detection.
+    */
+  QueryTree(const TokenList& tokens, const TermDictionary& dict);
 
-    /**
-     * @brief Constructs a QueryNode with an operation only.
-     * @param op The query operator (e.g., "#combine").
-     */
-    explicit QueryNode(const std::string& op);
+  /**
+    * @brief Retrieves a specific node by index.
+    * @param index The index of the node.
+    * @return Pointer to the requested QueryNode, or nullptr if out of bounds.
+    */
+  const QueryNode* getNode(int index) const;
 
-    /**
-     * @brief Constructs a QueryNode with an operation and value.
-     * @param op The query operator
-     * @param val The term associated with this node.
-     */
-    QueryNode(const std::string& op, const std::string& val);
+  /**
+    * @brief Prints the structured query tree for debugging.
+    */
+  void print() const;
+
+private:
+  /**
+  * @brief Checks if a token is a recognized query operation.
+  * @param token The token to check.
+  * @return True if the token is an operator, false otherwise.
+  */
+  bool QueryTree::isOperation(const std::string& token);
+
+    std::vector<QueryNode> nodes;
 };
 
-/**
- * @brief Builds a structured query tree from a processed list of tokens.
- * @param tokens The list of processed tokens.
- * @param dict The dictionary object to check for phrases.
- * @return A shared pointer to the root of the query tree.
- * @note https://sourceforge.net/p/lemur/wiki/Galago%20Query%20Language/
- */
-std::shared_ptr<QueryNode> buildQueryTree(const TokenList& tokens, 
-                                          const TermDictionary& dict);
-
-/**
- * @brief Prints the structured query tree for debugging.
- * @param root The root of the query tree.
- * @param depth The indentation level (default is 0).
- */
-void printQueryTree(const std::shared_ptr<QueryNode>& root, int depth = 0);
 } // namespace queryTree
