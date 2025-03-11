@@ -2,41 +2,51 @@
 
 namespace SearchRPI {
     void Router::setupRoutes(crow::SimpleApp& app){
-        //TODO: returns ranked search results for a query
+
         CROW_ROUTE(app, "/search").methods(crow::HTTPMethod::GET)([](const crow::request& req){
-            auto query = req.url_params.get("q");
-            if (!query) {
-                return crow::response(400, "Missing query parameter\n");
+            auto body = crow::json::load(req.body);
+            if (!body || !body["query"].s() || !body["start"].s() || !body["end"].s()) {
+                return crow::response(400, "Invalid input: query, start, end are required");
             }
 
             return crow::response(200, "Ok");
         });
 
-        //TODO: adds new document to the index
-        CROW_ROUTE(app, "/index").methods(crow::HTTPMethod::POST)([](const crow::request& req){
+        CROW_ROUTE(app, "/favicon/<docid>").methods(crow::HTTPMethod::GET)([](const crow::request& req){
             return crow::response(200, "Ok");
         });
 
-        //TODO: removes a document from the index
-        CROW_ROUTE(app, "/delete").methods(crow::HTTPMethod::DELETE)([](const crow::request& req){
-            auto query = req.url_params.get("id");
-            if (!query){
-                return crow::response(400, "Missing query parameter\n");
+        CROW_ROUTE(app, "/backend/update").methods(crow::HTTPMethod::POST)([](const crow::request& req){
+            auto body = crow::json::load(req.body);
+            if (!body || !body["url"].s() || !body["title"].s() || !body["raw"].s()) {
+                return crow::response(400, "Invalid input: url, title, and raw are required");
             }
+
             return crow::response(200, "Ok");
         });
 
-        //TODO: returns search engine stats
-        CROW_ROUTE(app, "/stats").methods(crow::HTTPMethod::GET)([](const crow::request& req){
+        CROW_ROUTE(app, "/backend/update-favicon/<docid>").methods(crow::HTTPMethod::PUT)([](const crow::request& req){
+            auto body = crow::json::load(req.body);
+            if (!body || !body["favicon"].s()) {
+                return crow::response(400, "Invalid input: favicon is required");
+            }
+
             return crow::response(200, "Ok");
         });
 
-        //TODO: checks if service is running
-        CROW_ROUTE(app, "/health").methods(crow::HTTPMethod::GET)([](const crow::request& req){
+        CROW_ROUTE(app, "/backend/getdocid/<url>").methods(crow::HTTPMethod::GET)([](const crow::request& req){
+            return crow::response(200, "Ok");
+        });
+
+        CROW_ROUTE(app, "/backend/pagerank/<docid>").methods(crow::HTTPMethod::GET)([](const crow::request& req){
+            auto body = crow::json::load(req.body);
+            if (!body || !body["PageRankScore"].s()) {
+                return crow::response(400, "Invalid input: PageRankScore is required");
+            }
+
             return crow::response(200, "Ok");
         });
 
     }
-
     
 }
