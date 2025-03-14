@@ -8,21 +8,13 @@
 */
 
 #include <string>
+#include "queryOperator.h"
 
 /**
  * @namespace queryTree
  * @brief Contains the core structures for query processing.
  */
 namespace queryTree {
-
-/**
- * @enum NodeType
- * @brief Represents the type of a QueryNode in the query structure.
- */
-enum class NodeType {
-    OPERATION,
-    VALUE
-};
 
 /**
  * @class QueryNode
@@ -33,13 +25,13 @@ public:
     /**
      * @brief Constructs a query node.
      * @param nodeIndex The position of this node in the array.
-     * @param operation The query operation (e.g., "#combine").
+     * @param operation The query operation as an enum.
      * @param value The term value (for value nodes).
      * @param childStart The index of the first child in the array (-1 if none).
      * @param childCount The number of children this node has.
      */
-    QueryNode(int nodeIndex, const std::string& operation,
-              const std::string& value, int childStart, int childCount);
+    QueryNode(int nodeIndex, QueryOperator operation, const std::string& value,
+              int childStart, int childCount);
 
     /**
      * @brief Checks if this node is an operation node.
@@ -49,9 +41,9 @@ public:
 
     /**
      * @brief Gets the operation associated with this node.
-     * @return The operation string
+     * @return The operator enum
      */
-    const std::string& getOperation() const;
+    QueryOperator getOperation() const;
 
     /**
      * @brief Gets the value associated with this node.
@@ -79,8 +71,7 @@ public:
 
 private:
     int nodeIndex;
-    NodeType type;
-    std::string operation;
+    QueryOperator operation;
     std::string value;
     int childStart;
     int childCount;

@@ -117,7 +117,7 @@ TokenList findSuggestion(const TokenList& tokens,
 
 namespace query {
 
-std::shared_ptr<queryTree::QueryNode> processQuery(
+queryTree::QueryTree processQuery(
     const std::string& rawQuery,
     const Dictionary& dictionary,
     const bk::BKTree& tree,
@@ -137,7 +137,7 @@ std::shared_ptr<queryTree::QueryNode> processQuery(
     }
 
     // Build and return the query tree
-    return queryTree::buildQueryTree(processedTokens, termDictionary);
+    return queryTree::QueryTree(processedTokens, termDictionary);
 }
 
 // NOTE: This function might fit better elsewhere

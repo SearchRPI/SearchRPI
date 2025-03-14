@@ -59,23 +59,23 @@ void BKTree::search(const Node* node, const std::string& query, int threshold,
 
 int BKTree::editDistance(const std::string& a, const std::string& b) {
     size_t n = a.size(), m = b.size();
-    std::vector<std::vector<int>> dp(n + 1, std::vector<int>(m + 1, 0));
+    std::vector<int> prev(m + 1, 0), curr(m + 1, 0);
 
-    for (size_t i = 0; i <= n; ++i) dp[i][0] = i;
-    for (size_t j = 0; j <= m; ++j) dp[0][j] = j;
+    for (size_t j = 0; j <= m; ++j) prev[j] = j;
 
     for (size_t i = 1; i <= n; ++i) {
+        curr[0] = i;
         for (size_t j = 1; j <= m; ++j) {
             if (a[i - 1] == b[j - 1]) {
-                dp[i][j] = dp[i - 1][j - 1];
+                curr[j] = prev[j - 1];
             } else {
-                dp[i][j] = 1 + std::min(
-                    {dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]}
-                );
+                curr[j] = 1 + std::min({prev[j], curr[j - 1], prev[j - 1]});
             }
         }
+        std::swap(prev, curr);
     }
-    return dp[n][m];
+    return prev[m];
 }
+
 
 } // namespace bk

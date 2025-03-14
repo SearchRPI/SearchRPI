@@ -1,19 +1,20 @@
 #include "../../include/query-processing/queryNode.h"
+#include <iostream>
 
 namespace queryTree {
 
-QueryNode::QueryNode(int nodeIndex, const std::string& operation,
+QueryNode::QueryNode(int nodeIndex, QueryOperator operation,
     const std::string& value, int childStart, int childCount)
     : nodeIndex(nodeIndex), operation(operation), value(value),
-    childStart(childStart), childCount(childCount) {
-    type = value.empty() ? NodeType::OPERATION : NodeType::VALUE;
-}
+    childStart(childStart), childCount(childCount) {}
+
+
 
 bool QueryNode::isOperation() const {
-    return type == NodeType::OPERATION;
+    return operation != QueryOperator::TEXT;
 }
 
-const std::string& QueryNode::getOperation() const {
+QueryOperator QueryNode::getOperation() const {
     return operation;
 }
 

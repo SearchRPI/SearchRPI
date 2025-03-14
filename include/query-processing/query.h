@@ -38,9 +38,9 @@ Dictionary loadDictionary(const std::string& filepath);
  * @param dictionary The dictionary for typo detection.
  * @param tree The BK-Tree containing dictionary words.
  * @param termDictionary The dictionary for identifying multi-word phrases.
- * @return A shared pointer to the root of the constructed query tree.
+ * @return The queryTree structure created from the processed query.
  */
-std::shared_ptr<queryTree::QueryNode> processQuery(
+queryTree::QueryTree processQuery(
     const std::string& rawQuery,
     const Dictionary& dictionary,
     const bk::BKTree& tree,

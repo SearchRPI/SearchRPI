@@ -1,107 +1,111 @@
 #include "../../include/query-processing/queryTree.h"
+#include "../../include/query-processing/queryOperator.h"
 #include <unordered_set>
+#include <map>
 #include <fstream>
 #include <iostream>
 #include <string>
 
 /**
- * @brief Loads query operators from a file into an unordered_set.
- * @param filename The path to the operator list file.
- * @return A set containing all recognized query operators.
- */
-std::unordered_set<std::string> loadOperators(const std::string& filename) {
-    std::unordered_set<std::string> operators;
-    std::ifstream file(filename);
+* @brief Converts a string token into its corresponding QueryOperator enum.
+* @param token The operator string.
+* @return The corresponding QueryOperator value.
+*/
+queryTree::QueryOperator getOperatorType(const std::string& token) {
+    auto it = queryTree::OPERATOR_MAP.find(token);
 
-    if (!file) {
-        std::cerr << "Error: Could not open operator file: " << filename << std::endl;
-        return operators;
+    if (it ==  queryTree::OPERATOR_MAP.end()) {
+        return queryTree::QueryOperator::TEXT;
     }
 
-    std::string line;
-    while (std::getline(file, line)) {
-        if (!line.empty()) {
-            operators.insert(line);
-        }
-    }
-
-    return operators;
+    return it->second;
 }
 
 /**
- * @brief Extracts an operation and its parameters from a token.
+ * @brief Extracts the parameter from an operator token.
  * @param token The input token (e.g., "#dirichlet:1500").
- * @param operation The extracted operation name.
- * @param value The extracted value (if any).
+ * @return The extracted value (if any), otherwise an empty string.
  */
-void extractOperationDetails(const std::string& token, std::string& operation, std::string& value) {
+std::string extractParameter(const std::string& token) {
     size_t paramPos = token.find(':');
-    if (paramPos != std::string::npos) {
-        operation = token.substr(0, paramPos);
-        value = token.substr(paramPos + 1);
-    } else {
-        operation = token;
-        value = "";
-    }
+    return (paramPos != std::string::npos) ? token.substr(paramPos + 1) : "";
 }
 
 /**
- * @brief Finds multi-word phrases in the token list based on a dictionary.
+ * @brief Finds bi-word phrases in the token list based on a dictionary.
  * @param tokens The list of query tokens.
  * @param dict The dictionary containing valid phrases.
- * @return A set of recognized phrases.
+ * @return map<int, pair<string,vector<int>>> A set of recognized phrases.
  */
-std::unordered_set<std::string> findPhrases(const TokenList& tokens,
-                                            const TermDictionary& dict) {
-    std::unordered_set<std::string> foundPhrases;
+std::map<int, std::pair<std::string, std::vector<int>>> findPhrases(
+    const queryTree::TokenList& tokens,
+    const queryTree::TermDictionary& dict) {
+    std::map<int, std::pair<std::string, std::vector<int>>> phraseMap;
 
-    for (size_t i = 0; i < tokens.size(); ++i) {
-        std::string phrase = tokens[i];
+    for (size_t i = 0; i < tokens.size() - 1; ++i) {
+        std::string phrase = tokens[i] + " " + tokens[i + 1];
 
-        for (size_t j = i + 1; j < tokens.size(); ++j) {
-            phrase += " " + tokens[j];
-
-            if (dict.find(phrase) != dict.end()) {
-                foundPhrases.insert(phrase);
-                i = j;  // Skip the next token since it's part of a phrase
-                break;
-            }
+        if (dict.find(phrase) != dict.end()) {
+            phraseMap[i] = {phrase, {static_cast<int>(i), static_cast<int>(i + 1)}};
+            ++i;  // Skip the next token as it's part of a phrase
         }
     }
 
-    return foundPhrases;
+    return phraseMap;
 }
 
-namespace queryTree {
-bool QueryTree::isOperation(const std::string& token) {
-    std::unordered_set<std::string> OPERATORS = loadOperators("operators.txt");
 
-    bool isOperation(const std::string& token) {
-        return OPERATORS.find(token) != OPERATORS.end()
-            || token.rfind("#od:", 0) == 0
-            || token.rfind("#uw:", 0) == 0;
+namespace queryTree {
+
+void QueryTree::addPhraseNodes(const queryTree::TokenList& tokens,
+    const std::map<int, std::pair<std::string, std::vector<int>>>& phraseMap,
+    std::unordered_set<int>& usedTokens, int& nodeIndex) {
+    for (const auto& [startIndex, phraseData] : phraseMap) {
+        const std::string& phrase = phraseData.first;
+        const std::vector<int>& tokenIndexes = phraseData.second;
+
+        // Attach the OD node to the root (COMBINE node, index 0)
+        int phraseNodeIndex = nodeIndex++;
+        nodes.emplace_back(phraseNodeIndex, QueryOperator::OD, phrase, 0, tokenIndexes.size());
+
+        // Add child term nodes under OD
+        for (int idx : tokenIndexes) {
+            usedTokens.insert(idx);
+            nodes.emplace_back(nodeIndex++, QueryOperator::TEXT, tokens[idx], phraseNodeIndex, 0);
+        }
     }
 }
 
-QueryTree::QueryTree(const TokenList& tokens, const TermDictionary& dict) {
+
+void QueryTree::addTermNodes(const queryTree::TokenList& tokens,
+                             const std::unordered_set<int>& usedTokens,
+                             int& nodeIndex) {
+    for (size_t i = 0; i < tokens.size(); ++i) {
+        if (usedTokens.find(i) != usedTokens.end() || tokens[i].empty()) continue;
+
+        QueryOperator opType = getOperatorType(tokens[i]);
+        nodes.emplace_back(nodeIndex++, opType, tokens[i], -1, 0);
+    }
+}
+
+QueryTree::QueryTree(const queryTree::TokenList& tokens,
+                     const queryTree::TermDictionary& dict) {
     if (tokens.empty()) return;
 
     nodes.reserve(tokens.size()); // Preallocate for efficiency
 
-    std::unordered_set<std::string> usedTokens = findPhrases(tokens, dict);
     int nodeIndex = 0;
+    nodes.emplace_back(nodeIndex++, QueryOperator::COMBINE, "", -1, tokens.size());
 
-    // Process tokens and create nodes
-    for (size_t i = 0; i < tokens.size(); ++i) {
-        if (usedTokens.find(tokens[i]) != usedTokens.end()) {
-            continue;
-        }
+    // Find phrases and their positions
+    auto phraseMap = findPhrases(tokens, dict);
+    std::unordered_set<int> usedTokens;
 
-        std::string operation, value;
-        extractOperationDetails(tokens[i], operation, value);
+    // add phrase nodes
+    addPhraseNodes(tokens, phraseMap, usedTokens, nodeIndex);
 
-        nodes.emplace_back(nodeIndex++, operation, value, -1, 0);
-    }
+    // Add individual term nodes
+    addTermNodes(tokens, usedTokens, nodeIndex);
 }
 
 const QueryNode* QueryTree::getNode(int index) const {
@@ -111,9 +115,10 @@ const QueryNode* QueryTree::getNode(int index) const {
     return &nodes[index];
 }
 
+// FIXME: make this an operator overload
 void QueryTree::print() const {
     for (const auto& node : nodes) {
-        std::cout << "Node " << node.getNodeIndex() << ": " << node.getOperation();
+        std::cout << "Node " << node.getNodeIndex() << ": " << toString(node.getOperation());
         if (!node.getValue().empty()) {
             std::cout << " (" << node.getValue() << ")";
         }

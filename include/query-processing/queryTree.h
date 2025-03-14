@@ -1,14 +1,16 @@
 #pragma once
 
 /**
-  ******************************************************************************
-  * @file           : queryTree.h
-  * @brief          : Efficient indexed query structure for ranking.
-  ******************************************************************************
+ ******************************************************************************
+ * @file           : queryTree.h
+ * @brief          : Efficient indexed query structure for ranking.
+ ******************************************************************************
 */
 
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
+#include <map>
 #include <string>
 #include "queryNode.h"
 
@@ -27,32 +29,35 @@ using TokenList = std::vector<std::string>;
  */
 class QueryTree {
 public:
-  /**
+    /**
     * @brief Constructs a QueryTree from tokenized input.
     * @param tokens The list of processed tokens.
     * @param dict The dictionary for phrase detection.
     */
-  QueryTree(const TokenList& tokens, const TermDictionary& dict);
+    QueryTree(const TokenList& tokens, const TermDictionary& dict);
 
-  /**
+    /**
     * @brief Retrieves a specific node by index.
     * @param index The index of the node.
     * @return Pointer to the requested QueryNode, or nullptr if out of bounds.
     */
-  const QueryNode* getNode(int index) const;
+    const QueryNode* getNode(int index) const;
 
-  /**
+    /**
     * @brief Prints the structured query tree for debugging.
     */
-  void print() const;
+    void print() const;
 
 private:
-  /**
-  * @brief Checks if a token is a recognized query operation.
-  * @param token The token to check.
-  * @return True if the token is an operator, false otherwise.
-  */
-  bool QueryTree::isOperation(const std::string& token);
+    void addPhraseNodes(const queryTree::TokenList& tokens,
+        const std::map<int, std::pair<std::string, std::vector<int>>>& phraseMap,
+        std::unordered_set<int>& usedTokens, int& nodeIndex);
+
+    void addTermNodes(const queryTree::TokenList& tokens,
+                      const std::unordered_set<int>& usedTokens,
+                      int& nodeIndex);
+
+    void print(int nodeIndex, int depth) const;
 
     std::vector<QueryNode> nodes;
 };
