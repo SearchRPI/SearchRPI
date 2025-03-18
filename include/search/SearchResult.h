@@ -16,7 +16,7 @@ namespace Ranking {
 class SearchResult {
 public:
     // Disable default constructor
-    SearchResult() = delete;
+    // SearchResult() = delete;
 
     // Disable copy constructor(s)
     // SearchResult(const SearchResult&) = delete;

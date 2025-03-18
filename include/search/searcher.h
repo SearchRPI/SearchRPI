@@ -30,7 +30,7 @@ public:
      * @param db The database to search.
      * @param weight The weighting scheme to use for ranking results.
      */
-    Searcher(std::shared_ptr<IDatabase> db, const Weight& weight) 
+    Searcher(std::shared_ptr<IDatabase> db, std::shared_ptr<Weight> weight) 
             : db(db), weight_scheme(weight) {}
 
     /**
@@ -44,7 +44,7 @@ public:
 
 private:
     std::shared_ptr<IDatabase> db;
-    Weight weight_scheme;
+    std::shared_ptr<Weight> weight_scheme;
     
     // Configuration Settings Here as needed
     // double time_limit;
