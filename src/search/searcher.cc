@@ -25,22 +25,31 @@ MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
             int doc_len = 1;
             int doc_freq = 1;
 
-            double score = weight_scheme.get_score(doc_len, freq, avg_doc_len, collection_size, doc_freq);
+            double score = weight_scheme->get_score(doc_len, freq, avg_doc_len, collection_size, doc_freq);
             mdocs[docid] += score;
         }
     }
 
-    // Convert map to a MatchingDocs object
-    MatchingDocs results;
+    std::vector<SearchResult> results;
     for (const auto& [doc_id, score] : mdocs) {
-        results.add_result(SearchResult(score, doc_id));
+        results.emplace_back(score, doc_id);
     }
 
-    // Sort descending
-    results.sort_by_score_desc();
+    std::sort(results.begin(), results.end(), [](const SearchResult& a, const SearchResult& b) {
+         return a.get_weight() > b.get_weight();
+    });
 
-    // Return final results
-    return results;
+    if (results.size() > max_items) {
+        // This is not efficient at all but works for now
+        results.erase(results.begin() + max_items, results.end());
+    }
+
+    MatchingDocs matching;
+    for (const auto& result : results) {
+        matching.add_result(result);
+    }
+
+    return matching;
 }
 
 }
