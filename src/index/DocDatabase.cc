@@ -1,6 +1,6 @@
 #include "index/DocDatabase.h"
 
-DocDatabase::DocDatabase(const std::string& dbPath); {
+DocDatabase::DocDatabase(const std::string& dbPath) {
     int rc = mdb_env_create(&env_);
     if (rc != MDB_SUCCESS)
         throw std::runtime_error("Failed to create LMDB environment");
@@ -271,7 +271,7 @@ std::string DocDatabase::serializeDoc(const std::string& url, const std::string&
     return oss.str();
 }
 
-void DocDatabase::deserializeDoc(const std::string& data, std::string& url, std::string& title, std::vector<std::string>& words) {
+void DocDatabase::deserializeDoc(const std::string& data, std::string& url, std::string& title, std::vector<std::string>& words) const {
     std::istringstream iss(data);
     std::getline(iss, url);
     std::getline(iss, title);

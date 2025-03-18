@@ -5,6 +5,7 @@
  * @brief Document DB wrapper
  */
 
+#include "index/IDocDatabase.h"
 #include "types.h"
 
 #include <lmdb.h>
@@ -16,9 +17,7 @@
 #include <cstring>
 #include <cstdint>
 
-namespace Index {
-
-class DocDatabase : IDocDatabase {
+class DocDatabase : public IDocDatabase {
 public:
     DocDatabase() { DocDatabase("../test_docdb"); }
     explicit DocDatabase(const std::string& dbPath);
@@ -74,11 +73,9 @@ private:
     std::string serializeDoc(const std::string& url, const std::string& title, const std::vector<std::string>& words);
     
     // Helper: deserialize a document record into its parts.
-    void deserializeDoc(const std::string& data, std::string& url, std::string& title, std::vector<std::string>& words);
+    void deserializeDoc(const std::string& data, std::string& url, std::string& title, std::vector<std::string>& words) const;
     
     // Helper: convert a document ID to a string.
     std::string docidToStr(SearchRPI::docid id) const { return std::to_string(id); }
 
 };
-
-} // namespace Index
