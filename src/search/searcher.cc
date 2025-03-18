@@ -39,14 +39,9 @@ MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
          return a.get_weight() > b.get_weight();
     });
 
-    if (results.size() > max_items) {
-        // This is not efficient at all but works for now
-        results.erase(results.begin() + max_items, results.end());
-    }
-
     MatchingDocs matching;
-    for (const auto& result : results) {
-        matching.add_result(result);
+    for (int i = 0; i < std::min((unsigned int) results.size(), max_items); i++) {
+        matching.add_result(results[i]);
     }
 
     return matching;
