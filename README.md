@@ -1,4 +1,4 @@
-# Search
+# SearchRPI
 
 This repository contains the core components of SearchRPI, responsible for handling the user-facing functionality of the search engine. It integrates all the essential systems required to deliver relevant and ranked search results to users.
 
@@ -6,8 +6,8 @@ This repository contains the core components of SearchRPI, responsible for handl
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/SearchRPI/Search.git
-    cd Search
+    git clone https://github.com/SearchRPI/SearchRPI.git
+    cd SearchRPI
     ```
 
 2. **Install Dependencies**
