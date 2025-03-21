@@ -10,14 +10,21 @@ This repository contains the core components of SearchRPI, responsible for handl
     cd Search
     ```
 
-2. **Build the project:**
+2. **Install Dependencies**
     ```bash
-    mkdir build && cd build
-    cmake ..
-    make
+    sudo apt-get update
+    sudo apt-get install -y cmake g++ make pkg-config liblmdb-dev
     ```
 
-5. **Run tests:**
+3. **Build the project:**
+    ```bash
+    mkdir build
+    cd build
+    cmake ..
+    make -j$(nproc)
+    ```
+
+4. **Run tests:**
     ```bash
     ./all_tests
     ```

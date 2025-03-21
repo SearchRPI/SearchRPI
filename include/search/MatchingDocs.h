@@ -23,13 +23,6 @@ public:
 
     // Temporary Functions
     void add_result(const SearchResult& sr) { results.push_back(sr); }
-    void sort_by_score_desc() {
-        std::sort(results.begin(), results.end(),
-            [](const SearchResult& a, const SearchResult& b) {
-                return a.get_weight() > b.get_weight();
-            }
-        );
-    }
     const std::vector<SearchResult>& get_all_results() const { return results; }
 
     // Returns the number of search results in the collection.

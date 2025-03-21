@@ -17,19 +17,19 @@ namespace Ranking {
 class SearcherTest : public ::testing::Test {
 protected:
     std::shared_ptr<MockDatabase> mockDB;
-    Weight weightScheme;
+    std::shared_ptr<Weight> bm25Weight = std::make_shared<BM25Weight>();
     std::unique_ptr<Searcher> searcher;
 
     void SetUp() override {
         mockDB = std::make_shared<MockDatabase>();
-        searcher = std::make_unique<Searcher>(mockDB, weightScheme);
+        searcher = std::make_unique<Searcher>(mockDB, bm25Weight);
     }
 };
 
 TEST_F(SearcherTest, SearchReturnsExpectedDocs) {
     // Prepare mock data.
     std::vector<Data> fakeData = {
-        {10, 123},  // priority=10, docId=123
+        {10, 123},  // freq=10, docId=123
         {5, 456}
     };
 

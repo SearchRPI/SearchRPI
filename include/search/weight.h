@@ -36,7 +36,7 @@ public:
 
 };
 
-class BM25Weight : Weight {
+class BM25Weight : public Weight {
 public:
     /**
      * @brief Constructor for BM25Weight.
@@ -72,7 +72,7 @@ protected:
 // TODO: BM25Plus? BM25f?
 
 // TF-IDF Implementation
-class TFIDFWeight : Weight {
+class TFIDFWeight : public Weight {
 public:
     /**
      * @brief Constructor for TFIDFWeight.
