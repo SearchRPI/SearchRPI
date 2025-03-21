@@ -14,6 +14,7 @@
 #include <string>
 #include <set>
 #include <sstream>
+#include <cstring>
 
 class DocDatabase : public IDocDatabase {
 public:

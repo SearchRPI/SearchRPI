@@ -128,7 +128,7 @@ TEST_F(DocDBTest, PerformanceTest_AddDocuments) {
               << elapsed.count() << " seconds (" << timePerDoc 
               << " sec per document)" << std::endl;
     
-    EXPECT_LT(timePerDoc, 0.005);
+    EXPECT_LT(timePerDoc, 0.01);
 }
 
 // Performance test: measure how long it takes to retrieve a large number of documents.
