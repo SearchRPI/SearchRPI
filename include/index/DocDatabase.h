@@ -13,14 +13,12 @@
 #include <string>
 #include <set>
 #include <sstream>
-#include <cstring>
-#include <cstdint>
 
 namespace Index {
 
 class DocDatabase : IDocDatabase {
 public:
-    DocDatabase() { DocDatabase("../test_docdb"); }
+    DocDatabase() { DocDatabase("../docdb"); }
     explicit DocDatabase(const std::string& dbPath);
     ~DocDatabase();
 
