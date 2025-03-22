@@ -6,20 +6,28 @@
  */
 
 #include <lmdb.h>
-
-#include "index/IDatabase.h"
-
 #include <string>
 #include <vector>
 
-class Database : IDatabase {
-public:
-    // Get the singleton instance
-    static Database& getInstance();
+// Struct to store in LMDB
+struct Data {
+    int priority;         // Priority value (used for ranking)
+    int docId;            // docId for specific document
+};
 
-    // Delete copy constructor and assignment operator
-    Database(const Database&) = delete;
-    Database& operator=(const Database&) = delete;
+class Database {
+public:
+    /**
+     * @brief Constructor with database path
+     * 
+     * @param db_path Path to the database file.
+     */
+    Database(const std::string& db_path);
+
+    /**
+     * @brief Destructor to clean up LMDB resources
+     */
+    ~Database();
 
     /**
      * @brief Add data to database
@@ -53,19 +61,11 @@ public:
      */
     std::vector<Data> get(const std::string& key, size_t n);
 
-    // TODO: Clarify when get is used and its purpose, add bulk get
-
 private:
     MDB_env* env = nullptr;
     MDB_dbi dbi;
     MDB_txn* write_txn = nullptr;
     MDB_txn* read_txn = nullptr;
-
-    // Private constructor for singleton
-    Database();
-
-    // Destructor to clean up LMDB resources
-    ~Database();
 
     // Serialize the Data struct
     void serialize_data(const Data& data, MDB_val& value);

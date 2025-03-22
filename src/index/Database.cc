@@ -1,17 +1,10 @@
 #include "Database.h"
 #include <cstring>
+#include <iostream>
 #include <stdexcept>
 
-// Get the singleton instance
-Database& Database::getInstance() {
-    static Database instance;
-    return instance;
-}
-
-// Private constructor for singleton
-Database::Database() {
-    const char* db_path = "../testdb";
-
+// Constructor with database path
+Database::Database(const std::string& db_path) {
     // Initialize LMDB environment
     if (mdb_env_create(&env) != 0) {
         throw std::runtime_error("Failed to create LMDB environment.");
@@ -19,16 +12,13 @@ Database::Database() {
     if (mdb_env_set_mapsize(env, 10 * 1024 * 1024) != 0) {
         throw std::runtime_error("Failed to set map size.");
     }
-    if (mdb_env_open(env, db_path, MDB_CREATE, 0664) != 0) {
+    if (mdb_env_open(env, db_path.c_str(), MDB_CREATE, 0664) != 0) {
         throw std::runtime_error("Failed to open LMDB environment.");
     }
 
     // Start write and read transactions
     if (mdb_txn_begin(env, nullptr, 0, &write_txn) != 0) {
         throw std::runtime_error("Failed to begin write transaction.");
-    }
-    if (mdb_txn_begin(env, nullptr, MDB_RDONLY, &read_txn) != 0) {
-        throw std::runtime_error("Failed to begin read transaction.");
     }
 
     // Open database with MDB_DUPSORT for duplicate support
@@ -42,7 +32,6 @@ Database::Database() {
 
 // Destructor to clean up LMDB resources
 Database::~Database() {
-    if (read_txn) mdb_txn_abort(read_txn);
     if (write_txn) mdb_txn_commit(write_txn);
     mdb_dbi_close(env, dbi);
     mdb_env_close(env);
@@ -51,7 +40,6 @@ Database::~Database() {
 // Serialize the Data struct
 void Database::serialize_data(const Data& data, MDB_val& value) {
     size_t total_size = sizeof(int) * 2; // Two integers
-
     void* data_blob = malloc(total_size);
     if (!data_blob) {
         throw std::bad_alloc();
@@ -68,7 +56,6 @@ void Database::deserialize_data(const MDB_val& value, Data& data) {
     if (value.mv_size != sizeof(int) * 2) {
         throw std::runtime_error("Invalid data size during deserialization");
     }
-
     std::memcpy(&data.priority, value.mv_data, sizeof(int));
     std::memcpy(&data.docId, (char*)value.mv_data + sizeof(int), sizeof(int));
 }
@@ -78,7 +65,7 @@ int Database::custom_compare(const MDB_val* a, const MDB_val* b) {
     int priority_a, priority_b;
     std::memcpy(&priority_a, a->mv_data, sizeof(int));
     std::memcpy(&priority_b, b->mv_data, sizeof(int));
-    return priority_a - priority_b;
+    return priority_b - priority_a;
 }
 
 // Add data to the database
@@ -126,14 +113,20 @@ void Database::remove(const std::string& key) {
 }
 
 std::vector<Data> Database::get(const std::string& key) {
+    MDB_txn* txn;
+    if (mdb_txn_begin(env, nullptr, MDB_RDONLY, &txn) != 0) {
+        throw std::runtime_error("Failed to begin read transaction");
+    }
+
+    MDB_cursor* cursor;
+    if (mdb_cursor_open(txn, dbi, &cursor) != 0) {
+        mdb_txn_abort(txn);
+        throw std::runtime_error("Failed to open LMDB cursor");
+    }
+
     MDB_val mdb_key, mdb_value;
     mdb_key.mv_size = key.size();
     mdb_key.mv_data = (void*)key.c_str();
-
-    MDB_cursor* cursor;
-    if (mdb_cursor_open(read_txn, dbi, &cursor) != 0) {
-        throw std::runtime_error("Failed to open LMDB cursor");
-    }
 
     std::vector<Data> results;
     if (mdb_cursor_get(cursor, &mdb_key, &mdb_value, MDB_SET) == 0) {
@@ -145,6 +138,7 @@ std::vector<Data> Database::get(const std::string& key) {
     }
 
     mdb_cursor_close(cursor);
+    mdb_txn_abort(txn);  // Always abort read-only transactions
 
     if (results.empty()) {
         throw std::runtime_error("Key not found: " + key);
@@ -154,14 +148,20 @@ std::vector<Data> Database::get(const std::string& key) {
 }
 
 std::vector<Data> Database::get(const std::string& key, size_t n) {
+    MDB_txn* txn;
+    if (mdb_txn_begin(env, nullptr, MDB_RDONLY, &txn) != 0) {
+        throw std::runtime_error("Failed to begin read transaction");
+    }
+
+    MDB_cursor* cursor;
+    if (mdb_cursor_open(txn, dbi, &cursor) != 0) {
+        mdb_txn_abort(txn);
+        throw std::runtime_error("Failed to open LMDB cursor");
+    }
+
     MDB_val mdb_key, mdb_value;
     mdb_key.mv_size = key.size();
     mdb_key.mv_data = (void*)key.c_str();
-
-    MDB_cursor* cursor;
-    if (mdb_cursor_open(read_txn, dbi, &cursor) != 0) {
-        throw std::runtime_error("Failed to open LMDB cursor");
-    }
 
     std::vector<Data> results;
     size_t count = 0;
@@ -176,6 +176,7 @@ std::vector<Data> Database::get(const std::string& key, size_t n) {
     }
 
     mdb_cursor_close(cursor);
+    mdb_txn_abort(txn);
 
     if (results.empty()) {
         throw std::runtime_error("Key not found: " + key);
