@@ -20,9 +20,6 @@ Database::Database(const std::string& db_path) {
     if (mdb_txn_begin(env, nullptr, 0, &write_txn) != 0) {
         throw std::runtime_error("Failed to begin write transaction.");
     }
-    if (mdb_txn_begin(env, nullptr, MDB_RDONLY, &read_txn) != 0) {
-        throw std::runtime_error("Failed to begin read transaction.");
-    }
 
     // Open database with MDB_DUPSORT for duplicate support
     if (mdb_dbi_open(write_txn, nullptr, MDB_CREATE | MDB_DUPSORT, &dbi) != 0) {
@@ -35,7 +32,6 @@ Database::Database(const std::string& db_path) {
 
 // Destructor to clean up LMDB resources
 Database::~Database() {
-    if (read_txn) mdb_txn_abort(read_txn);
     if (write_txn) mdb_txn_commit(write_txn);
     mdb_dbi_close(env, dbi);
     mdb_env_close(env);
@@ -69,7 +65,7 @@ int Database::custom_compare(const MDB_val* a, const MDB_val* b) {
     int priority_a, priority_b;
     std::memcpy(&priority_a, a->mv_data, sizeof(int));
     std::memcpy(&priority_b, b->mv_data, sizeof(int));
-    return priority_a - priority_b;
+    return priority_b - priority_a;
 }
 
 // Add data to the database
@@ -117,14 +113,20 @@ void Database::remove(const std::string& key) {
 }
 
 std::vector<Data> Database::get(const std::string& key) {
+    MDB_txn* txn;
+    if (mdb_txn_begin(env, nullptr, MDB_RDONLY, &txn) != 0) {
+        throw std::runtime_error("Failed to begin read transaction");
+    }
+
+    MDB_cursor* cursor;
+    if (mdb_cursor_open(txn, dbi, &cursor) != 0) {
+        mdb_txn_abort(txn);
+        throw std::runtime_error("Failed to open LMDB cursor");
+    }
+
     MDB_val mdb_key, mdb_value;
     mdb_key.mv_size = key.size();
     mdb_key.mv_data = (void*)key.c_str();
-
-    MDB_cursor* cursor;
-    if (mdb_cursor_open(read_txn, dbi, &cursor) != 0) {
-        throw std::runtime_error("Failed to open LMDB cursor");
-    }
 
     std::vector<Data> results;
     if (mdb_cursor_get(cursor, &mdb_key, &mdb_value, MDB_SET) == 0) {
@@ -136,6 +138,7 @@ std::vector<Data> Database::get(const std::string& key) {
     }
 
     mdb_cursor_close(cursor);
+    mdb_txn_abort(txn);  // Always abort read-only transactions
 
     if (results.empty()) {
         throw std::runtime_error("Key not found: " + key);
@@ -145,14 +148,20 @@ std::vector<Data> Database::get(const std::string& key) {
 }
 
 std::vector<Data> Database::get(const std::string& key, size_t n) {
+    MDB_txn* txn;
+    if (mdb_txn_begin(env, nullptr, MDB_RDONLY, &txn) != 0) {
+        throw std::runtime_error("Failed to begin read transaction");
+    }
+
+    MDB_cursor* cursor;
+    if (mdb_cursor_open(txn, dbi, &cursor) != 0) {
+        mdb_txn_abort(txn);
+        throw std::runtime_error("Failed to open LMDB cursor");
+    }
+
     MDB_val mdb_key, mdb_value;
     mdb_key.mv_size = key.size();
     mdb_key.mv_data = (void*)key.c_str();
-
-    MDB_cursor* cursor;
-    if (mdb_cursor_open(read_txn, dbi, &cursor) != 0) {
-        throw std::runtime_error("Failed to open LMDB cursor");
-    }
 
     std::vector<Data> results;
     size_t count = 0;
@@ -167,6 +176,7 @@ std::vector<Data> Database::get(const std::string& key, size_t n) {
     }
 
     mdb_cursor_close(cursor);
+    mdb_txn_abort(txn);
 
     if (results.empty()) {
         throw std::runtime_error("Key not found: " + key);

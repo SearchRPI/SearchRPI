@@ -23,9 +23,17 @@ protected:
     Database* db;
 };
 
+std::string GetTestFilePath(const std::string& relative_path) {
+    std::filesystem::path base = __FILE__;
+    base = base.parent_path();
+    return (base / relative_path).string();
+}
+
 // Constructor Tests
 TEST(DatabaseConstructorTest, ConstructorSuccess) {
-    ASSERT_NO_THROW(Database db(TEST_DB_PATH));
+    std::string path = GetTestFilePath("testdb");
+    std::filesystem::create_directory(path);  // Make sure directory exists
+    ASSERT_NO_THROW(Database db(path));
 }
 
 TEST(DatabaseConstructorTest, ConstructorFailure) {
@@ -128,4 +136,42 @@ TEST_F(DatabaseTest, RetrieveFromEmptyDatabase) {
 TEST_F(DatabaseTest, AddNullKey) {
     Data data = {10, 1};
     ASSERT_THROW(db->add("", data), std::runtime_error);
+}
+
+TEST_F(DatabaseTest, IndexMultipleWordsWithMultipleDocs) {
+    std::unordered_map<std::string, std::vector<Data>> index = {
+        { "c++",     { {100, 1}, {90, 2}, {80, 3} } },
+        { "search",  { {70, 4}, {60, 5}, {50, 6}, {40, 7} } },
+        { "engine",  { {30, 8}, {20, 9}, {10, 10} } }
+    };
+
+    // Add all entries to the DB
+    for (const auto& [word, docs] : index) {
+        for (const auto& d : docs) {
+            db->add(word, d);
+        }
+    }
+
+    // Retrieve and check
+    for (const auto& [word, expected_docs] : index) {
+        auto results = db->get(word);
+
+        // Check size matches
+        ASSERT_EQ(results.size(), expected_docs.size());
+
+        // Check all expected docIds are found
+        std::vector<int> found_ids;
+        for (const auto& d : results) {
+            found_ids.push_back(d.docId);
+        }
+
+        for (const auto& expected : expected_docs) {
+            ASSERT_TRUE(std::find(found_ids.begin(), found_ids.end(), expected.docId) != found_ids.end());
+        }
+
+        // Check descending order by priority
+        for (size_t i = 1; i < results.size(); ++i) {
+            ASSERT_GE(results[i - 1].priority, results[i].priority);
+        }
+    }
 }
