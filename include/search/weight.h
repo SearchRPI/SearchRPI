@@ -1,13 +1,11 @@
 #pragma once
 
-#include <math.h>
-
 /**
  * @file  weight.h
  * @brief Weighting schemes
 */
 
-namespace SearchRPI {
+namespace Ranking {
 
 /**
  * @class Weight
@@ -30,11 +28,15 @@ public:
      * 
      * @return The calculated score as a double.
      */
-    virtual double get_score() const = 0;
+    virtual double get_score(unsigned int doc_len,
+                     unsigned int term_freq,
+                     double avg_doc_len,
+                     unsigned int collection_size,
+                     unsigned int doc_freq) const { return 0.0; }
 
 };
 
-class BM25Weight : Weight {
+class BM25Weight : public Weight {
 public:
     /**
      * @brief Constructor for BM25Weight.
@@ -70,7 +72,7 @@ protected:
 // TODO: BM25Plus? BM25f?
 
 // TF-IDF Implementation
-class TFIDFWeight : Weight {
+class TFIDFWeight : public Weight {
 public:
     /**
      * @brief Constructor for TFIDFWeight.
@@ -87,7 +89,8 @@ public:
      * @param collection_size Total number of documents in the collection.
      * @return The TF-IDF score as a double.
      */
-    double get_score(unsigned int term_freq,
+    double get_score(unsigned int doc_len,
+                     unsigned int term_freq,
                      double avg_doc_len,
                      unsigned int collection_size,
                      unsigned int doc_freq) const;
