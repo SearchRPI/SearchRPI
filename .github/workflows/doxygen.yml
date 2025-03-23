@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - "main"
-
   workflow_dispatch:
 
 jobs:
@@ -15,25 +14,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Update package lists
-        run: sudo apt-get update
-
-      - name: Install Doxygen if not installed
-        run: |
-          if ! command -v doxygen &> /dev/null
-          then
-              echo "Doxygen not found. Installing..."
-              sudo apt-get install -y doxygen graphviz
-          else
-              echo "Doxygen is already installed."
-          fi
-
       - name: Set up Doxygen
         uses: mattnotmitt/doxygen-action@v1.9.8
 
-      - name: Generate Doxygen documentation
+      - name: Generate Doxygen Docs
         run: |
-          doxygen -d WARNING Doxyfile || true
+          doxygen Doxyfile
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
