@@ -18,13 +18,14 @@ var searchData=
   ['check_5fglobal_5fcall_5ffalse_15',['check_global_call_false',['../structcrow_1_1detail_1_1check__global__call__false.html',1,'crow::detail']]],
   ['ci_5fhash_16',['ci_hash',['../structcrow_1_1ci__hash.html',1,'crow']]],
   ['ci_5fkey_5feq_17',['ci_key_eq',['../structcrow_1_1ci__key__eq.html',1,'crow']]],
-  ['connection_18',['Connection',['../classcrow_1_1Connection.html',1,'crow::Connection&lt; Adaptor, Handler, Middlewares &gt;'],['../classcrow_1_1websocket_1_1Connection.html',1,'crow::websocket::Connection&lt; Adaptor, Handler &gt;']]],
+  ['connection_18',['Connection',['../classcrow_1_1Connection.html',1,'crow']]],
   ['connection_19',['connection',['../structcrow_1_1websocket_1_1connection.html',1,'crow::websocket']]],
-  ['context_20',['context',['../structcrow_1_1CookieParser_1_1context.html',1,'crow::CookieParser::context'],['../structcrow_1_1CORSHandler_1_1context.html',1,'crow::CORSHandler::context'],['../structcrow_1_1detail_1_1context.html',1,'crow::detail::context&lt; Middlewares &gt;'],['../structcrow_1_1SessionMiddleware_1_1context.html',1,'crow::SessionMiddleware&lt; Store &gt;::context'],['../structcrow_1_1UTF8_1_1context.html',1,'crow::UTF8::context']]],
-  ['context_3c_20middlewares_2e_2e_2e_20_3e_21',['context&lt; Middlewares... &gt;',['../structcrow_1_1detail_1_1context.html',1,'crow::detail']]],
-  ['cookie_22',['Cookie',['../structcrow_1_1CookieParser_1_1Cookie.html',1,'crow::CookieParser']]],
-  ['cookieparser_23',['CookieParser',['../structcrow_1_1CookieParser.html',1,'crow']]],
-  ['corshandler_24',['CORSHandler',['../structcrow_1_1CORSHandler.html',1,'crow']]],
-  ['corsrules_25',['CORSRules',['../structcrow_1_1CORSRules.html',1,'crow']]],
-  ['crow_26',['Crow',['../classcrow_1_1Crow.html',1,'crow']]]
+  ['connection_20',['Connection',['../classcrow_1_1websocket_1_1Connection.html',1,'crow::websocket']]],
+  ['context_21',['context',['../structcrow_1_1CookieParser_1_1context.html',1,'crow::CookieParser::context'],['../structcrow_1_1CORSHandler_1_1context.html',1,'crow::CORSHandler::context'],['../structcrow_1_1detail_1_1context.html',1,'crow::detail::context&lt; Middlewares &gt;'],['../structcrow_1_1SessionMiddleware_1_1context.html',1,'crow::SessionMiddleware&lt; Store &gt;::context'],['../structcrow_1_1UTF8_1_1context.html',1,'crow::UTF8::context']]],
+  ['context_3c_20middlewares_2e_2e_2e_20_3e_22',['context&lt; Middlewares... &gt;',['../structcrow_1_1detail_1_1context.html',1,'crow::detail']]],
+  ['cookie_23',['Cookie',['../structcrow_1_1CookieParser_1_1Cookie.html',1,'crow::CookieParser']]],
+  ['cookieparser_24',['CookieParser',['../structcrow_1_1CookieParser.html',1,'crow']]],
+  ['corshandler_25',['CORSHandler',['../structcrow_1_1CORSHandler.html',1,'crow']]],
+  ['corsrules_26',['CORSRules',['../structcrow_1_1CORSRules.html',1,'crow']]],
+  ['crow_27',['Crow',['../classcrow_1_1Crow.html',1,'crow']]]
 ];
