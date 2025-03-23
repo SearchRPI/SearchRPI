@@ -14,7 +14,12 @@ struct Data {
  */
 class IDatabase {
 public:
+    IDatabase() = default;
     virtual ~IDatabase() = default;
+
+    // Disable Copy Constructor/Assignment Operator
+    IDatabase(const IDatabase&) = delete;
+    IDatabase& operator=(IDatabase const&) = delete;
 
     /**
      * @brief Add data to database
