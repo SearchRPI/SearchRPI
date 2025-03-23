@@ -1,0 +1,9 @@
+<map id="include/query&#45;processing/query.h" name="include/query&#45;processing/query.h">
+<area shape="rect" id="node1" title=": Processes input query and optimizes it for ranking." alt="" coords="59,5,225,45"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,167,60,192"/>
+<area shape="rect" id="node3" title=" " alt="" coords="85,167,143,192"/>
+<area shape="rect" id="node4" title=" " alt="" coords="239,93,343,119"/>
+<area shape="rect" id="node5" href="$bkTree_8h.html" title=": Data structure for fuzzy&#45;finding strings." alt="" coords="143,93,215,119"/>
+<area shape="rect" id="node6" title=" " alt="" coords="168,167,279,192"/>
+<area shape="rect" id="node7" title=" " alt="" coords="303,167,371,192"/>
+</map>

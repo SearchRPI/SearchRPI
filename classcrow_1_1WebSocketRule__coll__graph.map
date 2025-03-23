@@ -1,0 +1,6 @@
+<map id="crow::WebSocketRule&lt; App &gt;" name="crow::WebSocketRule&lt; App &gt;">
+<area shape="rect" id="node1" title="A rule dealing with websockets." alt="" coords="138,196,287,236"/>
+<area shape="rect" id="node2" href="$classcrow_1_1BaseRule.html" title="A base class for all rules." alt="" coords="29,108,141,133"/>
+<area shape="rect" id="node3" href="$structcrow_1_1detail_1_1middleware__indices.html" title="Typesafe wrapper for storing lists of middleware as their indices in the App." alt="" coords="5,5,164,45"/>
+<area shape="rect" id="node4" href="$classcrow_1_1Crow.html" title="The main server application class." alt="" coords="165,108,346,133"/>
+</map>

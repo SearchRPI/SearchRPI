@@ -1,0 +1,4 @@
+<map id="crow::multipart::message" name="crow::multipart::message">
+<area shape="rect" id="node1" title="The parsed multipart request/response." alt="" coords="5,79,171,104"/>
+<area shape="rect" id="node2" href="$structcrow_1_1returnable.html" title="An abstract class that allows any other class to be returned by a handler." alt="" coords="31,5,145,31"/>
+</map>

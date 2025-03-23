@@ -1,0 +1,6 @@
+<map id="crow::HTTPParser&lt; Handler &gt;" name="crow::HTTPParser&lt; Handler &gt;">
+<area shape="rect" id="node1" title="A wrapper for nodejs/http&#45;parser." alt="" coords="5,181,201,207"/>
+<area shape="rect" id="node2" href="$structcrow_1_1http__parser.html" title=" " alt="" coords="21,93,143,119"/>
+<area shape="rect" id="node3" href="$structcrow_1_1request.html" title="An HTTP request." alt="" coords="167,93,266,119"/>
+<area shape="rect" id="node4" href="$classcrow_1_1query__string.html" title="A class to represent any data coming after the ? in the request URL into key&#45;value pairs." alt="" coords="153,5,280,31"/>
+</map>

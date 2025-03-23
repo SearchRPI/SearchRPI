@@ -1,0 +1,5 @@
+<map id="Ranking::Weight" name="Ranking::Weight">
+<area shape="rect" id="node1" title="Base class for weighting schemes." alt="" coords="109,5,224,31"/>
+<area shape="rect" id="node2" href="$classRanking_1_1BM25Weight.html" title=" " alt="" coords="5,79,155,104"/>
+<area shape="rect" id="node3" href="$classRanking_1_1TFIDFWeight.html" title=" " alt="" coords="179,79,331,104"/>
+</map>

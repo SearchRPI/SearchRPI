@@ -1,0 +1,6 @@
+<map id="crow::BaseRule" name="crow::BaseRule">
+<area shape="rect" id="node1" title="A base class for all rules." alt="" coords="193,5,305,31"/>
+<area shape="rect" id="node2" href="$classcrow_1_1DynamicRule.html" title="A rule that can change its parameters during runtime." alt="" coords="5,86,137,111"/>
+<area shape="rect" id="node3" href="$classcrow_1_1TaggedRule.html" title="Default rule created when CROW_ROUTE is called." alt="" coords="161,86,336,111"/>
+<area shape="rect" id="node4" href="$classcrow_1_1WebSocketRule.html" title="A rule dealing with websockets." alt="" coords="361,79,510,119"/>
+</map>

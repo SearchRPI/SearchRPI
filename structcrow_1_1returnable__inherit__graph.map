@@ -1,0 +1,6 @@
+<map id="crow::returnable" name="crow::returnable">
+<area shape="rect" id="node1" title="An abstract class that allows any other class to be returned by a handler." alt="" coords="183,5,296,31"/>
+<area shape="rect" id="node2" href="$classcrow_1_1json_1_1wvalue.html" title="JSON write value." alt="" coords="5,86,132,111"/>
+<area shape="rect" id="node3" href="$structcrow_1_1multipart_1_1message.html" title="The parsed multipart request/response." alt="" coords="157,86,322,111"/>
+<area shape="rect" id="node4" href="$structcrow_1_1mustache_1_1rendered__template.html" title="Returned object after call the template_t::render() method. Its intended to be returned during a rule..." alt="" coords="347,79,516,119"/>
+</map>

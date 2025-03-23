@@ -1,0 +1,4 @@
+<map id="crow::BaseRule" name="crow::BaseRule">
+<area shape="rect" id="node1" title="A base class for all rules." alt="" coords="29,108,141,133"/>
+<area shape="rect" id="node2" href="$structcrow_1_1detail_1_1middleware__indices.html" title="Typesafe wrapper for storing lists of middleware as their indices in the App." alt="" coords="5,5,164,45"/>
+</map>

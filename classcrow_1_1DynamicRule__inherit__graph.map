@@ -1,0 +1,5 @@
+<map id="crow::DynamicRule" name="crow::DynamicRule">
+<area shape="rect" id="node1" title="A rule that can change its parameters during runtime." alt="" coords="79,93,211,119"/>
+<area shape="rect" id="node2" href="$classcrow_1_1BaseRule.html" title="A base class for all rules." alt="" coords="5,13,117,38"/>
+<area shape="rect" id="node3" href="$structcrow_1_1RuleParameterTraits.html" title=" " alt="" coords="142,5,317,45"/>
+</map>

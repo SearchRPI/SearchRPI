@@ -1,0 +1,13 @@
+<map id="include/search/searcher.h" name="include/search/searcher.h">
+<area shape="rect" id="node1" title="Class for searching a database." alt="" coords="311,5,482,31"/>
+<area shape="rect" id="node2" href="$types_8h.html" title="Global typedefs." alt="" coords="5,225,68,251"/>
+<area shape="rect" id="node3" href="$IDatabase_8h.html" title=" " alt="" coords="275,79,401,104"/>
+<area shape="rect" id="node4" title=" " alt="" coords="404,225,459,251"/>
+<area shape="rect" id="node5" title=" " alt="" coords="309,152,367,177"/>
+<area shape="rect" id="node6" href="$search_2query_8h.html" title="Query Class." alt="" coords="425,79,488,104"/>
+<area shape="rect" id="node7" href="$weight_8h.html" title="Weighting schemes." alt="" coords="564,79,677,104"/>
+<area shape="rect" id="node8" href="$MatchingDocs_8h.html" title="Class containing ordered search results for a query." alt="" coords="41,79,200,104"/>
+<area shape="rect" id="node11" title=" " alt="" coords="701,79,769,104"/>
+<area shape="rect" id="node9" href="$SearchResult_8h.html" title=" " alt="" coords="75,152,185,177"/>
+<area shape="rect" id="node10" title=" " alt="" coords="210,152,285,177"/>
+</map>
