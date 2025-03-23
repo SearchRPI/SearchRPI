@@ -80,42 +80,34 @@ $(function() {
 <a href="Database_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;lmdb.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="IDatabase_8h.html">index/IDatabase.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classDatabase.html">   15</a></span><span class="keyword">class </span><a class="code hl_class" href="classDatabase.html">Database</a> : <a class="code hl_class" href="classIDatabase.html">IDatabase</a> {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="comment">// Get the singleton instance</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">static</span> <a class="code hl_class" href="classDatabase.html">Database</a>&amp; <a class="code hl_function" href="classDatabase.html#aa04e547554cc34fa4b6c5a9390021eab">getInstance</a>();</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="comment">// Delete copy constructor and assignment operator</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classDatabase.html#a83f8b6d2941a4aee50f225e08e97291c">   21</a></span>    <a class="code hl_function" href="classDatabase.html#a83f8b6d2941a4aee50f225e08e97291c">Database</a>(<span class="keyword">const</span> <a class="code hl_class" href="classDatabase.html">Database</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classDatabase.html#a46b93a4878076c7cfddd5b4058297f14">   22</a></span>    <a class="code hl_class" href="classDatabase.html">Database</a>&amp; <a class="code hl_function" href="classDatabase.html#a46b93a4878076c7cfddd5b4058297f14">operator=</a>(<span class="keyword">const</span> <a class="code hl_class" href="classDatabase.html">Database</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDatabase.html#a305f2f4a2b6e9fd11cb77c055b400c28">add</a>(<span class="keyword">const</span> std::string&amp; key, <span class="keyword">const</span> <a class="code hl_struct" href="structData.html">Data</a>&amp; data);</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// Struct to store in LMDB</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="structData.html">   13</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structData.html">Data</a> {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="structData.html#a7c4f9f1aefe049bb27133dc582d6e652">   14</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structData.html#a7c4f9f1aefe049bb27133dc582d6e652">priority</a>;         <span class="comment">// Priority value (used for ranking)</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="structData.html#a7d9a766bddf3d24851e6bba265a6b0ff">   15</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structData.html#a7d9a766bddf3d24851e6bba265a6b0ff">docId</a>;            <span class="comment">// docId for specific document</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>};</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classDatabase.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classDatabase.html">Database</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_class" href="classDatabase.html">Database</a>(<span class="keyword">const</span> std::string&amp; db_path);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <a class="code hl_function" href="classDatabase.html#a84d399a2ad58d69daab9b05330e1316d">~Database</a>();</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDatabase.html#aa490ba13d3cba0e348b3982dc024e0e1">remove</a>(<span class="keyword">const</span> std::string&amp; key);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    std::vector&lt;Data&gt; <a class="code hl_function" href="classDatabase.html#a4623d9ba588fffdbd05d2349b6fdd1ec">get</a>(<span class="keyword">const</span> std::string&amp; key);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDatabase.html#a305f2f4a2b6e9fd11cb77c055b400c28">add</a>(<span class="keyword">const</span> std::string&amp; key, <span class="keyword">const</span> <a class="code hl_struct" href="structData.html">Data</a>&amp; data);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDatabase.html#aa490ba13d3cba0e348b3982dc024e0e1">remove</a>(<span class="keyword">const</span> std::string&amp; key);</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    std::vector&lt;Data&gt; <a class="code hl_function" href="classDatabase.html#a4623d9ba588fffdbd05d2349b6fdd1ec">get</a>(<span class="keyword">const</span> std::string&amp; key, <span class="keywordtype">size_t</span> n);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="comment">// TODO: Clarify when get is used and its purpose, add bulk get</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    MDB_env* env = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    MDB_dbi dbi;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    MDB_txn* write_txn = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    MDB_txn* read_txn = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    std::vector&lt;Data&gt; <a class="code hl_function" href="classDatabase.html#a4623d9ba588fffdbd05d2349b6fdd1ec">get</a>(<span class="keyword">const</span> std::string&amp; key);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    std::vector&lt;Data&gt; <a class="code hl_function" href="classDatabase.html#a4623d9ba588fffdbd05d2349b6fdd1ec">get</a>(<span class="keyword">const</span> std::string&amp; key, <span class="keywordtype">size_t</span> n);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">// Private constructor for singleton</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_class" href="classDatabase.html">Database</a>();</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="comment">// Destructor to clean up LMDB resources</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <a class="code hl_class" href="classDatabase.html">~Database</a>();</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    MDB_env* env = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    MDB_dbi dbi;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    MDB_txn* write_txn = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    MDB_txn* read_txn = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">// Serialize the Data struct</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordtype">void</span> serialize_data(<span class="keyword">const</span> <a class="code hl_struct" href="structData.html">Data</a>&amp; data, MDB_val&amp; value);</div>
@@ -126,16 +118,14 @@ $(function() {
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="comment">// Custom comparison function for ranking by priority</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keyword">static</span> <span class="keywordtype">int</span> custom_compare(<span class="keyword">const</span> MDB_val* a, <span class="keyword">const</span> MDB_val* b);</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>};</div>
-<div class="ttc" id="aIDatabase_8h_html"><div class="ttname"><a href="IDatabase_8h.html">IDatabase.h</a></div></div>
-<div class="ttc" id="aclassDatabase_html"><div class="ttname"><a href="classDatabase.html">Database</a></div><div class="ttdef"><b>Definition:</b> Database.h:15</div></div>
-<div class="ttc" id="aclassDatabase_html_a305f2f4a2b6e9fd11cb77c055b400c28"><div class="ttname"><a href="classDatabase.html#a305f2f4a2b6e9fd11cb77c055b400c28">Database::add</a></div><div class="ttdeci">void add(const std::string &amp;key, const Data &amp;data)</div><div class="ttdoc">Add data to database.</div><div class="ttdef"><b>Definition:</b> Database.cc:85</div></div>
-<div class="ttc" id="aclassDatabase_html_a4623d9ba588fffdbd05d2349b6fdd1ec"><div class="ttname"><a href="classDatabase.html#a4623d9ba588fffdbd05d2349b6fdd1ec">Database::get</a></div><div class="ttdeci">std::vector&lt; Data &gt; get(const std::string &amp;key)</div><div class="ttdoc">Retrieve the first value for a given key.</div><div class="ttdef"><b>Definition:</b> Database.cc:128</div></div>
-<div class="ttc" id="aclassDatabase_html_a46b93a4878076c7cfddd5b4058297f14"><div class="ttname"><a href="classDatabase.html#a46b93a4878076c7cfddd5b4058297f14">Database::operator=</a></div><div class="ttdeci">Database &amp; operator=(const Database &amp;)=delete</div></div>
-<div class="ttc" id="aclassDatabase_html_a83f8b6d2941a4aee50f225e08e97291c"><div class="ttname"><a href="classDatabase.html#a83f8b6d2941a4aee50f225e08e97291c">Database::Database</a></div><div class="ttdeci">Database(const Database &amp;)=delete</div></div>
-<div class="ttc" id="aclassDatabase_html_aa04e547554cc34fa4b6c5a9390021eab"><div class="ttname"><a href="classDatabase.html#aa04e547554cc34fa4b6c5a9390021eab">Database::getInstance</a></div><div class="ttdeci">static Database &amp; getInstance()</div><div class="ttdef"><b>Definition:</b> Database.cc:6</div></div>
-<div class="ttc" id="aclassDatabase_html_aa490ba13d3cba0e348b3982dc024e0e1"><div class="ttname"><a href="classDatabase.html#aa490ba13d3cba0e348b3982dc024e0e1">Database::remove</a></div><div class="ttdeci">void remove(const std::string &amp;key)</div><div class="ttdoc">Remove all data for a specific key.</div><div class="ttdef"><b>Definition:</b> Database.cc:105</div></div>
-<div class="ttc" id="aclassIDatabase_html"><div class="ttname"><a href="classIDatabase.html">IDatabase</a></div><div class="ttdoc">Interface for Database operations.</div><div class="ttdef"><b>Definition:</b> IDatabase.h:15</div></div>
-<div class="ttc" id="astructData_html"><div class="ttname"><a href="structData.html">Data</a></div><div class="ttdef"><b>Definition:</b> IDatabase.h:7</div></div>
+<div class="ttc" id="aclassDatabase_html"><div class="ttname"><a href="classDatabase.html">Database</a></div><div class="ttdef"><b>Definition:</b> Database.h:18</div></div>
+<div class="ttc" id="aclassDatabase_html_a305f2f4a2b6e9fd11cb77c055b400c28"><div class="ttname"><a href="classDatabase.html#a305f2f4a2b6e9fd11cb77c055b400c28">Database::add</a></div><div class="ttdeci">void add(const std::string &amp;key, const Data &amp;data)</div><div class="ttdoc">Add data to database.</div><div class="ttdef"><b>Definition:</b> Database.cc:72</div></div>
+<div class="ttc" id="aclassDatabase_html_a4623d9ba588fffdbd05d2349b6fdd1ec"><div class="ttname"><a href="classDatabase.html#a4623d9ba588fffdbd05d2349b6fdd1ec">Database::get</a></div><div class="ttdeci">std::vector&lt; Data &gt; get(const std::string &amp;key)</div><div class="ttdoc">Retrieve the first value for a given key.</div><div class="ttdef"><b>Definition:</b> Database.cc:115</div></div>
+<div class="ttc" id="aclassDatabase_html_a84d399a2ad58d69daab9b05330e1316d"><div class="ttname"><a href="classDatabase.html#a84d399a2ad58d69daab9b05330e1316d">Database::~Database</a></div><div class="ttdeci">~Database()</div><div class="ttdoc">Destructor to clean up LMDB resources.</div><div class="ttdef"><b>Definition:</b> Database.cc:34</div></div>
+<div class="ttc" id="aclassDatabase_html_aa490ba13d3cba0e348b3982dc024e0e1"><div class="ttname"><a href="classDatabase.html#aa490ba13d3cba0e348b3982dc024e0e1">Database::remove</a></div><div class="ttdeci">void remove(const std::string &amp;key)</div><div class="ttdoc">Remove all data for a specific key.</div><div class="ttdef"><b>Definition:</b> Database.cc:92</div></div>
+<div class="ttc" id="astructData_html"><div class="ttname"><a href="structData.html">Data</a></div><div class="ttdef"><b>Definition:</b> Database.h:13</div></div>
+<div class="ttc" id="astructData_html_a7c4f9f1aefe049bb27133dc582d6e652"><div class="ttname"><a href="structData.html#a7c4f9f1aefe049bb27133dc582d6e652">Data::priority</a></div><div class="ttdeci">int priority</div><div class="ttdef"><b>Definition:</b> Database.h:14</div></div>
+<div class="ttc" id="astructData_html_a7d9a766bddf3d24851e6bba265a6b0ff"><div class="ttname"><a href="structData.html#a7d9a766bddf3d24851e6bba265a6b0ff">Data::docId</a></div><div class="ttdeci">int docId</div><div class="ttdef"><b>Definition:</b> Database.h:15</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

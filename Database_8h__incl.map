@@ -1,7 +1,6 @@
 <map id="include/Database.h" name="include/Database.h">
-<area shape="rect" id="node1" title="Inverted index wrapper." alt="" coords="87,5,219,31"/>
+<area shape="rect" id="node1" title="Inverted index wrapper." alt="" coords="51,5,183,31"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,79,65,104"/>
-<area shape="rect" id="node3" href="$IDatabase_8h.html" title=" " alt="" coords="141,79,266,104"/>
-<area shape="rect" id="node4" title=" " alt="" coords="131,152,185,177"/>
-<area shape="rect" id="node5" title=" " alt="" coords="219,152,278,177"/>
+<area shape="rect" id="node3" title=" " alt="" coords="89,79,144,104"/>
+<area shape="rect" id="node4" title=" " alt="" coords="169,79,227,104"/>
 </map>

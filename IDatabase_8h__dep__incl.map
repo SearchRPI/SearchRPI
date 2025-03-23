@@ -1,7 +1,5 @@
 <map id="include/index/IDatabase.h" name="include/index/IDatabase.h">
-<area shape="rect" id="node1" title=" " alt="" coords="171,5,342,31"/>
-<area shape="rect" id="node2" href="$Database_8h.html" title="Inverted index wrapper." alt="" coords="15,79,147,104"/>
-<area shape="rect" id="node4" href="$searcher_8h.html" title="Class for searching a database." alt="" coords="171,79,342,104"/>
-<area shape="rect" id="node5" href="$searcher_8cc.html" title=" " alt="" coords="241,152,395,177"/>
-<area shape="rect" id="node3" href="$Database_8cc.html" title=" " alt="" coords="5,152,156,177"/>
+<area shape="rect" id="node1" title=" " alt="" coords="67,5,237,31"/>
+<area shape="rect" id="node2" href="$searcher_8h.html" title="Class for searching a database." alt="" coords="5,79,176,104"/>
+<area shape="rect" id="node3" href="$searcher_8cc.html" title=" " alt="" coords="75,152,229,177"/>
 </map>

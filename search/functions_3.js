@@ -1,7 +1,7 @@
 var searchData=
 [
   ['d_0',['d',['../classcrow_1_1json_1_1rvalue.html#a4a3e33d65b812ed583814a7ac2e1f448',1,'crow::json::rvalue']]],
-  ['database_1',['Database',['../classDatabase.html#a83f8b6d2941a4aee50f225e08e97291c',1,'Database']]],
+  ['database_1',['Database',['../classDatabase.html#a30c7c16e384a327e720f99983e58b7ff',1,'Database']]],
   ['debug_5fprint_2',['debug_print',['../classcrow_1_1Trie.html#a9ac17b6ae0f96dc94b595bb704a89101',1,'crow::Trie::debug_print()'],['../classcrow_1_1Router.html#a61157adad80f901413a4023d8fb0fd9d',1,'crow::Router::debug_print()'],['../classcrow_1_1Crow.html#a839c1e6f82d577308eb6f0d4948a4fbb',1,'crow::Crow::debug_print()']]],
   ['default_5fexception_5fhandler_3',['default_exception_handler',['../classcrow_1_1Router.html#abd592c6aef245fce60fabd1dde89530f',1,'crow::Router']]],
   ['default_5floader_4',['default_loader',['../namespacecrow_1_1mustache.html#a7e8660fbdeeb994a1f00c704b469c792',1,'crow::mustache']]],

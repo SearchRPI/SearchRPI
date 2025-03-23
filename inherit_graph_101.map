@@ -1,4 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,136,45"/>
-<area shape="rect" id="node2" href="$classcrow_1_1Connection.html" title="An HTTP connection." alt="" coords="184,5,365,45"/>
+<area shape="rect" id="node1" href="$classsha1_1_1SHA1.html" title="A tiny SHA1 algorithm implementation used internally in the Crow server (specifically in crow/websock..." alt="" coords="5,5,96,31"/>
 </map>
