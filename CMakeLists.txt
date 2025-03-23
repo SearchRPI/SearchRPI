@@ -60,5 +60,24 @@ target_link_libraries(all_tests
     GTest::gmock_main
 )
 
+# --------------------------
+# LMDB Integration
+# --------------------------
+# Ensure pkg-config is available
+find_package(PkgConfig REQUIRED)
+
+# Use pkg-config to find LMDB
+pkg_check_modules(LMDB REQUIRED lmdb)
+
+# Add LMDB include directories
+target_include_directories(SearchRPI PUBLIC ${LMDB_INCLUDE_DIRS})
+target_include_directories(all_tests PRIVATE ${LMDB_INCLUDE_DIRS})
+
+# Link LMDB to your targets
+target_link_libraries(SearchRPI PUBLIC ${LMDB_LIBRARIES})
+target_link_libraries(all_tests PRIVATE ${LMDB_LIBRARIES})
+# --------------------------
+
+# Include GoogleTest and discover all tests
 include(GoogleTest)
 gtest_discover_tests(all_tests)
