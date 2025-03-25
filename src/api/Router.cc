@@ -1,8 +1,7 @@
-#include "api/Router.h"
+#include "api/Router.h" 
 
 namespace SearchRPI {
     void Router::setupRoutes(crow::SimpleApp& app){
-
         //get search results
         CROW_ROUTE(app, "/search").methods(crow::HTTPMethod::GET)([](const crow::request& req){
             auto query_params = crow::query_string(req.url_params);
@@ -14,7 +13,8 @@ namespace SearchRPI {
             //dummy response
             crow::json::wvalue response;
             response["total"] = 2;
-            response["docs"] = crow::json::value::list({
+            
+            response["docs"] = crow::json::wvalue::list({
                 crow::json::wvalue({
                     {"id", 1234},
                     {"title", "Website Name"},
@@ -22,16 +22,16 @@ namespace SearchRPI {
                     {"snippet", "Text under link that is relevant for query here"}
                 }),
                 crow::json::wvalue({
-                "id": 2346,
-                "title": "Website Name 2",
-                "url": "https://website2.com",
-                "snippet": "More relevant text from website"
-                }),
+                    {"id", 2346},
+                    {"title", "Website Name 2"},
+                    {"url", "https://website2.com"},
+                    {"snippet", "More relevant text from website"}
+                })
             });
-
+            
             return crow::response(200, response);
         });
-
+        
         // Get the logo for a specific document
         CROW_ROUTE(app, "/favicon/<int>").methods(crow::HTTPMethod::GET)([](const crow::request& req, int docid){
             crow::response res;
@@ -40,7 +40,7 @@ namespace SearchRPI {
             // you'd load and return the favicon image here
             return res;
         });
-
+        
         // Update document information
         CROW_ROUTE(app, "/backend/update").methods(crow::HTTPMethod::PUT)([](const crow::request& req){
             auto body = crow::json::load(req.body);
@@ -60,7 +60,7 @@ namespace SearchRPI {
             
             return crow::response(200, response);
         });
-
+        
         // Update the favicon for a specific site
         CROW_ROUTE(app, "/backend/update-favicon/<int>").methods(crow::HTTPMethod::PUT)([](const crow::request& req, int docid){
 
