@@ -9,7 +9,7 @@
 
 #include <unordered_set>
 
-namespace SearchRPI {
+namespace Ranking {
 
 // A set of documents determined relevant
 class RelevantDocs {
@@ -29,7 +29,7 @@ public:
      * 
      *  @param doc_id ID of relevant document.
      */
-    void add_document(docid doc_id) { docs.insert(doc_id); }
+    void add_document(SearchRPI::docid doc_id) { docs.insert(doc_id); }
 
     /** 
      *  @brief Unmark a document as relevant.
@@ -37,18 +37,18 @@ public:
      * 
      *  @param doc_id ID of irrelevant document.
      */
-    void remove_document(docid doc_id) { docs.erase(doc_id); }
+    void remove_document(SearchRPI::docid doc_id) { docs.erase(doc_id); }
 
     /** 
      *  @param doc_id ID of document being checked.
      *  @returns Whether document is relevant.
      */
-    bool contains(docid doc_id) const { return docs.count(doc_id) > 0; }
+    bool contains(SearchRPI::docid doc_id) const { return docs.count(doc_id) > 0; }
 
 private:
     // NOTE: Depending on average size of these sets, normal set 
     //       may be more applicable than unordered_set.
-    std::unordered_set<docid> docs;
+    std::unordered_set<SearchRPI::docid> docs;
 
 };
 
