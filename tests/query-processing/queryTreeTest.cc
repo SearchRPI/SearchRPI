@@ -1,77 +1,97 @@
-// #include "../include/query-processing/queryTree.h"
-// #include <gtest/gtest.h>
-// #include <sstream>
+#include "../include/query-processing/queryTree.h"
+#include <gtest/gtest.h>
+#include <sstream>
 
-// class QueryTreeTest : public ::testing::Test {
-// protected:
-//     queryTree::TermDictionary termDictionary;
-//     queryTree::TokenList tokens;
+class QueryTreeTest : public ::testing::Test {
+protected:
+    queryTree::TermDictionary termDictionary;
+    queryTree::TokenList tokens;
 
-//     void SetUp() override {
-//         // Define a small term dictionary (manual phrases)
-//         termDictionary = {
-//             {"good skis", {}},  // Ensures "good skis" is detected as a phrase
-//         };
+    void SetUp() override {
+        // Define a small term dictionary (manual phrases)
+        termDictionary = {
+            {"good skis", {}},  // Ensures "good skis" is detected as a phrase
+        };
 
-//         // Sample processed query tokens (unaltered)
-//         tokens = {"good", "skis"};
-//     }
-// };
+        // Sample processed query tokens (unaltered)
+        tokens = {"good", "skis"};
+    }
+};
 
-// // Test QueryNode constructor with only an operation
-// TEST_F(QueryTreeTest, QueryNodeOperationConstructor) {
-//     queryTree::QueryNode node("#combine");
-//     EXPECT_EQ(node.operation, "#combine");
-//     EXPECT_TRUE(node.children.empty());
-//     EXPECT_TRUE(node.value.empty());
-// }
+// Test building a query tree with phrase and term weighting
+TEST_F(QueryTreeTest, BuildQueryTreeBasic) {
+    queryTree::QueryTree tree(tokens, termDictionary);
 
-// // Test QueryNode constructor with an operation and value
-// TEST_F(QueryTreeTest, QueryNodeOperationValueConstructor) {
-//     queryTree::QueryNode node("#text", "good");
-//     EXPECT_EQ(node.operation, "#text");
-//     EXPECT_EQ(node.value, "good");
-//     EXPECT_TRUE(node.children.empty());
-// }
+    // Check root node
+    const auto* root = tree.getNode(0);
+    ASSERT_NE(root, nullptr);
+    EXPECT_EQ(root->getOperation(), queryTree::QueryOperator::COMBINE);
+    EXPECT_EQ(root->getChildCount(), 1);  // "good skis" phrase node
 
-// // Test building a query tree with phrase and term weighting
-// TEST_F(QueryTreeTest, BuildQueryTreeBasic) {
-//     auto root = queryTree::buildQueryTree(tokens, termDictionary);
-//     ASSERT_NE(root, nullptr);
+    // Check first child (phrase node)
+    const auto* phraseNode = tree.getNode(root->getChildStart());
+    ASSERT_NE(phraseNode, nullptr);
+    EXPECT_EQ(phraseNode->getOperation(), queryTree::QueryOperator::OD);
+    EXPECT_EQ(phraseNode->getChildCount(), 2);
 
-//     // Assertions
-//     EXPECT_EQ(root->operation, "#combine");
-//     EXPECT_EQ(root->children.size(), 1);  // "good skis" should be merged into one phrase
+    // Check individual term nodes
+    const auto* firstTerm = tree.getNode(phraseNode->getChildStart());
+    ASSERT_NE(firstTerm, nullptr);
+    EXPECT_EQ(firstTerm->getOperation(), queryTree::QueryOperator::TEXT);
+    EXPECT_EQ(firstTerm->getValue(), "good");
 
-//     // Check the first child (should be an ordered phrase `#od:1`)
-//     auto firstChild = root->children[0];
-//     EXPECT_EQ(firstChild->operation, "#od:1");
-//     EXPECT_EQ(firstChild->children.size(), 2);
-//     EXPECT_EQ(firstChild->children[0]->operation, "#text");
-//     EXPECT_EQ(firstChild->children[0]->value, "good");
-//     EXPECT_EQ(firstChild->children[1]->operation, "#text");
-//     EXPECT_EQ(firstChild->children[1]->value, "skis");
-// }
+    const auto* secondTerm = tree.getNode(phraseNode->getChildStart() + 1);
+    ASSERT_NE(secondTerm, nullptr);
+    EXPECT_EQ(secondTerm->getOperation(), queryTree::QueryOperator::TEXT);
+    EXPECT_EQ(secondTerm->getValue(), "skis");
+}
 
-// // Test printing the query tree
-// TEST_F(QueryTreeTest, PrintQueryTreeOutput) {
-//     auto root = queryTree::buildQueryTree(tokens, termDictionary);
-//     ASSERT_NE(root, nullptr);
+TEST_F(QueryTreeTest, TraverseQueryTreeWithDepthHelper) {
+    queryTree::QueryTree tree(tokens, termDictionary);
+    std::ostringstream oss;
 
-//     // Redirect cout to a string stream
-//     std::ostringstream output;
-//     std::streambuf* oldCout = std::cout.rdbuf(output.rdbuf());
+    tree.forEachNodeWithDepth([&](const queryTree::QueryNode& node, int depth) {
+        for (int i = 0; i < depth; ++i)
+            oss << "  ";
 
-//     // Print tree
-//     queryTree::printQueryTree(root);
+        switch (node.getOperation()) {
+            case queryTree::QueryOperator::COMBINE:
+                oss << "#combine\n";
+                break;
+            case queryTree::QueryOperator::OD:
+                oss << "#od\n";
+                break;
+            case queryTree::QueryOperator::TEXT:
+                oss << "#text:" << node.getValue() << "\n";
+                break;
+            default:
+                oss << "#unknown\n";
+                break;
+        }
+    });
 
-//     // Restore cout
-//     std::cout.rdbuf(oldCout);
+    std::string expected =
+        "#combine\n"
+        "  #od\n"
+        "    #text:good\n"
+        "    #text:skis\n";
 
-//     // Verify output structure (approximate)
-//     std::string printedTree = output.str();
-//     EXPECT_NE(printedTree.find("#combine"), std::string::npos);
-//     EXPECT_NE(printedTree.find("#od:1"), std::string::npos);
-//     EXPECT_NE(printedTree.find("#text (good)"), std::string::npos);
-//     EXPECT_NE(printedTree.find("#text (skis)"), std::string::npos);
-// }
+    EXPECT_EQ(oss.str(), expected);
+}
+
+
+// Test printing the query tree
+TEST_F(QueryTreeTest, PrintsQueryTreeStructure) {
+    queryTree::QueryTree tree(tokens, termDictionary);
+
+    std::ostringstream oss;
+    oss << tree;
+
+    std::string expected =
+        "#combine\n"
+        "  #od\n"
+        "    #text:good\n"
+        "    #text:skis\n";
+
+    EXPECT_EQ(oss.str(), expected);
+}

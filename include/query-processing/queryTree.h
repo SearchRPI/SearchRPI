@@ -12,6 +12,7 @@
 #include <unordered_set>
 #include <map>
 #include <string>
+#include <functional>
 #include "queryNode.h"
 
 /**
@@ -44,9 +45,22 @@ public:
     const QueryNode* getNode(int index) const;
 
     /**
+    * @brief Retrieves a all the query tree nodes
+    * @return Pointer to the requested QueryNodes
+    */
+    const std::vector<QueryNode>* getNodes() const { return &nodes; }
+
+    /**
+     * @brief Helper function for itterating through query tree
+     */
+    void forEachNodeWithDepth(
+        const std::function<void(const QueryNode&, int depth)>& callback) const;
+
+
+    /**
     * @brief Prints the structured query tree for debugging.
     */
-    void print() const;
+    friend std::ostream& operator<<(std::ostream& os, const QueryTree& tree);
 
 private:
     void addPhraseNodes(const queryTree::TokenList& tokens,
@@ -56,8 +70,6 @@ private:
     void addTermNodes(const queryTree::TokenList& tokens,
                       const std::unordered_set<int>& usedTokens,
                       int& nodeIndex);
-
-    void print(int nodeIndex, int depth) const;
 
     std::vector<QueryNode> nodes;
 };
