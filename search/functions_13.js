@@ -8,7 +8,8 @@ var searchData=
   ['tfidfweight_5',['TFIDFWeight',['../classRanking_1_1TFIDFWeight.html#a114985f54463ef7851eff480da03b97b',1,'Ranking::TFIDFWeight']]],
   ['tick_6',['tick',['../classcrow_1_1Crow.html#a7d5baf439ee8c85ad500cdb022bcd3a1',1,'crow::Crow']]],
   ['timeout_7',['timeout',['../classcrow_1_1Crow.html#a1d69f60255f2bf1571d6570a6abb1552',1,'crow::Crow']]],
-  ['tokenize_8',['tokenize',['../namespacequery.html#ab109f4c5ac7d6754c990b1d949c73ba6',1,'query']]],
-  ['tolower_9',['toLower',['../namespacequery.html#a93332adaefdef9bf011dc6839eabd41b',1,'query']]],
-  ['trie_10',['Trie',['../classcrow_1_1Trie.html#ae6b070e1e25b6c5d77cfb2aa05473d73',1,'crow::Trie']]]
+  ['tokenize_8',['tokenize',['../query-processing_2query_8cc.html#a76809aec2d62960dd863b51fc64240ff',1,'tokenize():&#160;query.cc'],['../namespacequery.html#a98ca2986b1041fb85ed265f3ff140f77',1,'query::tokenize()']]],
+  ['tolower_9',['toLower',['../query-processing_2query_8cc.html#a2daf73440b231c35077478fe95c4b4ff',1,'toLower():&#160;query.cc'],['../namespacequery.html#a93332adaefdef9bf011dc6839eabd41b',1,'query::toLower()']]],
+  ['tostring_10',['toString',['../namespacequeryTree.html#aa36b7f6c51516533922d625d57b935a4',1,'queryTree']]],
+  ['trie_11',['Trie',['../classcrow_1_1Trie.html#ae6b070e1e25b6c5d77cfb2aa05473d73',1,'crow::Trie']]]
 ];

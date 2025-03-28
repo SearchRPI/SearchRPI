@@ -1,5 +1,23 @@
 var searchData=
 [
-  ['watch_0',['watch',['../structcrow_1_1websocket_1_1Connection_1_1WeakWrappedMessage.html#ae78a48466c5a8d1bf6effa67352a54c6',1,'crow::websocket::Connection::WeakWrappedMessage']]],
-  ['weight_1',['weight',['../classRanking_1_1SearchResult.html#a919bc284df29f6c9fecefdf23b272499',1,'Ranking::SearchResult']]]
+  ['v_0',['v',['../stopwords_8txt.html#a037b6e47896fa405c806f19bd9f732c9',1,'stopwords.txt']]],
+  ['v_5f_1',['v_',['../structcrow_1_1session_1_1multi__value.html#a7de7d376ae343ce53b2639d94a4401d9',1,'crow::session::multi_value']]],
+  ['va_2',['va',['../stopwords_8txt.html#a0c15ed8574dc9e586bb34be9616df541',1,'stopwords.txt']]],
+  ['value_3',['value',['../structcrow_1_1multipart_1_1header.html#aec60ea97914c4b9b102c3d5c1e89330a',1,'crow::multipart::header::value()'],['../structcrow_1_1multipart_1_1header__view.html#acf0fda29ac1f295c661db2249431cfcf',1,'crow::multipart::header_view::value()'],['../structcrow_1_1multipart_1_1padded.html#a3198bf9ee11e1c8e9e84a5880898e85b',1,'crow::multipart::padded::value()'],['../structcrow_1_1detail_1_1is__before__handle__arity__3__impl.html#a35fa3f816aea7a81a099219f6c149bfc',1,'crow::detail::is_before_handle_arity_3_impl::value()'],['../structcrow_1_1detail_1_1is__after__handle__arity__3__impl.html#a5d4630cc2d9b33d53a61ef31cc923413',1,'crow::detail::is_after_handle_arity_3_impl::value()'],['../structcrow_1_1detail_1_1is__middleware__global.html#abcff454b0d282801758fad6648f3649d',1,'crow::detail::is_middleware_global::value()'],['../stopwords_8txt.html#aff9c63caccddd451e935e89a7bb6b02f',1,'value():&#160;stopwords.txt']]],
+  ['various_4',['various',['../stopwords_8txt.html#ac2145e1f7418a0c423a72b72e735e703',1,'stopwords.txt']]],
+  ['vd_5',['vd',['../stopwords_8txt.html#ac33f89556ca58185f1b069be9d6cc7f7',1,'stopwords.txt']]],
+  ['ve_6',['ve',['../stopwords_8txt.html#a8bdd7f6b07735b1ad738cdadc7ecf3ac',1,'stopwords.txt']]],
+  ['version_7',['VERSION',['../namespacecrow.html#abb19b56c65f91e49d56abadf3fc947f1',1,'crow']]],
+  ['very_8',['very',['../stopwords_8txt.html#ab891eca3167aa8022152effb5ef9271a',1,'stopwords.txt']]],
+  ['via_9',['via',['../stopwords_8txt.html#a0c6f293e73fae5dcd1eee74c03931a3d',1,'stopwords.txt']]],
+  ['viz_10',['viz',['../stopwords_8txt.html#a9b1804f41856be82d83b9d6eba085dd4',1,'stopwords.txt']]],
+  ['vj_11',['vj',['../stopwords_8txt.html#a991947f48a7b5034ba4d3a1b55f75464',1,'stopwords.txt']]],
+  ['vo_12',['vo',['../stopwords_8txt.html#aebba2e3b79193c4d9471369ec9133125',1,'stopwords.txt']]],
+  ['vol_13',['vol',['../stopwords_8txt.html#adb853141bb8eb0a6488db120d109cc58',1,'stopwords.txt']]],
+  ['vols_14',['vols',['../stopwords_8txt.html#ab70fb8e645f84b9e95202221782ef544',1,'stopwords.txt']]],
+  ['volumtype_15',['volumtype',['../stopwords_8txt.html#aef93a254ea8608e8ee641deb57a8a366',1,'stopwords.txt']]],
+  ['vq_16',['vq',['../stopwords_8txt.html#a01827432017fd6f588dd3c5c3094dcb7',1,'stopwords.txt']]],
+  ['vs_17',['vs',['../stopwords_8txt.html#ae8425e320fe9485456885bab2e3eb68f',1,'stopwords.txt']]],
+  ['vt_18',['vt',['../stopwords_8txt.html#ac00179ebbf07fc1b341a38f4e41262b1',1,'stopwords.txt']]],
+  ['vu_19',['vu',['../stopwords_8txt.html#a6e5274ef796930250c664b9c64cf2319',1,'stopwords.txt']]]
 ];

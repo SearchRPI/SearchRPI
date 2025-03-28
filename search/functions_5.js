@@ -5,8 +5,10 @@ var searchData=
   ['filestore_2',['FileStore',['../structcrow_1_1FileStore.html#abb247faa5b37800faf1681c6135873cb',1,'crow::FileStore']]],
   ['find_3',['find',['../classcrow_1_1Trie.html#abc0bd160cacaf955c4940e8f30632c42',1,'crow::Trie::find(const std::string &amp;req_url, const Node &amp;node, unsigned pos=0, routing_params *params=nullptr, std::vector&lt; uint16_t &gt; *blueprints=nullptr) const'],['../classcrow_1_1Trie.html#ae7a7ee733beb27778c248d1845810ed0',1,'crow::Trie::find(const std::string &amp;req_url) const']]],
   ['findclosest_4',['findClosest',['../classbk_1_1BKTree.html#a39fc2e30ae25b7a968f5171a8af18cf6',1,'bk::BKTree']]],
-  ['findclosestword_5',['findClosestWord',['../namespacequery.html#a96bb59cc4f92379139d7bab1eb7b31c2',1,'query']]],
-  ['findsuggestion_6',['findSuggestion',['../namespacequery.html#adcfbd2b5da8da303a9ad020445687733',1,'query']]],
-  ['foreach_5fmethod_7',['foreach_method',['../classcrow_1_1BaseRule.html#adea69ae04c498740b73408455197d6a0',1,'crow::BaseRule']]],
-  ['from_5fjson_8',['from_json',['../structcrow_1_1session_1_1multi__value.html#a13320879348f7a651a380c54c4b973fc',1,'crow::session::multi_value']]]
+  ['findclosestword_5',['findClosestWord',['../query-processing_2query_8cc.html#a99b10159918cd39bc5776f2264441c81',1,'findClosestWord():&#160;query.cc'],['../namespacequery.html#a57f236958c05075ea9e401ffe2c1efb6',1,'query::findClosestWord()']]],
+  ['findphrases_6',['findPhrases',['../queryTree_8cc.html#a4ada5c58dd13f5d60cf5ee6041bfb3a9',1,'queryTree.cc']]],
+  ['findsuggestion_7',['findSuggestion',['../query-processing_2query_8cc.html#a9e4da958d6e0c81fe85803536f45b9fc',1,'findSuggestion():&#160;query.cc'],['../namespacequery.html#a7066de61451d8586ad33637f7228513f',1,'query::findSuggestion()']]],
+  ['foreach_5fmethod_8',['foreach_method',['../classcrow_1_1BaseRule.html#adea69ae04c498740b73408455197d6a0',1,'crow::BaseRule']]],
+  ['foreachnodewithdepth_9',['forEachNodeWithDepth',['../classqueryTree_1_1QueryTree.html#a315b69acd662aca899e7540c771c96fd',1,'queryTree::QueryTree']]],
+  ['from_5fjson_10',['from_json',['../structcrow_1_1session_1_1multi__value.html#a13320879348f7a651a380c54c4b973fc',1,'crow::session::multi_value']]]
 ];

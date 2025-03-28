@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['y_0',['y',['../stopwords_8txt.html#a7edbfb7fa095f508e94a7cd05a3f04b0',1,'stopwords.txt']]],
+  ['y2_1',['y2',['../stopwords_8txt.html#adaf02e924ce6e1d43ae1343598912b02',1,'stopwords.txt']]],
+  ['yes_2',['yes',['../stopwords_8txt.html#ae4bed04b6e58b17ece0c2b21cd67941c',1,'stopwords.txt']]],
+  ['yet_3',['yet',['../stopwords_8txt.html#aece47a12be9d7414c9c84f0de13fa92d',1,'stopwords.txt']]],
+  ['yj_4',['yj',['../stopwords_8txt.html#acaf7c68249099797a93c96e9d94678da',1,'stopwords.txt']]],
+  ['yl_5',['yl',['../stopwords_8txt.html#a27a73b7938cbdb00d0e2ec920cdd7e41',1,'stopwords.txt']]],
+  ['you_6',['you',['../stopwords_8txt.html#a0e4f602c2654933a4690862e5c72073b',1,'stopwords.txt']]],
+  ['youd_7',['youd',['../stopwords_8txt.html#a63499ac57f3101c1860db1ba7af5541d',1,'stopwords.txt']]],
+  ['your_8',['your',['../stopwords_8txt.html#a931535fba146207cfb70f9b4e64d094d',1,'stopwords.txt']]],
+  ['youre_9',['youre',['../stopwords_8txt.html#a78202247dfe07ec9d09faceb1e0ebef3',1,'stopwords.txt']]],
+  ['yours_10',['yours',['../stopwords_8txt.html#ac929cec3d830d342b236477611f0bdf4',1,'stopwords.txt']]],
+  ['yourself_11',['yourself',['../stopwords_8txt.html#af387933003e95c842beb41a8a8c8b0bd',1,'stopwords.txt']]],
+  ['yourselves_12',['yourselves',['../stopwords_8txt.html#a6acd1af24ae1468471dfa37e4a8535ab',1,'stopwords.txt']]],
+  ['yr_13',['yr',['../stopwords_8txt.html#acadfbf7dfc774c33bf4226201d01367e',1,'stopwords.txt']]],
+  ['ys_14',['ys',['../stopwords_8txt.html#af2a2a5d695768832f9871b3ad0f44a00',1,'stopwords.txt']]],
+  ['yt_15',['yt',['../stopwords_8txt.html#a9e5d951c45ce5f9e09a9b50f6939edcc',1,'stopwords.txt']]]
+];

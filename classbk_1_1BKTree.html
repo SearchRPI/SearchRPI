@@ -87,11 +87,22 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="bkTree_8h_source.html">bkTree.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbk_1_1BKTree_1_1Node.html">Node</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a30d158af5c05c4ba8d4feaede378b948"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbk_1_1BKTree.html#a30d158af5c05c4ba8d4feaede378b948">BKTree</a> ()</td></tr>
 <tr class="memdesc:a30d158af5c05c4ba8d4feaede378b948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty BK-Tree.  <a href="classbk_1_1BKTree.html#a30d158af5c05c4ba8d4feaede378b948">More...</a><br /></td></tr>
 <tr class="separator:a30d158af5c05c4ba8d4feaede378b948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41fb64a90f9de39428e0fd9f58098b17"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbk_1_1BKTree.html#a41fb64a90f9de39428e0fd9f58098b17">BKTree</a> (const <a class="el" href="namespacebk.html#a3bd64f9839e52147cd0d6fa0c22ff5e4">Dictionary</a> &amp;dict)</td></tr>
+<tr class="memdesc:a41fb64a90f9de39428e0fd9f58098b17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a BK-Tree from a given dictionary.  <a href="classbk_1_1BKTree.html#a41fb64a90f9de39428e0fd9f58098b17">More...</a><br /></td></tr>
+<tr class="separator:a41fb64a90f9de39428e0fd9f58098b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ecc18ff5ab96b3b4eee90027b0ff3a5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structbk_1_1BKTree_1_1Node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbk_1_1BKTree.html#a1ecc18ff5ab96b3b4eee90027b0ff3a5">getRoot</a> () const</td></tr>
+<tr class="memdesc:a1ecc18ff5ab96b3b4eee90027b0ff3a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree root getter.  <a href="classbk_1_1BKTree.html#a1ecc18ff5ab96b3b4eee90027b0ff3a5">More...</a><br /></td></tr>
+<tr class="separator:a1ecc18ff5ab96b3b4eee90027b0ff3a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a422acf23a794373af5b32b3f0a2834d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbk_1_1BKTree.html#a422acf23a794373af5b32b3f0a2834d2">insert</a> (const std::string &amp;word)</td></tr>
 <tr class="memdesc:a422acf23a794373af5b32b3f0a2834d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a word into the BK-Tree.  <a href="classbk_1_1BKTree.html#a422acf23a794373af5b32b3f0a2834d2">More...</a><br /></td></tr>
 <tr class="separator:a422acf23a794373af5b32b3f0a2834d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -103,7 +114,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p >A Burkhard-Keller Tree for approximate string matching using edit distance. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a30d158af5c05c4ba8d4feaede378b948" name="a30d158af5c05c4ba8d4feaede378b948"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30d158af5c05c4ba8d4feaede378b948">&#9670;&#160;</a></span>BKTree()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a30d158af5c05c4ba8d4feaede378b948">&#9670;&#160;</a></span>BKTree() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -118,6 +129,40 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Constructs an empty BK-Tree. </p>
+
+</div>
+</div>
+<a id="a41fb64a90f9de39428e0fd9f58098b17" name="a41fb64a90f9de39428e0fd9f58098b17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41fb64a90f9de39428e0fd9f58098b17">&#9670;&#160;</a></span>BKTree() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bk::BKTree::BKTree </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacebk.html#a3bd64f9839e52147cd0d6fa0c22ff5e4">Dictionary</a> &amp;&#160;</td>
+          <td class="paramname"><em>dict</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a BK-Tree from a given dictionary. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dict</td><td>The dictionary of words to insert. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -157,6 +202,34 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The closest word found in the tree. </dd></dl>
+
+</div>
+</div>
+<a id="a1ecc18ff5ab96b3b4eee90027b0ff3a5" name="a1ecc18ff5ab96b3b4eee90027b0ff3a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ecc18ff5ab96b3b4eee90027b0ff3a5">&#9670;&#160;</a></span>getRoot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structbk_1_1BKTree_1_1Node.html">Node</a> * bk::BKTree::getRoot </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tree root getter. </p>
+<dl class="section return"><dt>Returns</dt><dd>root of tree. </dd></dl>
 
 </div>
 </div>

@@ -1,0 +1,10 @@
+<map id="include/query&#45;processing/queryOperator.h" name="include/query&#45;processing/queryOperator.h">
+<area shape="rect" id="node1" title=": An enum holding all the Galago query operators." alt="" coords="293,5,459,45"/>
+<area shape="rect" id="node2" href="$queryNode_8h.html" title=": Node structure for indexed query representation." alt="" coords="173,93,339,133"/>
+<area shape="rect" id="node6" href="$queryTree_8cc.html" title=" " alt="" coords="250,269,393,309"/>
+<area shape="rect" id="node8" href="$queryOperator_8cc.html" title=" " alt="" coords="414,93,557,133"/>
+<area shape="rect" id="node3" href="$queryTree_8h.html" title=": Efficient indexed query structure for ranking." alt="" coords="5,181,171,221"/>
+<area shape="rect" id="node7" href="$queryNode_8cc.html" title=" " alt="" coords="195,181,338,221"/>
+<area shape="rect" id="node4" href="$query-processing_2query_8h.html" title=": Processes input query and optimizes it for ranking." alt="" coords="5,269,171,309"/>
+<area shape="rect" id="node5" href="$query-processing_2query_8cc.html" title=" " alt="" coords="17,357,159,397"/>
+</map>

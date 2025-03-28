@@ -7,7 +7,7 @@ var searchData=
   ['load_5ftext_4',['load_text',['../namespacecrow_1_1mustache.html#a8db3aff497ff60b32321fc0a16274576',1,'crow::mustache']]],
   ['load_5ftext_5funsafe_5',['load_text_unsafe',['../namespacecrow_1_1mustache.html#a5c27c8fa1561611202419d8c2f6c80cc',1,'crow::mustache']]],
   ['load_5funsafe_6',['load_unsafe',['../namespacecrow_1_1mustache.html#af883f129665fb698bc4da7659d0b0841',1,'crow::mustache']]],
-  ['loaddictionary_7',['loadDictionary',['../namespacequery.html#a14c580efc476e4959f633880de1c4a44',1,'query']]],
+  ['loaddictionary_7',['loadDictionary',['../namespacequery.html#ad6c1e4804bc51ae029abee26aaa846a0',1,'query']]],
   ['log_8',['log',['../classcrow_1_1CerrLogHandler.html#a8c0f59589facc283b5cd99ead9a1d2c4',1,'crow::CerrLogHandler::log()'],['../classcrow_1_1ILogHandler.html#ae17f05549983c9d7d6aea77cda589f60',1,'crow::ILogHandler::log()']]],
   ['logger_9',['logger',['../classcrow_1_1logger.html#a1e8d38b6f23b020c5c008b0028210acc',1,'crow::logger']]],
   ['loglevel_10',['loglevel',['../classcrow_1_1Crow.html#adaaea481094e3f4488569c991772d27f',1,'crow::Crow']]]

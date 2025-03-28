@@ -88,18 +88,24 @@ $(function() {
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;unordered_set&gt;</code><br />
 <code>#include &quot;<a class="el" href="bkTree_8h_source.html">bkTree.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="queryTree_8h_source.html">queryTree.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for query.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="query-processing_2query_8h__incl.png" border="0" usemap="#ainclude_2query-processing_2query_8h" alt=""/></div>
 <map name="ainclude_2query-processing_2query_8h" id="ainclude_2query-processing_2query_8h">
-<area shape="rect" title=": Processes input query and optimizes it for ranking." alt="" coords="59,5,225,45"/>
-<area shape="rect" title=" " alt="" coords="5,167,60,192"/>
-<area shape="rect" title=" " alt="" coords="85,167,143,192"/>
-<area shape="rect" title=" " alt="" coords="239,93,343,119"/>
-<area shape="rect" href="bkTree_8h.html" title=": Data structure for fuzzy&#45;finding strings." alt="" coords="143,93,215,119"/>
-<area shape="rect" title=" " alt="" coords="168,167,279,192"/>
-<area shape="rect" title=" " alt="" coords="303,167,371,192"/>
+<area shape="rect" title=": Processes input query and optimizes it for ranking." alt="" coords="330,5,495,45"/>
+<area shape="rect" title=" " alt="" coords="129,313,184,339"/>
+<area shape="rect" title=" " alt="" coords="383,167,442,192"/>
+<area shape="rect" title=" " alt="" coords="466,167,570,192"/>
+<area shape="rect" href="bkTree_8h.html" title=": Data structure for fuzzy&#45;finding strings." alt="" coords="548,93,620,119"/>
+<area shape="rect" href="queryTree_8h.html" title=": Efficient indexed query structure for ranking." alt="" coords="250,93,340,119"/>
+<area shape="rect" title=" " alt="" coords="290,313,401,339"/>
+<area shape="rect" title=" " alt="" coords="645,167,713,192"/>
+<area shape="rect" title=" " alt="" coords="142,167,189,192"/>
+<area shape="rect" title=" " alt="" coords="40,167,118,192"/>
+<area shape="rect" href="queryNode_8h.html" title=": Node structure for indexed query representation." alt="" coords="213,167,308,192"/>
+<area shape="rect" href="queryOperator_8h.html" title=": An enum holding all the Galago query operators." alt="" coords="194,240,308,265"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -117,42 +123,24 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacequery"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html">query</a></td></tr>
-<tr class="memdesc:namespacequery"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains utility functions for processing queries, including tokenization, typo detection, and query expansion. <br /></td></tr>
+<tr class="memdesc:namespacequery"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains utility functions for processing queries. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ad74fb3d00b6f94bf4753890bf638860c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#ad74fb3d00b6f94bf4753890bf638860c">query::Dictionary</a> = std::unordered_set&lt; std::string &gt;</td></tr>
+<tr class="memitem:ad74fb3d00b6f94bf4753890bf638860c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="stopwords_8txt.html#a3e62e6a8ce876b629621d2a0377b2b1e">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#ad74fb3d00b6f94bf4753890bf638860c">query::Dictionary</a> = std::unordered_set&lt; std::string &gt;</td></tr>
 <tr class="separator:ad74fb3d00b6f94bf4753890bf638860c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39dce581377efada78fc7f7673d01760"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#a39dce581377efada78fc7f7673d01760">query::TokenList</a> = std::vector&lt; std::string &gt;</td></tr>
+<tr class="memitem:a39dce581377efada78fc7f7673d01760"><td class="memItemLeft" align="right" valign="top"><a class="el" href="stopwords_8txt.html#a3e62e6a8ce876b629621d2a0377b2b1e">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#a39dce581377efada78fc7f7673d01760">query::TokenList</a> = std::vector&lt; std::string &gt;</td></tr>
 <tr class="separator:a39dce581377efada78fc7f7673d01760"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a14c580efc476e4959f633880de1c4a44"><td class="memItemLeft" align="right" valign="top">Dictionary&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#a14c580efc476e4959f633880de1c4a44">query::loadDictionary</a> (const std::string &amp;filepath)</td></tr>
-<tr class="memdesc:a14c580efc476e4959f633880de1c4a44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a dictionary from a given file path.  <a href="namespacequery.html#a14c580efc476e4959f633880de1c4a44">More...</a><br /></td></tr>
-<tr class="separator:a14c580efc476e4959f633880de1c4a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf278d9982b2e77783aca17587e4952f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#aaf278d9982b2e77783aca17587e4952f">query::isStopWord</a> (const std::string &amp;word)</td></tr>
-<tr class="memdesc:aaf278d9982b2e77783aca17587e4952f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a given word is a stop word.  <a href="namespacequery.html#aaf278d9982b2e77783aca17587e4952f">More...</a><br /></td></tr>
-<tr class="separator:aaf278d9982b2e77783aca17587e4952f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93332adaefdef9bf011dc6839eabd41b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#a93332adaefdef9bf011dc6839eabd41b">query::toLower</a> (const std::string &amp;word)</td></tr>
-<tr class="memdesc:a93332adaefdef9bf011dc6839eabd41b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a word to lowercase.  <a href="namespacequery.html#a93332adaefdef9bf011dc6839eabd41b">More...</a><br /></td></tr>
-<tr class="separator:a93332adaefdef9bf011dc6839eabd41b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec808cfc31acad24b3fe2cd050582401"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#aec808cfc31acad24b3fe2cd050582401">query::removePunctuation</a> (std::string word)</td></tr>
-<tr class="memdesc:aec808cfc31acad24b3fe2cd050582401"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes punctuation from a given word.  <a href="namespacequery.html#aec808cfc31acad24b3fe2cd050582401">More...</a><br /></td></tr>
-<tr class="separator:aec808cfc31acad24b3fe2cd050582401"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab109f4c5ac7d6754c990b1d949c73ba6"><td class="memItemLeft" align="right" valign="top">TokenList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#ab109f4c5ac7d6754c990b1d949c73ba6">query::tokenize</a> (const std::string &amp;rawQuery)</td></tr>
-<tr class="memdesc:ab109f4c5ac7d6754c990b1d949c73ba6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tokenizes a raw query string into individual words.  <a href="namespacequery.html#ab109f4c5ac7d6754c990b1d949c73ba6">More...</a><br /></td></tr>
-<tr class="separator:ab109f4c5ac7d6754c990b1d949c73ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96bb59cc4f92379139d7bab1eb7b31c2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#a96bb59cc4f92379139d7bab1eb7b31c2">query::findClosestWord</a> (const std::string &amp;word, const <a class="el" href="classbk_1_1BKTree.html">bk::BKTree</a> &amp;tree)</td></tr>
-<tr class="memdesc:a96bb59cc4f92379139d7bab1eb7b31c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the closest word in the dictionary to a given word.  <a href="namespacequery.html#a96bb59cc4f92379139d7bab1eb7b31c2">More...</a><br /></td></tr>
-<tr class="separator:a96bb59cc4f92379139d7bab1eb7b31c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcfbd2b5da8da303a9ad020445687733"><td class="memItemLeft" align="right" valign="top">TokenList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#adcfbd2b5da8da303a9ad020445687733">query::findSuggestion</a> (const TokenList &amp;tokens, const <a class="el" href="classbk_1_1BKTree.html">bk::BKTree</a> &amp;tree, const Dictionary &amp;dictionary)</td></tr>
-<tr class="memdesc:adcfbd2b5da8da303a9ad020445687733"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds typos in a list of tokens and suggests corrections.  <a href="namespacequery.html#adcfbd2b5da8da303a9ad020445687733">More...</a><br /></td></tr>
-<tr class="separator:adcfbd2b5da8da303a9ad020445687733"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b66f6e5c416278d69980ede0d750d0b"><td class="memItemLeft" align="right" valign="top">TokenList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#a7b66f6e5c416278d69980ede0d750d0b">query::processQuery</a> (const std::string &amp;rawQuery, const Dictionary &amp;dictionary, const <a class="el" href="classbk_1_1BKTree.html">bk::BKTree</a> &amp;tree)</td></tr>
-<tr class="memdesc:a7b66f6e5c416278d69980ede0d750d0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes a query string by tokenizing, correcting typos, and normalizing it.  <a href="namespacequery.html#a7b66f6e5c416278d69980ede0d750d0b">More...</a><br /></td></tr>
-<tr class="separator:a7b66f6e5c416278d69980ede0d750d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6c1e4804bc51ae029abee26aaa846a0"><td class="memItemLeft" align="right" valign="top">Dictionary&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#ad6c1e4804bc51ae029abee26aaa846a0">query::loadDictionary</a> (const std::string &amp;filepath)</td></tr>
+<tr class="memdesc:ad6c1e4804bc51ae029abee26aaa846a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a dictionary from a given file path.  <a href="namespacequery.html#ad6c1e4804bc51ae029abee26aaa846a0">More...</a><br /></td></tr>
+<tr class="separator:ad6c1e4804bc51ae029abee26aaa846a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27f3600f0ae4f09a91f556b2cb725a9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqueryTree_1_1QueryTree.html">queryTree::QueryTree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequery.html#a27f3600f0ae4f09a91f556b2cb725a9c">query::processQuery</a> (const std::string &amp;rawQuery, const Dictionary &amp;dictionary, const <a class="el" href="classbk_1_1BKTree.html">bk::BKTree</a> &amp;tree, const <a class="el" href="namespacequeryTree.html#a107d595dc5f52d779816db5661779576">queryTree::TermDictionary</a> &amp;termDictionary)</td></tr>
+<tr class="memdesc:a27f3600f0ae4f09a91f556b2cb725a9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes a query string.  <a href="namespacequery.html#a27f3600f0ae4f09a91f556b2cb725a9c">More...</a><br /></td></tr>
+<tr class="separator:a27f3600f0ae4f09a91f556b2cb725a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >: Processes input query and optimizes it for ranking. </p>

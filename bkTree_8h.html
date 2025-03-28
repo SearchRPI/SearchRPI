@@ -76,7 +76,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle"><div class="title">bkTree.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -87,16 +88,18 @@ $(function() {
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;unordered_set&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for bkTree.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="bkTree_8h__incl.png" border="0" usemap="#ainclude_2query-processing_2bkTree_8h" alt=""/></div>
 <map name="ainclude_2query-processing_2bkTree_8h" id="ainclude_2query-processing_2bkTree_8h">
-<area shape="rect" title=": Data structure for fuzzy&#45;finding strings." alt="" coords="125,5,290,45"/>
+<area shape="rect" title=": Data structure for fuzzy&#45;finding strings." alt="" coords="166,5,331,45"/>
 <area shape="rect" title=" " alt="" coords="5,93,116,119"/>
 <area shape="rect" title=" " alt="" coords="140,93,195,119"/>
 <area shape="rect" title=" " alt="" coords="219,93,278,119"/>
 <area shape="rect" title=" " alt="" coords="303,93,371,119"/>
+<area shape="rect" title=" " alt="" coords="395,93,499,119"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -118,11 +121,18 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbk_1_1BKTree.html">bk::BKTree</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Burkhard-Keller Tree for approximate string matching using edit distance.  <a href="classbk_1_1BKTree.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbk_1_1BKTree_1_1Node.html">bk::BKTree::Node</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacebk"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebk.html">bk</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a3bd64f9839e52147cd0d6fa0c22ff5e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="stopwords_8txt.html#a3e62e6a8ce876b629621d2a0377b2b1e">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebk.html#a3bd64f9839e52147cd0d6fa0c22ff5e4">bk::Dictionary</a> = std::unordered_set&lt; std::string &gt;</td></tr>
+<tr class="separator:a3bd64f9839e52147cd0d6fa0c22ff5e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >: <a class="el" href="structData.html">Data</a> structure for fuzzy-finding strings. </p>

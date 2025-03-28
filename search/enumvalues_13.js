@@ -1,5 +1,24 @@
 var searchData=
 [
-  ['warning_0',['WARNING',['../namespacecrow.html#ad07dc32e163caa516aa1225a1ec4afe4a059e9861e0400dfbe05c98a841f3f96b',1,'crow']]],
-  ['warning_1',['Warning',['../namespacecrow.html#ad07dc32e163caa516aa1225a1ec4afe4a0eaadb4fcb48a0a0ed7bc9868be9fbaa',1,'crow']]]
+  ['ubigram_0',['UBIGRAM',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a927576b97e59fa65981049dd5b9c523e',1,'queryTree']]],
+  ['uint_1',['UINT',['../namespacecrow.html#a6ea84108a731cd6a42a55737c9970d5fa3351504090a741e69da641a42e00da80',1,'crow']]],
+  ['unacceptabledata_2',['UnacceptableData',['../namespacecrow_1_1websocket.html#a4bf145253691b9129a657e4fac5cb580afc6d0d4072160226bdf7baf566bab806',1,'crow::websocket']]],
+  ['unauthorized_3',['UNAUTHORIZED',['../namespacecrow.html#aa3ae5c0994dff8425d7515e2806180d2aa4c229683e23e7ce3de0c6f27f1dfd34',1,'crow']]],
+  ['unavailable_5ffor_5flegal_5freasons_4',['UNAVAILABLE_FOR_LEGAL_REASONS',['../namespacecrow.html#aa3ae5c0994dff8425d7515e2806180d2af85b2be08a05b35370dd31bc8bbb31e2',1,'crow']]],
+  ['unbind_5',['Unbind',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a4bffa5083d48d52f00eb873b6e136d5f',1,'crow']]],
+  ['unbind_6',['UNBIND',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a82c3132801d8e123a351387716e61247',1,'crow']]],
+  ['unescapetag_7',['UnescapeTag',['../namespacecrow_1_1mustache.html#aeb8da2ae9d8d9fe55f6ab0a7455dd667a6a92aa81e0cd0b1c2f77a84226ad4777',1,'crow::mustache']]],
+  ['unexpectedcondition_8',['UnexpectedCondition',['../namespacecrow_1_1websocket.html#a4bf145253691b9129a657e4fac5cb580a94b7f6351f294f54bcc9c67a4e4a04bb',1,'crow::websocket']]],
+  ['unknown_9',['UNKNOWN',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a696b031073e74bf2cb98e5ef201d4aa3',1,'queryTree']]],
+  ['unlink_10',['Unlink',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4ac1a39b6a60f8b2f87e23d60ab649d994',1,'crow']]],
+  ['unlink_11',['UNLINK',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4aa07e75cb3ec757003bb6b1284024135b',1,'crow']]],
+  ['unlock_12',['Unlock',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a7e7123b0d269ad5d9ec8d12c52a8ed8a',1,'crow']]],
+  ['unlock_13',['UNLOCK',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a08f473e8e1515801cb25e584a6832f34',1,'crow']]],
+  ['unordered_14',['UNORDERED',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a6caf8ac543ee5994b1ab98021bba1173',1,'queryTree']]],
+  ['unsigned_5finteger_15',['Unsigned_integer',['../namespacecrow_1_1json.html#a0058ebd08b7ec4cd8055d1b2cd4fc527ae5842290ab3530ab2a35bf0dcaa61608',1,'crow::json']]],
+  ['unsubscribe_16',['Unsubscribe',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a4182c8f19d40c7ca236a5f4f83faeb6b',1,'crow']]],
+  ['unsubscribe_17',['UNSUBSCRIBE',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a62b18b8274e34fd701d0b684a32c633f',1,'crow']]],
+  ['unsupported_5fmedia_5ftype_18',['UNSUPPORTED_MEDIA_TYPE',['../namespacecrow.html#aa3ae5c0994dff8425d7515e2806180d2a169ba79197aad876ca5314d6eefebb59',1,'crow']]],
+  ['uw_19',['UW',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548afcf0ce24f7a7213da92fff372bb94bdf',1,'queryTree']]],
+  ['uwn_20',['UWN',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a40f65f5d097a6e56e8a1a45565a0a38a',1,'queryTree']]]
 ];

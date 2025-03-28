@@ -1,3 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classcrow_1_1Blueprint.html" title="A blueprint can be considered a smaller section of a Crow app, specifically where the router is conce..." alt="" coords="5,5,112,31"/>
+<area shape="rect" id="node1" href="$classcrow_1_1BaseRule.html" title="A base class for all rules." alt="" coords="37,70,149,95"/>
+<area shape="rect" id="node2" href="$classcrow_1_1DynamicRule.html" title="A rule that can change its parameters during runtime." alt="" coords="249,13,381,38"/>
+<area shape="rect" id="node3" href="$classcrow_1_1TaggedRule.html" title="Default rule created when CROW_ROUTE is called." alt="" coords="228,127,403,153"/>
+<area shape="rect" id="node4" href="$classcrow_1_1WebSocketRule.html" title="A rule dealing with websockets." alt="" coords="241,63,390,103"/>
+<area shape="rect" id="node5" href="$structcrow_1_1RuleParameterTraits.html" title=" " alt="" coords="5,5,180,45"/>
+<area shape="rect" id="node6" href="$structcrow_1_1RuleParameterTraits.html" title=" " alt="" coords="5,120,180,160"/>
 </map>

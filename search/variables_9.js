@@ -1,6 +1,11 @@
 var searchData=
 [
-  ['k1_0',['k1',['../classRanking_1_1BM25Weight.html#a8bed573472f7950bfe2fd2f5692a833b',1,'Ranking::BM25Weight']]],
-  ['keep_5falive_1',['keep_alive',['../structcrow_1_1request.html#a5148ce95969d261e50ee977c1dc7960c',1,'crow::request']]],
-  ['key_2',['key',['../structcrow_1_1Trie_1_1Node.html#a355b279db31bd1cead3f7de89a6f55f0',1,'crow::Trie::Node']]]
+  ['j_0',['j',['../stopwords_8txt.html#a7e5e9ea56518bd9addac24de4cbd6900',1,'stopwords.txt']]],
+  ['jar_1',['jar',['../structcrow_1_1CookieParser_1_1context.html#a65674550c5ee9ade652a4785c6b9b30c',1,'crow::CookieParser::context']]],
+  ['jj_2',['jj',['../stopwords_8txt.html#a353323c1df555403aff8ad639fdfe4c6',1,'stopwords.txt']]],
+  ['jr_3',['jr',['../stopwords_8txt.html#aebcaff5527894f8bcf455c75c259f391',1,'stopwords.txt']]],
+  ['js_4',['js',['../stopwords_8txt.html#a06e6dfc1f5b5331faaee657fd1490027',1,'stopwords.txt']]],
+  ['jt_5',['jt',['../stopwords_8txt.html#aa63f59f593b91392b624e3ce70bc35f6',1,'stopwords.txt']]],
+  ['ju_6',['ju',['../stopwords_8txt.html#a20fb4212962ec8c042bfa03b72a5bd27',1,'stopwords.txt']]],
+  ['just_7',['just',['../stopwords_8txt.html#aedcedf894c043b00ae87c0bfe5b1764d',1,'stopwords.txt']]]
 ];

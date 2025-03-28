@@ -1,0 +1,8 @@
+<map id="include/query&#45;processing/queryNode.h" name="include/query&#45;processing/queryNode.h">
+<area shape="rect" id="node1" title=": Node structure for indexed query representation." alt="" coords="184,5,349,45"/>
+<area shape="rect" id="node2" href="$queryTree_8h.html" title=": Efficient indexed query structure for ranking." alt="" coords="95,93,260,133"/>
+<area shape="rect" id="node6" href="$queryNode_8cc.html" title=" " alt="" coords="285,93,427,133"/>
+<area shape="rect" id="node3" href="$query-processing_2query_8h.html" title=": Processes input query and optimizes it for ranking." alt="" coords="5,181,171,221"/>
+<area shape="rect" id="node5" href="$queryTree_8cc.html" title=" " alt="" coords="195,181,338,221"/>
+<area shape="rect" id="node4" href="$query-processing_2query_8cc.html" title=" " alt="" coords="17,269,159,309"/>
+</map>

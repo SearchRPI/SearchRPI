@@ -1,10 +1,13 @@
 var searchData=
 [
-  ['tag_0',['Tag',['../namespacecrow_1_1mustache.html#aeb8da2ae9d8d9fe55f6ab0a7455dd667ac101058e7ea21bbbf2a5ac893088e90b',1,'crow::mustache']]],
-  ['temporary_5fredirect_1',['TEMPORARY_REDIRECT',['../namespacecrow.html#aa3ae5c0994dff8425d7515e2806180d2af01b5584cbcde1b1c9a6717f96a29223',1,'crow']]],
-  ['tlshandshakefailure_2',['TLSHandshakeFailure',['../namespacecrow_1_1websocket.html#a4bf145253691b9129a657e4fac5cb580aec7ba69b5e9c9ac74051f1e434000f7a',1,'crow::websocket']]],
-  ['too_5fmany_5frequests_3',['TOO_MANY_REQUESTS',['../namespacecrow.html#aa3ae5c0994dff8425d7515e2806180d2a5cd8322fa600e7b84b62d4f231e23542',1,'crow']]],
-  ['trace_4',['TRACE',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a2d3e4144aa384b18849ab9a8abad74d6',1,'crow']]],
-  ['trace_5',['Trace',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4add4ec0ac4e58f7c32a01244ae91150b1',1,'crow']]],
-  ['true_6',['True',['../namespacecrow_1_1json.html#adb9569a402d1b289a75025c8c96e5d99af827cf462f62848df37c5e1e94a4da74',1,'crow::json']]]
+  ['range_5fnot_5fsatisfiable_0',['RANGE_NOT_SATISFIABLE',['../namespacecrow.html#aa3ae5c0994dff8425d7515e2806180d2af2ac4d9dd8af2c6830a5c05c3ddd1883',1,'crow']]],
+  ['rebind_1',['REBIND',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a165c797424624799cb60ff4fe6d5164c',1,'crow']]],
+  ['rebind_2',['Rebind',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a2c8b844cbfb121428d378232606d6b47',1,'crow']]],
+  ['reject_3',['REJECT',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a59b228d9fec9b88833bfe5d812ed8ad4',1,'queryTree']]],
+  ['report_4',['Report',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a4b1b4dc8cf38b3c64b1d657da8f5ac8c',1,'crow']]],
+  ['report_5',['REPORT',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4ad02a38d7ff75e9aed743437fd9539a44',1,'crow']]],
+  ['require_6',['REQUIRE',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a58476995b642435595799e856c5d2a74',1,'queryTree']]],
+  ['reset_5fcontent_7',['RESET_CONTENT',['../namespacecrow.html#aa3ae5c0994dff8425d7515e2806180d2aae353d39be103077cd80b41f39c73deb',1,'crow']]],
+  ['rm_8',['RM',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a2622e9b348f05f74e3e4bb9b7d213dc8',1,'queryTree']]],
+  ['root_9',['ROOT',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548aea2adde5c377cb5e09d14b71935c6f32',1,'queryTree']]]
 ];

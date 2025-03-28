@@ -2,6 +2,19 @@ var searchData=
 [
   ['bad_5fgateway_0',['BAD_GATEWAY',['../namespacecrow.html#aa3ae5c0994dff8425d7515e2806180d2a8bdf8e1a9f962b56c67e7566d456677f',1,'crow']]],
   ['bad_5frequest_1',['BAD_REQUEST',['../namespacecrow.html#aa3ae5c0994dff8425d7515e2806180d2aea8e1cf302f8f6b1f5e3365555f71976',1,'crow']]],
-  ['bind_2',['BIND',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a5c179f2c26f1208979f95a11f886c7c6',1,'crow']]],
-  ['bind_3',['Bind',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a0b172674284d79079624051d2ae11581',1,'crow']]]
+  ['band_2',['BAND',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548aa8a5bbeedca093b94b7f0d3f185b98f7',1,'queryTree']]],
+  ['between_3',['BETWEEN',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548ac1425a07f1a62b418d3e6017a523e4c1',1,'queryTree']]],
+  ['bigram_4',['BIGRAM',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a55be20a779d4a8bd6d396a158dda8b29',1,'queryTree']]],
+  ['bil2_5',['BIL2',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a622ef7fe9f2c177800816d3a400d9fa3',1,'queryTree']]],
+  ['bind_6',['BIND',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a5c179f2c26f1208979f95a11f886c7c6',1,'crow']]],
+  ['bind_7',['Bind',['../namespacecrow.html#afe3a72ef7c3edbf71d0bceacf02517c4a0b172674284d79079624051d2ae11581',1,'crow']]],
+  ['bm25_8',['BM25',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548aa84bddd5301a3c7150fc65a365127517',1,'queryTree']]],
+  ['bm25fcomb_9',['BM25FCOMB',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548aab3eb8f744d78fd1a8c9683e1401203f',1,'queryTree']]],
+  ['bm25field_10',['BM25FIELD',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a4d14f440b13ed826e0971739b7f0655c',1,'queryTree']]],
+  ['bm25rf_11',['BM25RF',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548ae9441509d7d699fcc1f2f2c5cd969504',1,'queryTree']]],
+  ['bnot_12',['BNOT',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a0fd78279a775c262180e0cfbad6fa9eb',1,'queryTree']]],
+  ['bool_13',['BOOL',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548aa97b2c144243b2b9d2c593ec268b62f5',1,'queryTree']]],
+  ['bool_5fto_5fcount_14',['BOOL_TO_COUNT',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548ae7449da8e5c44e7c98a17321f97802da',1,'queryTree']]],
+  ['boost_15',['BOOST',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548aa3c4a05e1fffe01e915a83d118f1647c',1,'queryTree']]],
+  ['bor_16',['BOR',['../namespacequeryTree.html#ad414cd77ca2642a3c1cd3f9ed5102548a0adf6aac232504c55ea4202e09498bfd',1,'queryTree']]]
 ];

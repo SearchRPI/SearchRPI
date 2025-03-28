@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classsha1_1_1SHA1.html" title="A tiny SHA1 algorithm implementation used internally in the Crow server (specifically in crow/websock..." alt="" coords="5,5,96,31"/>
+<area shape="rect" id="node1" href="$classRanking_1_1Weight.html" title="Base class for weighting schemes." alt="" coords="5,31,120,56"/>
+<area shape="rect" id="node2" href="$classRanking_1_1BM25Weight.html" title=" " alt="" coords="169,5,319,31"/>
+<area shape="rect" id="node3" href="$classRanking_1_1TFIDFWeight.html" title=" " alt="" coords="168,55,320,80"/>
 </map>
