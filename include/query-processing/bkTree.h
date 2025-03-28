@@ -13,12 +13,14 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <unordered_set>
 
 /**
  * @namespace bk
  * Namespace for BK-Tree based approximate string matching.
  */
 namespace bk {
+    using Dictionary = std::unordered_set<std::string>;
 
 /**
  * @class BKTree
@@ -26,10 +28,28 @@ namespace bk {
  */
 class BKTree {
 public:
+    struct Node {
+        std::string word;
+        std::unordered_map<int, std::unique_ptr<Node>> children;
+        explicit Node(const std::string& w) : word(w) {}
+    };
+
     /**
      * @brief Constructs an empty BK-Tree.
      */
     BKTree();
+
+    /**
+     * @brief Constructs a BK-Tree from a given dictionary.
+     * @param dict The dictionary of words to insert.
+     */
+    explicit BKTree(const Dictionary& dict);
+
+    /**
+     * @brief Tree root getter.
+     * @return root of tree.
+     */
+    const Node* getRoot() const { return root.get(); }
 
     /**
      * @brief Inserts a word into the BK-Tree.
@@ -46,11 +66,6 @@ public:
     std::string findClosest(const std::string& query, int threshold = 2) const;
 
 private:
-    struct Node {
-        std::string word;
-        std::unordered_map<int, std::unique_ptr<Node>> children;
-        explicit Node(const std::string& w) : word(w) {}
-    };
 
     std::unique_ptr<Node> root;
 

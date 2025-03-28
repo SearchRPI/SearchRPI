@@ -1,4 +1,5 @@
 #include "../../include/query-processing/query.h"
+#include "../../include/query-processing/stemmer.h"
 
 #include <iostream>
 #include <sstream>
@@ -6,42 +7,35 @@
 #include <algorithm>
 #include <climits>
 
-namespace query {
+// Use definitions from the query namespace
+using query::Dictionary;
+using query::TokenList;
 
-// NOTE: This function might fit better elsewhere
-Dictionary loadDictionary(const std::string& filepath) {
-    Dictionary dictionary;
-    std::ifstream file(filepath);
-    std::string word;
-
-    if (!file) {
-        std::cerr << "Error: Unable to open file " << filepath << std::endl;
-        return dictionary;
-    }
-
-    while (std::getline(file, word)) {
-        word.erase(0, word.find_first_not_of(" \t\r\n"));
-        word.erase(word.find_last_not_of(" \t\r\n") + 1);
-        if (!word.empty()) {
-            dictionary.insert(word);
-        }
-    }
-
-    file.close();
-    return dictionary;
-}
-
+/**
+ * @brief Checks if a given word is a stop word.
+ *
+ * @param word The word to check.
+ * @return True if the word is a stop word, false otherwise.
+ */
+// TODO: UPDATE TO READ FROM STOPWORDS.TXT
 bool isStopWord(const std::string& word) {
     static const Dictionary stopWords = {
         "the", "of", "to", "a", "and", "in", "said", "for", "that", "was", "on",
         "he", "is", "with", "at", "by", "it", "from", "as", "be", "were", "an",
         "have", "his", "but", "has", "are", "not", "who", "they", "its", "had",
         "will", "would", "about", "i", "been", "this", "their", "new", "or",
-        "which", "we", "more", "after", "us", "percent", "up", "one", "people"
+        "which", "we", "more", "after", "us", "percent", "up", "one", "people",
+        "what"
     };
     return stopWords.find(word) != stopWords.end();
 }
 
+/**
+ * @brief Converts a word to lowercase.
+ *
+ * @param word The word to convert.
+ * @return The lowercase version of the word.
+ */
 std::string toLower(const std::string& word) {
     std::string result = word;
     std::transform(
@@ -51,12 +45,24 @@ std::string toLower(const std::string& word) {
     return result;
 }
 
+/**
+ * @brief Removes punctuation from a given word.
+ *
+ * @param word The word to process.
+ * @return The word without punctuation.
+ */
 std::string removePunctuation(std::string word) {
     word.erase(std::remove_if(word.begin(), word.end(),
               [](unsigned char c) { return !std::isalnum(c); }), word.end());
     return word;
 }
 
+/**
+ * @brief Tokenizes a raw query string into individual words.
+ *
+ * @param rawQuery The raw query string to tokenize.
+ * @return A vector of tokens (words) from the query.
+ */
 TokenList tokenize(const std::string& rawQuery) {
     TokenList tokens;
     std::istringstream stream(rawQuery);
@@ -73,10 +79,26 @@ TokenList tokenize(const std::string& rawQuery) {
     return tokens;
 }
 
+/**
+ * @brief Finds the closest word in the dictionary to a given word.
+ *
+ * @param word The word to find a match for.
+ * @param tree The BK-Tree containing dictionary words.
+ * @param dictionary The set of dictionary words.
+ * @return The closest matching word from the dictionary.
+ */
 std::string findClosestWord(const std::string& word, const bk::BKTree& tree) {
     return tree.findClosest(word);
 }
 
+/**
+ * @brief Finds typos in a list of tokens and suggests corrections.
+ *
+ * @param tokens The list of tokens to check.
+ * @param tree The BK-Tree containing dictionary words.
+ * @param dictionary The dictionary for typo detection.
+ * @return A vector of corrected words.
+ */
 TokenList findSuggestion(const TokenList& tokens,
                          const bk::BKTree& tree,
                          const Dictionary& dictionary) {
@@ -93,13 +115,52 @@ TokenList findSuggestion(const TokenList& tokens,
     return suggestions;
 }
 
-TokenList processQuery(const std::string& rawQuery,
-                       const Dictionary& dictionary,
-                       const bk::BKTree& tree) {
+namespace query {
+
+queryTree::QueryTree processQuery(
+    const std::string& rawQuery,
+    const Dictionary& dictionary,
+    const bk::BKTree& tree,
+    const queryTree::TermDictionary& termDictionary
+) {
+    // Tokenization
     TokenList tokens = tokenize(rawQuery);
+
+    // Spelling correction
     TokenList correctedTokens = findSuggestion(tokens, tree, dictionary);
-    // TODO: Apply stemming here if needed
-    return correctedTokens;
+
+    // Normalization: punctuation removal & stemming
+    TokenList processedTokens;
+    for (std::string& token : correctedTokens) {
+        token = removePunctuation(token);
+        processedTokens.push_back(stemmer::stem(token));
+    }
+
+    // Build and return the query tree
+    return queryTree::QueryTree(processedTokens, termDictionary);
+}
+
+// NOTE: This function might fit better elsewhere
+Dictionary loadDictionary(const std::string& filepath) {
+    Dictionary dictionary;
+    std::ifstream file(filepath);
+    std::string word;
+
+    if (!file) {
+        std::cerr << "Error: Unable to open file " << filepath << std::endl;
+        return dictionary;
+    }
+
+    while (std::getline(file, word)) {
+        word.erase(0, word.find_first_not_of(" \t\r\n"));
+        word.erase(word.find_last_not_of(" \t\r\n") + 1);
+        if (!word.empty()) {
+            dictionary.insert(toLower(word));
+        }
+    }
+
+    file.close();
+    return dictionary;
 }
 
 } // namespace query
