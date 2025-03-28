@@ -5,17 +5,17 @@
 
 namespace Ranking {
 
-MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
+MatchingDocs Searcher::Search(const QueryTree& queryTree, unsigned int max_items) {
 
-    // NOTE: CURRENT IMPLEMENTATION IS TEMPORARY
-
-    std::vector<std::string> terms = query.terms();
-    std::unordered_map<int, double> mdocs; // mdocs[docid] = score;
-    
     int avg_doc_len = 1;
     int collection_size = 2;
+    std::unordered_map<int, double> mdocs; // mdocs[docid] = score;
 
-    for (const std::string& term : terms) {
+    queryTree.forEachNodeWithDepth([&](const queryTree::QueryNode& node, int depth) {
+        if (node.getOperation() != queryTree::QueryOperator::TEXT)
+            return;
+
+        std::string term = node.getValue();
         std::vector<Data> docs = db->get(term, 100000);
 
         for (const Data& doc : docs) {
@@ -25,10 +25,16 @@ MatchingDocs Searcher::Search(const Query& query, unsigned int max_items) {
             int doc_len = 1;
             int doc_freq = 1;
 
-            double score = weight_scheme->get_score(doc_len, freq, avg_doc_len, collection_size, doc_freq);
+            double score = weight_scheme->get_score(
+                doc_len,
+                freq,
+                avg_doc_len,
+                collection_size,
+                doc_freq
+            );
             mdocs[docid] += score;
         }
-    }
+    });
 
     std::vector<SearchResult> results;
     for (const auto& [doc_id, score] : mdocs) {
