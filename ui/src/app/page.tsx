@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 import Link from "next/link";
+import LightLogo from "@/components/light-logo.png";
+import DarkLogo from "@/components/dark-logo.png";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import RenderPaginationItems from "@/components/pagination-pages";
 import {
@@ -16,6 +20,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+
 
 // Fake data
 const linksMap: Map<string, string> = new Map([
@@ -49,6 +54,9 @@ const searchResults: SearchResults[] = Array.from(
 const HomePage: React.FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { theme } = useTheme();
+
+  const [logoSrc, setLogoSrc] = useState(LightLogo);
 
   const [searchQuery, setSearchQuery] = useState<string | null>(
     searchParams.get("query"),
@@ -61,9 +69,11 @@ const HomePage: React.FC = () => {
   // determines whether the results are being loaded
   const [loadingState, setLoadingState] = useState<boolean>(false);
 
+
   // NOTE: Used to test whether searchQuery is correct
   // biome-ignore lint/correctness/useExhaustiveDependencies: We don't worry about setShowResults
   useEffect(() => {
+    setLogoSrc(theme === "dark" ? DarkLogo : LightLogo);
     if (searchParams.get("query")) {
       setShowResults(true);
       setPageAndResults();
@@ -71,6 +81,7 @@ const HomePage: React.FC = () => {
       setShowResults(false);
     }
   }, [searchParams, searchQuery]);
+
 
   // NOTE: Used to call backend API to fetch the results
   const onSubmit = () => {
@@ -127,45 +138,39 @@ const HomePage: React.FC = () => {
 
   return (
     <div>
-      <Header setSearchQuery={setSearchQuery} />
+
       {/* Show the search results  */}
       {!loadingState ? (
         showResults ? (
-          <div className="mt-20">
-            <div className="flex justify-center">
-              {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
-              <Input
-                value={searchQuery || ""}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-[40vw]"
-                placeholder="Search here ..."
-                id="SearchBox"
-              />
+          <div>
+            <Header searchQuery={searchQuery || ""} setSearchQuery={setSearchQuery} onSubmit={onSubmit}/>
+            <div className="mt-20">
+              {/* Set loading state to true */}
+              {currentPagesResults.map((result) => (
+                <div key={result.title} className="px-10 py-5">
+                  <Link href={result.link}>
+                    <Card className="p-5 shadow-lg">
+                      <CardContent>
+                        <CardTitle>{result.link}</CardTitle>
+                        {result.title}
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </div>
+              ))}
+              {/* Set loading state to false */}
             </div>
-            <div className="flex justify-center mt-3">
-              <Button onClick={onSubmit}>Search</Button>
-            </div>
-
-            {/* Set loading state to true */}
-            {currentPagesResults.map((result) => (
-              <div key={result.title} className="px-10 py-5">
-                <Link href={result.link}>
-                  <Card className="p-5 shadow-lg">
-                    <CardContent>
-                      <CardTitle>{result.link}</CardTitle>
-                      {result.title}
-                    </CardContent>
-                  </Card>
-                </Link>
-              </div>
-            ))}
-            {/* Set loading state to false */}
           </div>
+
         ) : (
-          // No search results (i.e. did not click the search button, or does not have any search params in the URL)
-          <div className="h-[80vh] mt-20">
-            <div className="flex justify-center">
+          <div>
+            {/*landing page*/}
+
+            {/*No search results (i.e. did not click the search button, or does not have any search params in the URL)*/}
+            <div className="min-h-screen w-full flex flex-col justify-center items-center">
               {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
+              <Image src={logoSrc} alt="SearchRPI Logo" width={400} height={200}/>
+
               <Input
                 value={searchQuery || ""}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -173,9 +178,8 @@ const HomePage: React.FC = () => {
                 placeholder="Search here ..."
                 id="SearchBox"
               />
-            </div>
-            <div className="flex justify-center mt-3">
-              <Button onClick={onSubmit}>Search</Button>
+              <Button className="mt-3" onClick={onSubmit}>Search</Button>
+
             </div>
           </div>
         )
@@ -195,7 +199,7 @@ const HomePage: React.FC = () => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <Pagination className="mt-5">
+        <Pagination className="absolute bottom-28">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
@@ -224,7 +228,10 @@ const HomePage: React.FC = () => {
           </PaginationContent>
         </Pagination>
       )}
-      <Footer />
+      <div className="absolute left-1/2 bottom-5 transform -translate-x-1/2">
+        <Footer />
+      </div>
+
     </div>
   );
 };
