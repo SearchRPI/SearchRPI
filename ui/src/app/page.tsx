@@ -164,12 +164,15 @@ const HomePage: React.FC = () => {
 
         ) : (
           <div>
-            {/*landing page*/}
-
             {/*No search results (i.e. did not click the search button, or does not have any search params in the URL)*/}
-            <div className="min-h-screen w-full flex flex-col justify-center items-center">
+            <div className="min-h-screen w-full flex flex-col justify-center items-center space-y-5">
               {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
-              <Image src={logoSrc} alt="SearchRPI Logo" width={400} height={200}/>
+                <Image
+                  src={logoSrc}
+                  alt="SearchRPI Logo"
+                  style={{width: '600px', height: '300px', objectFit: 'cover'}}
+                />
+
 
               <Input
                 value={searchQuery || ""}
