@@ -82,7 +82,6 @@ const HomePage: React.FC = () => {
     }
   }, [searchParams, searchQuery]);
 
-
   // NOTE: Used to call backend API to fetch the results
   const onSubmit = () => {
     if (searchQuery) {
@@ -91,6 +90,13 @@ const HomePage: React.FC = () => {
       setPageAndResults();
     }
   };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      onSubmit();
+    }
+  };
+
   function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
@@ -166,17 +172,16 @@ const HomePage: React.FC = () => {
           <div>
             {/*No search results (i.e. did not click the search button, or does not have any search params in the URL)*/}
             <div className="min-h-screen w-full flex flex-col justify-center items-center space-y-5">
-              {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
                 <Image
                   src={logoSrc}
                   alt="SearchRPI Logo"
                   style={{width: '600px', height: '300px', objectFit: 'cover'}}
                 />
 
-
               <Input
                 value={searchQuery || ""}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
                 className="w-[40vw]"
                 placeholder="Search here ..."
                 id="SearchBox"
