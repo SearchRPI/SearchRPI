@@ -80,7 +80,7 @@ const HomePage: React.FC = () => {
     } else {
       setShowResults(false);
     }
-  }, [searchParams, searchQuery]);
+  }, [searchParams, searchQuery,theme]);
 
   // NOTE: Used to call backend API to fetch the results
   const onSubmit = () => {
@@ -148,8 +148,9 @@ const HomePage: React.FC = () => {
       {/* Show the search results  */}
       {!loadingState ? (
         showResults ? (
+          // need to update header to be sticky
           <div>
-            <Header searchQuery={searchQuery || ""} setSearchQuery={setSearchQuery} onSubmit={onSubmit}/>
+            <Header searchQuery={searchQuery || ""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={false}/>
             <div className="mt-20">
               {/* Set loading state to true */}
               {currentPagesResults.map((result) => (
@@ -166,18 +167,50 @@ const HomePage: React.FC = () => {
               ))}
               {/* Set loading state to false */}
             </div>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              // need to update to be sticky on bottom
+              <Pagination className="absolute bottom-28">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => {
+                        currentPage > 1 && setCurrentPage((prev) => prev - 1);
+                        currentPage > 1 && addPageParam(currentPage - 1);
+                      }}
+                    />
+                  </PaginationItem>
+                  <RenderPaginationItems
+                    totalPages={totalPages}
+                    maxPagesToShow={maxPagesToShow}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    addPageParam={addPageParam}
+                  />
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => {
+                        currentPage < totalPages &&
+                        setCurrentPage((prev) => prev + 1);
+                        currentPage < totalPages && addPageParam(currentPage + 1);
+                      }}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            )}
           </div>
 
         ) : (
           <div>
             {/*No search results (i.e. did not click the search button, or does not have any search params in the URL)*/}
+            <Header searchQuery={""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={true}/>
             <div className="min-h-screen w-full flex flex-col justify-center items-center space-y-5">
-                <Image
-                  src={logoSrc}
-                  alt="SearchRPI Logo"
-                  style={{width: '600px', height: '300px', objectFit: 'cover'}}
-                />
-
+              <Image
+                src={logoSrc}
+                alt="SearchRPI Logo"
+                style={{width: '600px', height: '300px', objectFit: 'cover'}}
+              />
               <Input
                 value={searchQuery || ""}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -205,37 +238,7 @@ const HomePage: React.FC = () => {
         </div>
       )}
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <Pagination className="absolute bottom-28">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() => {
-                  currentPage > 1 && setCurrentPage((prev) => prev - 1);
-                  currentPage > 1 && addPageParam(currentPage - 1);
-                }}
-              />
-            </PaginationItem>
-            <RenderPaginationItems
-              totalPages={totalPages}
-              maxPagesToShow={maxPagesToShow}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              addPageParam={addPageParam}
-            />
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => {
-                  currentPage < totalPages &&
-                    setCurrentPage((prev) => prev + 1);
-                  currentPage < totalPages && addPageParam(currentPage + 1);
-                }}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      )}
+
       <div className="absolute left-1/2 bottom-5 transform -translate-x-1/2">
         <Footer />
       </div>
