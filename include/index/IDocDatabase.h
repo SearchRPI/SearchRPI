@@ -41,7 +41,7 @@ public:
      * @param words Text of the page // TODO: Update format to include punctuation & support field weighting
      * @returns ID Generated for Added Document
      */
-    virtual SearchRPI::docid addDoc(const std::string& url, const std::string& title, std::vector<std::string> words) = 0;
+    virtual SearchRPI::docid addDoc(const std::string& url, const std::string& title, const std::string& rawText) = 0;
 
     /**
      * @param url Page URL
@@ -60,5 +60,23 @@ public:
      * @returns Whether document existed and was removed (false if doc didn't exist)
      */
     virtual bool remove(SearchRPI::docid id) = 0;
+
+    /**
+     * @param id Document ID
+     * @returns The complete original text of the document.
+     */
+    virtual std::string getDocText(SearchRPI::docid id) const = 0;
+
+    /**
+     * @param id Document ID
+     * @returns The title of the document
+     */
+    virtual std::string getDocTitle(SearchRPI::docid id) const = 0;
+
+    /**
+     * @param id Document ID
+     * @returns The URL of the document
+     */
+    virtual std::string getDocUrl(SearchRPI::docid id) const = 0;
 
 };
