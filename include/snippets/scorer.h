@@ -5,6 +5,8 @@
 #include <string>
 #include <cctype>
 
+namespace Snippets {
+
 /**
  * @brief A simple scorer for tokens and fragments that gives a positive score 
  * for tokens matching query terms.
@@ -20,23 +22,11 @@ public:
     Scorer(const std::set<std::string>& queryTerms)
         : queryTerms(queryTerms), totalScore(0.0f) {}
 
-    void startFragment() {
-        totalScore = 0.0f;
-    }
+    void startFragment() { totalScore = 0.0f; }
 
-    float getTokenScore(const Token& token) {
-        std::string lowerToken = toLower(token.text);
-        if (queryTerms.find(lowerToken) != queryTerms.end()) {
-            float score = static_cast<float>(token.text.size());
-            totalScore += score;
-            return score;
-        }
-        return 0.0f;
-    }
+    float getTokenScore(const Token& token);
 
-    float getFragmentScore() const {
-        return totalScore;
-    }
+    float getFragmentScore() const { return totalScore; }
 
 private:
     std::set<std::string> queryTerms;
@@ -52,3 +42,5 @@ private:
         return lower;
     }
 };
+
+} // namespace Snippets

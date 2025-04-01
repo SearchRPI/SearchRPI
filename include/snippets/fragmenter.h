@@ -5,6 +5,8 @@
 #include <cstddef>
 #include <algorithm>
 
+namespace Snippets {
+
 /**
  * @brief A basic fragmenter that breaks a documents text into fixed-size fragments.
  *
@@ -20,22 +22,13 @@ public:
     explicit Fragmenter(size_t fragmentSize = 100)
         : fragmentSize(fragmentSize), currentFragmentEnd(0) {}
 
-    void start(const std::string& /*text*/, const std::vector<Token>& /*tokens*/) {
-        // Initialize the first fragment boundary.
-        currentFragmentEnd = fragmentSize;
-    }
+    void start(const std::string& text, const std::vector<Token>& tokens);
 
-    bool isNewFragment(const Token& token) {
-        // If the token's end offset exceeds the current fragment boundary,
-        // signal the start of a new fragment and update the boundary.
-        if (token.end >= currentFragmentEnd) {
-            currentFragmentEnd += fragmentSize;
-            return true;
-        }
-        return false;
-    }
+    bool isNewFragment(const Token& token);
     
 private:
     size_t fragmentSize;
     size_t currentFragmentEnd;
 };
+
+} // namespace Snippets
