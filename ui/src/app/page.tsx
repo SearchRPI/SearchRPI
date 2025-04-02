@@ -150,7 +150,10 @@ const HomePage: React.FC = () => {
         showResults ? (
           // need to update header to be sticky
           <div>
-            <Header searchQuery={searchQuery || ""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={false}/>
+            <div className="sticky top-0">
+              <Header searchQuery={searchQuery || ""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={false}/>
+            </div>
+
             <div className="mt-20">
               {/* Set loading state to true */}
               {currentPagesResults.map((result) => (
@@ -170,7 +173,7 @@ const HomePage: React.FC = () => {
             {/* Pagination */}
             {totalPages > 1 && (
               // need to update to be sticky on bottom
-              <Pagination className="absolute bottom-28">
+              <Pagination className="fixed bottom-28">
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious
@@ -204,7 +207,10 @@ const HomePage: React.FC = () => {
         ) : (
           <div>
             {/*No search results (i.e. did not click the search button, or does not have any search params in the URL)*/}
-            <Header searchQuery={""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={true}/>
+            <div className="sticky">
+              <Header searchQuery={""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={true}/>
+            </div>
+
             <div className="min-h-screen w-full flex flex-col justify-center items-center space-y-5">
               <Image
                 src={logoSrc}
@@ -239,8 +245,8 @@ const HomePage: React.FC = () => {
       )}
 
 
-      <div className="absolute left-1/2 bottom-5 transform -translate-x-1/2">
-        <Footer />
+      <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2">
+          <Footer />
       </div>
 
     </div>

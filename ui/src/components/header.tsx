@@ -33,7 +33,7 @@ const Header: React.FC<Props> = ({ searchQuery, setSearchQuery, onSubmit , minim
   return (
     <div>
       {!minimal ? (
-        <nav className="flex justify-between items-center p-5">
+        <nav className="flex justify-between items-center p-5 backdrop-blur-xl">
           {/* TODO: Replace with actual logo as button */}
           <Button
             variant={"ghost"}
