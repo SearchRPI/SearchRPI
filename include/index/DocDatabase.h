@@ -59,6 +59,16 @@ public:
      * @returns Whether document existed and was removed (false if doc didn't exist)
      */
     bool remove(SearchRPI::docid id);
+    
+    /**
+     * @returns the number of documents in the database
+     */
+    int getNumDocs();
+    
+    /**
+     * @returns the average document length in the database
+     */
+    double getAvgDocLen();
 
 private:
     // LMDB environment and database handles.
