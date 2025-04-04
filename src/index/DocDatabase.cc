@@ -1,5 +1,7 @@
 #include "index/DocDatabase.h"
 
+#include <iostream>
+
 DocDatabase::DocDatabase(const std::string& dbPath) {
     int rc = mdb_env_create(&env_);
     if (rc != MDB_SUCCESS)
@@ -258,6 +260,67 @@ bool DocDatabase::remove(SearchRPI::docid id) {
     
     mdb_txn_commit(txn);
     return true;
+}
+
+int DocDatabase::getNumDocs() {
+    MDB_txn* txn;
+    int rc = mdb_txn_begin(env_, nullptr, MDB_RDONLY, &txn);
+    if (rc != MDB_SUCCESS)
+        throw std::runtime_error("mdb_txn_begin failed: " + std::string(mdb_strerror(rc)));
+
+    MDB_stat stat;
+    rc = mdb_stat(txn, dbi_docs_, &stat);
+    if (rc != MDB_SUCCESS) {
+        mdb_txn_abort(txn);
+        throw std::runtime_error("mdb_stat failed: " + std::string(mdb_strerror(rc)));
+    }
+
+    mdb_txn_abort(txn); 
+
+    return static_cast<int>(stat.ms_entries);
+}
+
+
+double DocDatabase::getAvgDocLen() {
+    MDB_txn* txn;
+    int rc = mdb_txn_begin(env_, nullptr, MDB_RDONLY, &txn);
+    if (rc != MDB_SUCCESS)
+        throw std::runtime_error("mdb_txn_begin failed: " + std::string(mdb_strerror(rc)));
+
+    MDB_cursor* cursor = nullptr;
+    rc = mdb_cursor_open(txn, dbi_docs_, &cursor);
+    if (rc != MDB_SUCCESS) {
+        mdb_txn_abort(txn);
+        throw std::runtime_error("mdb_cursor_open failed: " + std::string(mdb_strerror(rc)));
+    }
+
+    MDB_stat stat;
+    rc = mdb_stat(txn, dbi_docs_, &stat);
+    if (rc != MDB_SUCCESS) {
+        mdb_cursor_close(cursor);
+        mdb_txn_abort(txn);
+        throw std::runtime_error("mdb_stat failed: " + std::string(mdb_strerror(rc)));
+    }
+
+    if (stat.ms_entries == 0) {
+        mdb_cursor_close(cursor);
+        mdb_txn_abort(txn);
+        return 0.0;
+    }
+
+    MDB_val key, data;
+    long long docLens = 0;
+
+    rc = mdb_cursor_get(cursor, &key, &data, MDB_FIRST);
+    while (rc != MDB_NOTFOUND) {
+        docLens += static_cast<long long>(data.mv_size);
+        rc = mdb_cursor_get(cursor, &key, &data, MDB_NEXT);
+    }
+
+    mdb_cursor_close(cursor);
+    mdb_txn_abort(txn);
+
+    return static_cast<double>(docLens) / stat.ms_entries;
 }
 
 std::string DocDatabase::serializeDoc(const std::string& url, const std::string& title, const std::vector<std::string>& words) {
