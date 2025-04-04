@@ -5,9 +5,9 @@
 
 namespace Ranking {
 
-MatchingDocs Searcher::Search(const QueryTree& queryTree, unsigned int max_items) {
+MatchingDocs Searcher::Search(const queryTree::QueryTree& queryTree, unsigned int max_items) {
 
-    int avg_doc_len = 1;
+    int avg_doc_len = 20;
     int collection_size = 2;
     std::unordered_map<int, double> mdocs; // mdocs[docid] = score;
 
@@ -22,8 +22,8 @@ MatchingDocs Searcher::Search(const QueryTree& queryTree, unsigned int max_items
             int freq = doc.priority;
             int docid = doc.docId;
 
-            int doc_len = 1;
-            int doc_freq = 1;
+            int doc_len = 10;
+            int doc_freq = 10;
 
             double score = weight_scheme->get_score(
                 doc_len,

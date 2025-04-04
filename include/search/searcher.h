@@ -7,7 +7,7 @@
 
 #include "types.h"
 #include "index/IDatabase.h"
-#include "query.h"
+#include "../query-processing/query.h"
 #include "search/weight.h"
 #include "search/MatchingDocs.h"
 
@@ -39,7 +39,7 @@ public:
      *  @param max_items Maximum number of documents to return.
      *  @return Ordered list of documents that match query.
      */
-    MatchingDocs Search(const Query& query, unsigned int max_items);
+    MatchingDocs Search(const queryTree::QueryTree& queryTree, unsigned int max_items);
 
 
 private:
