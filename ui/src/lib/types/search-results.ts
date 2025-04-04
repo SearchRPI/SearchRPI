@@ -1,6 +1,6 @@
 type SearchResults = {
-  // The actual URL of the website
-  link: string;
-  // The title of the website
+  id: string;
   title: string;
+  url: string;
+  snippet: string;
 };

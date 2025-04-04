@@ -11,7 +11,12 @@ import Image from "next/image";
 import Link from "next/link";
 import LightLogo from "@/components/light-logo.png";
 import DarkLogo from "@/components/dark-logo.png";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
 import RenderPaginationItems from "@/components/pagination-pages";
 import {
   Pagination,
@@ -21,35 +26,199 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-
 // Fake data
-const linksMap: Map<string, string> = new Map([
-  ["https://www.google.com", "Google"],
-  ["https://www.facebook.com", "Facebook"],
-  ["https://www.twitter.com", "Twitter"],
-  ["https://www.linkedin.com", "LinkedIn"],
-  ["https://www.github.com", "GitHub"],
-  ["https://www.reddit.com", "Reddit"],
-  ["https://www.youtube.com", "YouTube"],
-  ["https://www.amazon.com", "Amazon"],
-  ["https://www.wikipedia.org", "Wikipedia"],
-  ["https://www.stackoverflow.com", "Stack Overflow"],
-  ["https://www.apple.com", "Apple"],
-  ["https://www.microsoft.com", "Microsoft"],
-  ["https://www.instagram.com", "Instagram"],
-  ["https://www.pinterest.com", "Pinterest"],
-  ["https://www.netflix.com", "Netflix"],
-  ["https://www.spotify.com", "Spotify"],
-  ["https://www.twitch.tv", "Twitch"],
-  ["https://www.bbc.com", "BBC"],
-  ["https://www.nytimes.com", "New York Times"],
-  ["https://www.cnn.com", "CNN"],
+const linksMap: Map<
+  string,
+  { id: string; title: string; url: string; snippet: string }
+> = new Map([
+  [
+    "https://www.google.com",
+    {
+      id: "1",
+      title: "Google",
+      url: "https://www.google.com",
+      snippet: "Search engine",
+    },
+  ],
+  [
+    "https://www.facebook.com",
+    {
+      id: "2",
+      title: "Facebook",
+      url: "https://www.facebook.com",
+      snippet: "Social media platform",
+    },
+  ],
+  [
+    "https://www.twitter.com",
+    {
+      id: "3",
+      title: "Twitter",
+      url: "https://www.twitter.com",
+      snippet: "Microblogging platform",
+    },
+  ],
+  [
+    "https://www.linkedin.com",
+    {
+      id: "4",
+      title: "LinkedIn",
+      url: "https://www.linkedin.com",
+      snippet: "Professional networking site",
+    },
+  ],
+  [
+    "https://www.github.com",
+    {
+      id: "5",
+      title: "GitHub",
+      url: "https://www.github.com",
+      snippet: "Code repository",
+    },
+  ],
+  [
+    "https://www.reddit.com",
+    {
+      id: "6",
+      title: "Reddit",
+      url: "https://www.reddit.com",
+      snippet: "Social news and discussion website",
+    },
+  ],
+  [
+    "https://www.youtube.com",
+    {
+      id: "7",
+      title: "YouTube",
+      url: "https://www.youtube.com",
+      snippet: "Video sharing platform",
+    },
+  ],
+  [
+    "https://www.amazon.com",
+    {
+      id: "8",
+      title: "Amazon",
+      url: "https://www.amazon.com",
+      snippet: "E-commerce website",
+    },
+  ],
+  [
+    "https://www.wikipedia.org",
+    {
+      id: "9",
+      title: "Wikipedia",
+      url: "https://www.wikipedia.org",
+      snippet: "Online encyclopedia",
+    },
+  ],
+  [
+    "https://www.stackoverflow.com",
+    {
+      id: "10",
+      title: "Stack Overflow",
+      url: "https://www.stackoverflow.com",
+      snippet: "Q&A platform for programmers",
+    },
+  ],
+  [
+    "https://www.apple.com",
+    {
+      id: "11",
+      title: "Apple",
+      url: "https://www.apple.com",
+      snippet: "Technology company",
+    },
+  ],
+  [
+    "https://www.microsoft.com",
+    {
+      id: "12",
+      title: "Microsoft",
+      url: "https://www.microsoft.com",
+      snippet: "Technology company",
+    },
+  ],
+  [
+    "https://www.instagram.com",
+    {
+      id: "13",
+      title: "Instagram",
+      url: "https://www.instagram.com",
+      snippet: "Photo and video sharing platform",
+    },
+  ],
+  [
+    "https://www.pinterest.com",
+    {
+      id: "14",
+      title: "Pinterest",
+      url: "https://www.pinterest.com",
+      snippet: "Social media platform",
+    },
+  ],
+  [
+    "https://www.netflix.com",
+    {
+      id: "15",
+      title: "Netflix",
+      url: "https://www.netflix.com",
+      snippet: "Streaming service",
+    },
+  ],
+  [
+    "https://www.spotify.com",
+    {
+      id: "16",
+      title: "Spotify",
+      url: "https://www.spotify.com",
+      snippet: "Music streaming service",
+    },
+  ],
+  [
+    "https://www.twitch.tv",
+    {
+      id: "17",
+      title: "Twitch",
+      url: "https://www.twitch.tv",
+      snippet: "Live streaming platform",
+    },
+  ],
+  [
+    "https://www.bbc.com",
+    {
+      id: "18",
+      title: "BBC",
+      url: "https://www.bbc.com",
+      snippet: "News organization",
+    },
+  ],
+  [
+    "https://www.nytimes.com",
+    {
+      id: "19",
+      title: "New York Times",
+      url: "https://www.nytimes.com",
+      snippet: "News organization",
+    },
+  ],
+  [
+    "https://www.cnn.com",
+    {
+      id: "20",
+      title: "CNN",
+      url: "https://www.cnn.com",
+      snippet: "News organization",
+    },
+  ],
 ]);
 
-const searchResults: SearchResults[] = Array.from(
-  linksMap,
-  ([link, title]) => ({ link, title }),
-);
+const searchResults: {
+  id: string;
+  title: string;
+  url: string;
+  snippet: string;
+}[] = Array.from(linksMap.values());
 
 const HomePage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -69,7 +238,6 @@ const HomePage: React.FC = () => {
   // determines whether the results are being loaded
   const [loadingState, setLoadingState] = useState<boolean>(false);
 
-
   // NOTE: Used to test whether searchQuery is correct
   // biome-ignore lint/correctness/useExhaustiveDependencies: We don't worry about setShowResults
   useEffect(() => {
@@ -80,7 +248,7 @@ const HomePage: React.FC = () => {
     } else {
       setShowResults(false);
     }
-  }, [searchParams, searchQuery,theme]);
+  }, [searchParams, searchQuery, theme]);
 
   // NOTE: Used to call backend API to fetch the results
   const onSubmit = () => {
@@ -92,7 +260,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       onSubmit();
     }
   };
@@ -142,27 +310,49 @@ const HomePage: React.FC = () => {
     currentPage * itemsPerPage,
   );
 
+  useEffect(() => {
+    const apiUrl = "/search";
+    const params = { param1: "value1", param2: "value2" };
+
+    const queryString = Object.keys(params)
+      .map((key) => `${key}=${params[key]}`)
+      .join("&");
+    const url = `${apiUrl}?${queryString}`;
+
+    fetch(url, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <div>
-
       {/* Show the search results  */}
       {!loadingState ? (
         showResults ? (
           // need to update header to be sticky
           <div>
             <div className="sticky top-0">
-              <Header searchQuery={searchQuery || ""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={false}/>
+              <Header
+                searchQuery={searchQuery || ""}
+                setSearchQuery={setSearchQuery}
+                onSubmit={onSubmit}
+                minimal={false}
+              />
             </div>
 
             <div className="mt-20">
               {/* Set loading state to true */}
               {currentPagesResults.map((result) => (
-                <div key={result.title} className="px-10 py-5">
-                  <Link href={result.link}>
+                <div key={result.id} className="px-10 py-5">
+                  <Link href={result.url}>
                     <Card className="p-5 shadow-lg">
                       <CardContent>
-                        <CardTitle>{result.link}</CardTitle>
+                        <CardTitle>{result.url}</CardTitle>
                         {result.title}
+                        <CardDescription>{result.snippet}</CardDescription>
                       </CardContent>
                     </Card>
                   </Link>
@@ -194,8 +384,9 @@ const HomePage: React.FC = () => {
                     <PaginationNext
                       onClick={() => {
                         currentPage < totalPages &&
-                        setCurrentPage((prev) => prev + 1);
-                        currentPage < totalPages && addPageParam(currentPage + 1);
+                          setCurrentPage((prev) => prev + 1);
+                        currentPage < totalPages &&
+                          addPageParam(currentPage + 1);
                       }}
                     />
                   </PaginationItem>
@@ -203,19 +394,23 @@ const HomePage: React.FC = () => {
               </Pagination>
             )}
           </div>
-
         ) : (
           <div>
             {/*No search results (i.e. did not click the search button, or does not have any search params in the URL)*/}
             <div className="sticky">
-              <Header searchQuery={""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={true}/>
+              <Header
+                searchQuery={""}
+                setSearchQuery={setSearchQuery}
+                onSubmit={onSubmit}
+                minimal={true}
+              />
             </div>
 
             <div className="min-h-screen w-full flex flex-col justify-center items-center space-y-5">
               <Image
                 src={logoSrc}
                 alt="SearchRPI Logo"
-                style={{width: '600px', height: '300px', objectFit: 'cover'}}
+                style={{ width: "600px", height: "300px", objectFit: "cover" }}
               />
               <Input
                 value={searchQuery || ""}
@@ -225,8 +420,9 @@ const HomePage: React.FC = () => {
                 placeholder="Search here ..."
                 id="SearchBox"
               />
-              <Button className="mt-3" onClick={onSubmit}>Search</Button>
-
+              <Button className="mt-3" onClick={onSubmit}>
+                Search
+              </Button>
             </div>
           </div>
         )
@@ -244,11 +440,9 @@ const HomePage: React.FC = () => {
         </div>
       )}
 
-
       <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2">
-          <Footer />
+        <Footer />
       </div>
-
     </div>
   );
 };
