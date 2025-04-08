@@ -70,6 +70,16 @@ public:
      */
     double getAvgDocLen();
 
+    /**
+     * @returns The number of words in document
+     */
+    int docLen(std::string word);
+
+    /**
+     * @returns The number of times a word appears
+     */
+    int termFreq(std::string word);
+
 private:
     // LMDB environment and database handles.
     MDB_env* env_;
