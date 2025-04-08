@@ -41,7 +41,7 @@ public:
      * @param words Text of the page // TODO: Update format to include punctuation & support field weighting
      * @returns ID Generated for Added Document
      */
-    virtual SearchRPI::docid addDoc(const std::string& url, const std::string& title, const std::string& rawText) = 0;
+    virtual SearchRPI::docid addDoc(const std::string& url, const std::string& title, std::vector<std::string> words) = 0;
 
     /**
      * @param url Page URL

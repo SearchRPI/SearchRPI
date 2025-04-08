@@ -18,8 +18,12 @@
 
 class DocDatabase : public IDocDatabase {
 public:
-    DocDatabase() { DocDatabase("../docdb"); }
-    explicit DocDatabase(const std::string& dbPath);
+    // Disable Copy Constructor/Assignment Operator
+    DocDatabase(const DocDatabase&) = delete;
+    DocDatabase& operator=(DocDatabase const&) = delete;
+
+    // DocDatabase() { DocDatabase("../docdb"); }
+    explicit DocDatabase(const std::string& dbPath = "../docdb");
     ~DocDatabase();
 
     /**
@@ -59,6 +63,24 @@ public:
      * @returns Whether document existed and was removed (false if doc didn't exist)
      */
     bool remove(SearchRPI::docid id);
+
+    /**
+     * @param id Document ID
+     * @returns The complete original text of the document.
+     */
+    std::string getDocText(SearchRPI::docid id) const { return ""; }
+
+    /**
+     * @param id Document ID
+     * @returns The title of the document
+     */
+    std::string getDocTitle(SearchRPI::docid id) const { return ""; }
+
+    /**
+     * @param id Document ID
+     * @returns The URL of the document
+     */
+    std::string getDocUrl(SearchRPI::docid id) const { return ""; }
 
 private:
     // LMDB environment and database handles.
