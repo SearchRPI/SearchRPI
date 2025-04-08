@@ -1,6 +1,8 @@
 #include "Database.h"
 #include <gtest/gtest.h>
 #include <filesystem>
+#include <unordered_map>
+#include <algorithm>
 
 const std::string TEST_DB_PATH = "./testdb";
 
@@ -174,4 +176,20 @@ TEST_F(DatabaseTest, IndexMultipleWordsWithMultipleDocs) {
             ASSERT_GE(results[i - 1].priority, results[i].priority);
         }
     }
+}
+
+TEST_F(DatabaseTest, TermDocCountSuccess) {
+    Data data1 = {10, 1};
+    Data data2 = {20, 2};
+    Data data3 = {30, 3};
+    db->add("term", data1);
+    db->add("term", data2);
+    db->add("term", data3);
+    unsigned int count = db->termDocCount("term");
+    ASSERT_EQ(count, 3);
+}
+
+TEST_F(DatabaseTest, TermDocCountNonexistentKey) {
+    unsigned int count = db->termDocCount("nonexistent");
+    ASSERT_EQ(count, 0);
 }
