@@ -20,6 +20,9 @@ const description =
 export const metadata: Metadata = {
   title: title,
   description: description,
+  icons: {
+    icon: "../components/dark-logo.png",
+  },
   twitter: {
     card: "summary_large_image",
     title,

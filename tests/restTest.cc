@@ -1,8 +1,8 @@
-#include "api/Server.h"
+#include "../include/api/Server.h"
 
-// int main(){
-//     SearchRPI::Server server;
-//     server.start();
+int main() {
+  SearchRPI::Server server;
+  server.start();
 
-//     return 0;
-// }
+  return 0;
+}
