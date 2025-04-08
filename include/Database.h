@@ -61,6 +61,14 @@ public:
      */
     std::vector<Data> get(const std::string& key, size_t n);
 
+    /**
+     * @brief Retrieve the number of documents containing a given term
+     *
+     * @param key Index to retrieve from.
+     * @return Number of documents associated with that term
+     */
+    unsigned int termDocCount(const std::string& key);
+
 private:
     MDB_env* env = nullptr;
     MDB_dbi dbi;

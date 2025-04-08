@@ -52,4 +52,13 @@ public:
      * @return At most the first 'n' entries
      */
     virtual std::vector<Data> get(const std::string& key, size_t n) = 0;
+
+    /**
+     * @brief Retrieve the number of documents containing a given term
+     *
+     * @param key Index to retrieve from.
+     * @return Number of documents associated with that term
+     */
+    virtual unsigned int termDocCount(const std::string& key) = 0;
+
 };

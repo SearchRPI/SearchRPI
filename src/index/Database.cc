@@ -184,3 +184,47 @@ std::vector<Data> Database::get(const std::string& key, size_t n) {
 
     return results;
 }
+
+unsigned int Database::termDocCount(const std::string& key) {
+    // Begin a read-only transaction for counting.
+    MDB_txn* txn;
+    if (mdb_txn_begin(env, nullptr, MDB_RDONLY, &txn) != 0) {
+        throw std::runtime_error("Failed to begin read transaction in getTermNumDocs");
+    }
+
+    // Open a cursor for the database.
+    MDB_cursor* cursor;
+    if (mdb_cursor_open(txn, dbi, &cursor) != 0) {
+        mdb_txn_abort(txn);
+        throw std::runtime_error("Failed to open LMDB cursor in getTermNumDocs");
+    }
+
+    // Prepare the key.
+    MDB_val mdb_key, mdb_value;
+    mdb_key.mv_size = key.size();
+    mdb_key.mv_data = (void*)key.c_str();
+
+    // Try to position the cursor to the key.
+    int rc = mdb_cursor_get(cursor, &mdb_key, &mdb_value, MDB_SET);
+    if (rc == MDB_NOTFOUND) {
+        // If the key isn't found, clean up and return 0.
+        mdb_cursor_close(cursor);
+        mdb_txn_abort(txn);
+        return 0;
+    }
+
+    // Count the number of duplicate entries (documents) associated with the key.
+    size_t count = 0;
+    rc = mdb_cursor_count(cursor, &count);
+    if (rc != 0) {
+        mdb_cursor_close(cursor);
+        mdb_txn_abort(txn);
+        throw std::runtime_error("Failed to count duplicates: " + std::string(mdb_strerror(rc)));
+    }
+
+    // Clean up the cursor and transaction.
+    mdb_cursor_close(cursor);
+    mdb_txn_abort(txn);
+
+    return static_cast<unsigned int>(count);
+}
