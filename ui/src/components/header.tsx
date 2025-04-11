@@ -1,3 +1,4 @@
+import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import LightLogo from "./light-logo.png";
@@ -45,7 +46,7 @@ const Header: React.FC<Props> = ({ searchQuery, setSearchQuery, onSubmit , minim
               <Image src={logoSrc} alt="SearchRPI Logo" width={240} height={240}/>
             </Link>
           </Button>
-          <div className="flex justify-center">
+          <div className="flex justify-center items-center space-x-5">
             {/* TODO: Handle "Submit" or "Enter" key press inside of the Input */}
             <Input
               value={searchQuery || ""}
@@ -54,6 +55,7 @@ const Header: React.FC<Props> = ({ searchQuery, setSearchQuery, onSubmit , minim
               placeholder="Search here ..."
               id="SearchBox"
             />
+            <Search/>
           </div>
           <ThemeSwitcher/>
         </nav>

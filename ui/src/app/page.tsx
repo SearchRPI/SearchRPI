@@ -143,37 +143,54 @@ const HomePage: React.FC = () => {
   );
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen min-w-screen">
 
       {/* Show the search results  */}
-      {!loadingState ? (
-        showResults ? (
-          // need to update header to be sticky
-          <div>
-            <div className="sticky top-0">
-              <Header searchQuery={searchQuery || ""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={false}/>
-            </div>
+      {showResults ? (
+        <div>
+          {!loadingState ? (
+            // need to update header to be sticky
+            <div>
+              <div className="sticky top-0">
+                <Header searchQuery={searchQuery || ""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={false}/>
+              </div>
 
-            <div className="mt-20">
-              {/* Set loading state to true */}
-              {currentPagesResults.map((result) => (
-                <div key={result.title} className="px-10 py-5">
-                  <Link href={result.link}>
-                    <Card className="p-5 shadow-lg">
-                      <CardContent>
-                        <CardTitle>{result.link}</CardTitle>
-                        {result.title}
-                      </CardContent>
-                    </Card>
-                  </Link>
-                </div>
-              ))}
-              {/* Set loading state to false */}
+              <div className="mt-20 mb-20">
+                {/* Set loading state to true */}
+                {currentPagesResults.map((result) => (
+                  <div key={result.title} className="px-[200px] py-5">
+                    <Link href={result.link}>
+                      <Card className="p-10 shadow-lg text-xl">
+                        <CardContent>
+                          <CardTitle className="text-2xl font-extrabold text-gray-400">Page Title</CardTitle>
+                          <div className="font-light text-gray-400">{result.link}</div>
+                          <div className="font-semibold text-gray-400">{result.title}</div> 
+                          <div className="mt-5 text-gray-400">Text excerpt from web page</div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </div>
+                ))}
+                {/* Set loading state to false */}
+              </div>
             </div>
+          ) : (
+          <div className="flex justify-center items-center h-[50vh] ">
+            <div
+              className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+              // biome-ignore lint/a11y/useSemanticElements: it works
+              role="status"
+            >
+              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                Loading...
+              </span>
+            </div>
+          </div>
+          )}
             {/* Pagination */}
             {totalPages > 1 && (
               // need to update to be sticky on bottom
-              <Pagination className="fixed bottom-28">
+              <Pagination className="flex justify-center">
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious
@@ -202,21 +219,23 @@ const HomePage: React.FC = () => {
                 </PaginationContent>
               </Pagination>
             )}
-          </div>
-
+          
+            </div>
         ) : (
-          <div>
+          <div className="flex-grow">
             {/*No search results (i.e. did not click the search button, or does not have any search params in the URL)*/}
-            <div className="sticky">
+            <div className="sticky top-0">
               <Header searchQuery={""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={true}/>
             </div>
 
-            <div className="min-h-screen w-full flex flex-col justify-center items-center space-y-5">
+            <div className="flex flex-col justify-center items-center space-y-5 mt-20">
+
               <Image
                 src={logoSrc}
                 alt="SearchRPI Logo"
                 style={{width: '600px', height: '300px', objectFit: 'cover'}}
               />
+              <div className="text-lg text-gray-400">The search engine for all things RPI</div>
               <Input
                 value={searchQuery || ""}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -230,22 +249,9 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         )
-      ) : (
-        <div className="flex justify-center items-center h-[50vh] ">
-          <div
-            className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
-            // biome-ignore lint/a11y/useSemanticElements: it works
-            role="status"
-          >
-            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-              Loading...
-            </span>
-          </div>
-        </div>
-      )}
+      }
 
-
-      <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2">
+      <div className="flex justify-center">
           <Footer />
       </div>
 
