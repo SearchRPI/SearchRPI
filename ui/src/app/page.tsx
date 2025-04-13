@@ -1,16 +1,14 @@
 "use client";
 import Footer from "@/components/footer";
-import Header from "../components/header";
+import Header from "@/components/header";
+import LogoSwitcher from "@/components/logo-switcher";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import Image from "next/image";
 import Link from "next/link";
-import LightLogo from "@/components/light-logo.png";
-import DarkLogo from "@/components/dark-logo.png";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import RenderPaginationItems from "@/components/pagination-pages";
 import {
@@ -56,8 +54,6 @@ const HomePage: React.FC = () => {
   const router = useRouter();
   const { theme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState(LightLogo);
-
   const [searchQuery, setSearchQuery] = useState<string | null>(
     searchParams.get("query"),
   );
@@ -73,14 +69,13 @@ const HomePage: React.FC = () => {
   // NOTE: Used to test whether searchQuery is correct
   // biome-ignore lint/correctness/useExhaustiveDependencies: We don't worry about setShowResults
   useEffect(() => {
-    setLogoSrc(theme === "dark" ? DarkLogo : LightLogo);
     if (searchParams.get("query")) {
       setShowResults(true);
       setPageAndResults();
     } else {
       setShowResults(false);
     }
-  }, [searchParams, searchQuery,theme]);
+  }, [searchParams, searchQuery, theme]);
 
   // NOTE: Used to call backend API to fetch the results
   const onSubmit = () => {
@@ -229,12 +224,7 @@ const HomePage: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-center items-center space-y-5 mt-20">
-
-              <Image
-                src={logoSrc}
-                alt="SearchRPI Logo"
-                style={{width: '600px', height: '300px', objectFit: 'cover'}}
-              />
+              <LogoSwitcher/>
               <div className="text-lg text-gray-400">The search engine for all things RPI</div>
               <Input
                 value={searchQuery || ""}
