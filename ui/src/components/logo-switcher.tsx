@@ -12,7 +12,13 @@ import DarkLogo from "@/components/dark-logo.png";
  * Light mode will have black text.
  * Dark mode will have white text.
  */
-export default function LogoSwitcher() {
+
+interface Props {
+  width: string | number;
+  height: string | number | undefined;
+}
+
+const LogoSwitcher: React.FC<Props> = ({ width, height }) => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -36,14 +42,16 @@ export default function LogoSwitcher() {
         <Image
           src={DarkLogo}
           alt="SearchRPI Logo"
-          style={{width: '600px', height: '300px', objectFit: 'cover'}}
+          style={{width, height, objectFit: 'cover'}}
         />}
       {theme === "light" && 
         <Image
           src={LightLogo}
           alt="SearchRPI Logo"
-          style={{width: '600px', height: '300px', objectFit: 'cover'}}
+          style={{width, height, objectFit: 'cover'}}
         />}
     </div>
   );
 }
+
+export default LogoSwitcher;

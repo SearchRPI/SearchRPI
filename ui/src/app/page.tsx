@@ -75,7 +75,7 @@ const HomePage: React.FC = () => {
     } else {
       setShowResults(false);
     }
-  }, [searchParams, searchQuery, theme]);
+  }, [searchParams]);
 
   // NOTE: Used to call backend API to fetch the results
   const onSubmit = () => {
@@ -114,6 +114,7 @@ const HomePage: React.FC = () => {
   const addQueryParam = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("query", value);
+    params.set("pages", "1"); // Reset to page 1 on new search
     router.push(`${window.location.pathname}?${params.toString()}`);
   };
 
@@ -147,7 +148,7 @@ const HomePage: React.FC = () => {
             // need to update header to be sticky
             <div>
               <div className="sticky top-0">
-                <Header searchQuery={searchQuery || ""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={false}/>
+                <Header searchQuery={searchQuery || ""} setSearchQuery={setSearchQuery} setShowResults={setShowResults} setPageAndResults={setPageAndResults} onSubmit={onSubmit} minimal={false} handleKeyDown={handleKeyDown}/>
               </div>
 
               <div className="mt-20 mb-20">
@@ -220,11 +221,11 @@ const HomePage: React.FC = () => {
           <div className="flex-grow">
             {/*No search results (i.e. did not click the search button, or does not have any search params in the URL)*/}
             <div className="sticky top-0">
-              <Header searchQuery={""} setSearchQuery={setSearchQuery} onSubmit={onSubmit} minimal={true}/>
+              <Header searchQuery={""} setSearchQuery={setSearchQuery} setShowResults={setShowResults} setPageAndResults={setPageAndResults} onSubmit={onSubmit} minimal={true} handleKeyDown={handleKeyDown}/>
             </div>
 
             <div className="flex flex-col justify-center items-center space-y-5 mt-20">
-              <LogoSwitcher/>
+              <LogoSwitcher width={"600px"} height={"300px"}/>
               <div className="text-lg text-gray-400">The search engine for all things RPI</div>
               <Input
                 value={searchQuery || ""}
