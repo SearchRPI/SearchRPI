@@ -8,12 +8,9 @@
 #include <lmdb.h>
 #include <string>
 #include <vector>
+#include "types.h"
 
-// Struct to store in LMDB
-struct Data {
-    int priority;         // Priority value (used for ranking)
-    int docId;            // docId for specific document
-};
+using SearchRPI::Data;
 
 class Database {
 public:

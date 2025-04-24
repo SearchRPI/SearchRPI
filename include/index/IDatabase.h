@@ -2,12 +2,9 @@
 
 #include <string>
 #include <vector>
+#include "../types.h"
 
-// Struct stored in database
-struct Data {
-    int priority; // Priority value (used for ranking) // TODO: Swap to term frequency
-    int docId;    // docId for specific document
-};
+using SearchRPI::Data;
 
 /**
  * @brief Interface for Database operations

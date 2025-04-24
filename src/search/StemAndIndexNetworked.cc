@@ -11,7 +11,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
-#include "DatabaseWrapper.h"
+#include "Database.h"
+#include "index/IDatabase.h"
 #include "query-processing/stemmer.h"
 
 using json = nlohmann::json;
@@ -36,7 +37,7 @@ std::mutex docid_mutex;
 std::unordered_map<std::string, int> url_to_docId;
 int next_docId = 1;
 
-void handle_connection(int client_sock, DatabaseWrapper& db) {
+void handle_connection(int client_sock, Database& db) {
     try {
         std::string buffer;
         char chunk[4096];
@@ -73,7 +74,7 @@ void handle_connection(int client_sock, DatabaseWrapper& db) {
             std::string tag = data["tag"];
             int priority = tag_priority(tag);
 
-            Data entry = { priority, std::to_string(docId) };
+            Data entry = { priority, docId };
             {
                 std::lock_guard<std::mutex> lock(db_mutex);
                 db.add(stemmed, entry);
@@ -88,7 +89,7 @@ void handle_connection(int client_sock, DatabaseWrapper& db) {
 }
 
 int main() {
-    DatabaseWrapper db;
+    Database db(DB_PATH);
 
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd == -1) {
@@ -125,4 +126,55 @@ int main() {
 
     close(server_fd);
     return 0;
+}
+
+void handle_connection_for_tests(int client_sock, IDatabase& db) {
+    try {
+        std::string buffer;
+        char chunk[4096];
+        ssize_t len;
+
+        while ((len = read(client_sock, chunk, sizeof(chunk))) > 0) {
+            buffer.append(chunk, len);
+            if (buffer.find('\n') != std::string::npos) break;
+        }
+
+        auto parsed = json::parse(buffer);
+        std::string url = parsed["url"];
+        auto words = parsed["words"];
+
+        // Assign a unique docId per URL
+        int docId;
+        {
+            std::lock_guard<std::mutex> lock(docid_mutex);
+            if (url_to_docId.count(url)) {
+                docId = url_to_docId[url];
+            } else {
+                docId = next_docId++;
+                url_to_docId[url] = docId;
+            }
+        }
+
+        std::unordered_set<std::string> seen;
+
+        for (auto& [word, data] : words.items()) {
+            std::string stemmed = stemmer::stem(word);
+            if (seen.count(stemmed)) continue;
+            seen.insert(stemmed);
+
+            std::string tag = data["tag"];
+            int priority = tag_priority(tag);
+
+            SearchRPI::Data entry = { priority, docId };
+            {
+                std::lock_guard<std::mutex> lock(db_mutex);
+                db.add(stemmed, entry);
+            }
+        }
+
+    } catch (const std::exception& e) {
+        std::cerr << "[!] Error processing connection: " << e.what() << std::endl;
+    }
+
+    close(client_sock);
 }

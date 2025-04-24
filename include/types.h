@@ -14,4 +14,11 @@ namespace SearchRPI {
  */
 typedef unsigned int docid;
 
+// Struct to store in LMDB
+struct Data {
+    int priority;         // Priority value (used for ranking)
+    int docId;            // docId for specific document
+};
+
+
 }
