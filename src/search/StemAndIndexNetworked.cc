@@ -11,8 +11,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
-#include "Database.h"
-#include "stemmer.h"
+#include "DatabaseWrapper.h"
+#include "query-processing/stemmer.h"
 
 using json = nlohmann::json;
 
@@ -36,7 +36,7 @@ std::mutex docid_mutex;
 std::unordered_map<std::string, int> url_to_docId;
 int next_docId = 1;
 
-void handle_connection(int client_sock, Database& db) {
+void handle_connection(int client_sock, DatabaseWrapper& db) {
     try {
         std::string buffer;
         char chunk[4096];
@@ -73,7 +73,7 @@ void handle_connection(int client_sock, Database& db) {
             std::string tag = data["tag"];
             int priority = tag_priority(tag);
 
-            Data entry = { priority, docId };
+            Data entry = { priority, std::to_string(docId) };
             {
                 std::lock_guard<std::mutex> lock(db_mutex);
                 db.add(stemmed, entry);
@@ -88,7 +88,7 @@ void handle_connection(int client_sock, Database& db) {
 }
 
 int main() {
-    Database db(DB_PATH);
+    DatabaseWrapper db;
 
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd == -1) {
