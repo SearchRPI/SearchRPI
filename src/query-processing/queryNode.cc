@@ -34,4 +34,13 @@ int QueryNode::getNodeIndex() const {
     return nodeIndex;
 }
 
+void QueryNode::setChildStart(int start) {
+    childStart = start;
+}
+
+void QueryNode::incrementChildCount() {
+    childCount++;
+}
+
+
 } // namespace queryTree

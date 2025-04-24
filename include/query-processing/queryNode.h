@@ -69,6 +69,18 @@ public:
      */
     int getNodeIndex() const;
 
+    /**
+    * @brief Set child start
+    * @param start The start index
+    */
+    void setChildStart(int start);
+
+    /**
+    * @brief increased child count
+    */
+    void incrementChildCount();
+
+
 private:
     int nodeIndex;
     QueryOperator operation;

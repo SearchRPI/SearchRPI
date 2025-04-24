@@ -60,22 +60,28 @@ namespace queryTree {
 void QueryTree::addPhraseNodes(const queryTree::TokenList& tokens,
     const std::map<int, std::pair<std::string, std::vector<int>>>& phraseMap,
     std::unordered_set<int>& usedTokens, int& nodeIndex) {
+
     for (const auto& [startIndex, phraseData] : phraseMap) {
         const std::string& phrase = phraseData.first;
         const std::vector<int>& tokenIndexes = phraseData.second;
 
-        // Attach the OD node to the root (COMBINE node, index 0)
         int phraseNodeIndex = nodeIndex++;
-        nodes.emplace_back(phraseNodeIndex, QueryOperator::OD, phrase, 0, tokenIndexes.size());
+
+        // Attach OD node to root
+        nodes.emplace_back(phraseNodeIndex, QueryOperator::OD, phrase,
+            nodeIndex, tokenIndexes.size());
+
+        // Update root to point to this Phrase node
+        if (nodes[0].getChildStart() == -1) nodes[0].setChildStart(phraseNodeIndex);
+        nodes[0].incrementChildCount();
 
         // Add child term nodes under OD
         for (int idx : tokenIndexes) {
             usedTokens.insert(idx);
-            nodes.emplace_back(nodeIndex++, QueryOperator::TEXT, tokens[idx], phraseNodeIndex, 0);
+            nodes.emplace_back(nodeIndex++, QueryOperator::TEXT, tokens[idx], -1, 0);
         }
     }
 }
-
 
 void QueryTree::addTermNodes(const queryTree::TokenList& tokens,
                              const std::unordered_set<int>& usedTokens,
@@ -84,7 +90,15 @@ void QueryTree::addTermNodes(const queryTree::TokenList& tokens,
         if (usedTokens.find(i) != usedTokens.end() || tokens[i].empty()) continue;
 
         QueryOperator opType = getOperatorType(tokens[i]);
-        nodes.emplace_back(nodeIndex++, opType, tokens[i], -1, 0);
+        int termNodeIndex = nodeIndex++;
+        nodes.emplace_back(termNodeIndex, opType, tokens[i], -1, 0);
+
+        // Attach term to root, but only if not already used by a phrase
+        if (usedTokens.find(i) == usedTokens.end()) {
+            if (nodes[0].getChildStart() == -1) nodes[0].setChildStart(termNodeIndex);
+            nodes[0].incrementChildCount();
+        }
+
     }
 }
 
@@ -95,7 +109,7 @@ QueryTree::QueryTree(const queryTree::TokenList& tokens,
     nodes.reserve(tokens.size()); // Preallocate for efficiency
 
     int nodeIndex = 0;
-    nodes.emplace_back(nodeIndex++, QueryOperator::COMBINE, "", -1, tokens.size());
+    nodes.emplace_back(nodeIndex++, QueryOperator::COMBINE, "", -1, 0);
 
     // Find phrases and their positions
     auto phraseMap = findPhrases(tokens, dict);
@@ -115,15 +129,46 @@ const QueryNode* QueryTree::getNode(int index) const {
     return &nodes[index];
 }
 
-// FIXME: make this an operator overload
-void QueryTree::print() const {
-    for (const auto& node : nodes) {
-        std::cout << "Node " << node.getNodeIndex() << ": " << toString(node.getOperation());
-        if (!node.getValue().empty()) {
-            std::cout << " (" << node.getValue() << ")";
+void queryTree::QueryTree::forEachNodeWithDepth(const std::function<void(
+    const QueryNode&, int depth)>& callback) const {
+    if (nodes.empty()) return;
+
+    std::vector<int> depth(nodes.size(), 0);
+
+    for (size_t i = 1; i < nodes.size(); ++i) {
+        for (size_t j = 0; j < nodes.size(); ++j) {
+            int start = nodes[j].getChildStart();
+            int count = nodes[j].getChildCount();
+            if (count == 0 || start == -1) continue;
+            if ((int)i >= start && (int)i < start + count) {
+                depth[i] = depth[j] + 1;
+                break;
+            }
         }
-        std::cout << std::endl;
+    }
+
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        callback(nodes[i], depth[i]);
     }
 }
+
+std::ostream& operator<<(std::ostream& os, const queryTree::QueryTree& tree) {
+    tree.forEachNodeWithDepth([&](const queryTree::QueryNode& node, int depth) {
+        for (int i = 0; i < depth; ++i)
+            os << "  ";
+
+        os << toString(node.getOperation());
+
+        // Show value only for TEXT nodes
+        if (node.getOperation() == queryTree::QueryOperator::TEXT) {
+            os << ":" << node.getValue();
+        }
+
+        os << "\n";
+    });
+
+    return os;
+}
+
 
 } // namespace queryTree

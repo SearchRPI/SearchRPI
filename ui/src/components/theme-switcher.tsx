@@ -33,7 +33,7 @@ export default function ThemeSwitcher() {
 
   return (
     // biome-ignore lint/a11y/useKeyWithClickEvents lint/a11y/useFocusableInteractive lint/a11y/useSemanticElements: treat as a button, it should be fine
-    <div role="button" onClick={handleTheme} className="px-4">
+    <div role="button" onClick={handleTheme} >
       {theme === "dark" && <SunIcon size={28} />}
       {theme === "light" && <MoonIcon size={28} />}
     </div>
